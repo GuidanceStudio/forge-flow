@@ -49,7 +49,7 @@ local-only per the v0.1 out-of-scope (no remote configured).
 
 ### Phase B — Migrate existing executor into the new structure
 
-#### M2: Migrate Claude variant (TDD.md, IDD.md, README.md)
+#### M2: Migrate Claude variant (TDD.md, IDD.md, README.md) ✅
 
 **Why:** The current Claude executor (`~/.claude/skills/devplan-executor/`) is
 already battle-tested. We bring its source files into the new repo unchanged
@@ -65,16 +65,20 @@ the variant-level `README.md` to reflect the new skill name and the fact that
 this is now a sub-document of a unified skill (not a standalone install).
 
 **Tasks:**
-- [ ] Copy `TDD.md` → `claude/devplan/TDD.md`
-- [ ] Copy `IDD.md` → `claude/devplan/IDD.md`
-- [ ] Copy `README.md` → `claude/devplan/README.md`
-- [ ] Grep both playbooks for `devplan-executor` references and update to `devplan`
-- [ ] Update `claude/devplan/README.md`: skill name, install path, link back to project root
-- [ ] Verify no broken internal links remain
-- [ ] Commit & push
+- [x] Copy `TDD.md` → `claude/devplan/TDD.md`
+- [x] Copy `IDD.md` → `claude/devplan/IDD.md`
+- [x] Copy `README.md` → `claude/devplan/README.md`
+- [x] Grep both playbooks for `devplan-executor` references and update to `devplan` (none found — clean)
+- [x] Update `claude/devplan/README.md`: skill name, install path, link back to project root
+- [x] Verify no broken internal links remain
+- [x] Commit (push skipped — no remote)
 
 **Done when:** `claude/devplan/` contains TDD.md, IDD.md, README.md with all
 references updated to the new skill name.
+
+**Notes:** Executed in IDD mode (TDD fallback). TDD.md and IDD.md had zero
+references to `devplan-executor` — they were already self-contained. README.md
+was fully rewritten to reflect the new 3-mode routing and unified install.
 
 ---
 
