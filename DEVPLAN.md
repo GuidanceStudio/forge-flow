@@ -208,7 +208,7 @@ wording for file search, guardrail formatting.
 
 ### Phase D — Wire the router
 
-#### M6: Rewrite `SKILL.md` as the design/TDD/IDD router (both variants)
+#### M6: Rewrite `SKILL.md` as the design/TDD/IDD router (both variants) ✅
 
 **Why:** This is the single entry point users invoke. Until M6 the new
 playbooks exist but nothing routes to them. After M6 the skill is functionally
@@ -231,13 +231,13 @@ The router itself never executes work; it just selects and hands off. Each
 playbook stays self-contained.
 
 **Tasks:**
-- [ ] Write `claude/devplan/SKILL.md` router with frontmatter and the 5-branch logic
-- [ ] Write `codex/devplan/SKILL.md` router (same logic, Codex syntax)
-- [ ] Verify both routers explicitly recommend TDD as default execution mode
-- [ ] Verify both routers load only one playbook per invocation (no eager loading)
-- [ ] Update `codex/devplan/agents/openai.yaml` to point to the new SKILL.md if needed
-- [ ] Manual smoke test: invoke each branch mentally against the router text
-- [ ] Commit & push
+- [x] Write `claude/devplan/SKILL.md` router with frontmatter and the 5-branch logic
+- [x] Write `codex/devplan/SKILL.md` router (same logic, Codex syntax)
+- [x] Verify both routers explicitly recommend TDD as default execution mode
+- [x] Verify both routers load only one playbook per invocation (no eager loading)
+- [x] Update `codex/devplan/agents/openai.yaml` to point to the new SKILL.md if needed (already done in M3)
+- [x] Manual smoke test: invoke each branch mentally against the router text
+- [x] Commit (push skipped — no remote)
 
 **Done when:** Both `SKILL.md` files dispatch correctly to design/TDD/IDD,
 recommend TDD by default, and load only the playbook needed for the chosen
