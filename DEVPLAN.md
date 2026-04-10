@@ -399,6 +399,64 @@ the actual codebase — not just format.
 
 ---
 
+#### M11: Remote install — one-liner `bash <(curl ...)` without cloning ✅
+
+**Why:** The current `install.sh` only works from a local clone. Users
+discovering the skill on GitHub should be able to install with a single
+command — `bash <(curl -fsSL https://raw.githubusercontent.com/OWNER/devplan/main/install.sh)` —
+without cloning the repo first. This is the standard distribution pattern
+for CLI tools and skills.
+
+**Approach:** Rewrite `install.sh` to auto-detect its execution context:
+
+1. **Local mode** (current behavior) — if the script detects that the
+   source directories (`claude/devplan/`, `codex/devplan/`) exist relative
+   to `SCRIPT_DIR`, it uses them directly via `cp -r`. Nothing changes for
+   users who already clone.
+
+2. **Remote mode** (new) — if the source directories are not found (i.e.
+   the script was piped from curl or run from a temp location), the script:
+   - creates a temp dir (`mktemp -d`)
+   - `git clone --depth 1` the repo into it (requires git)
+   - runs the install logic using the cloned files as source
+   - cleans up the temp dir on exit (trap)
+
+Detection: check `[ -d "$SCRIPT_DIR/claude/devplan" ]`. If yes → local
+mode. If no → remote mode.
+
+The repo URL should be a variable at the top of the script (`REPO_URL`)
+so it's easy to change. Default: `https://github.com/OWNER/devplan.git`
+(placeholder until the repo is published).
+
+All existing flags (`claude`, `codex`, `all`, `--force`, `--help`) work
+identically in both modes. The user-facing one-liner to document in the
+README:
+
+```
+bash <(curl -fsSL https://raw.githubusercontent.com/OWNER/devplan/main/install.sh)
+```
+
+**Tasks:**
+- [x] Refactor `install.sh`: extract source-detection logic at the top
+- [x] Add remote mode: temp dir, `git clone --depth 1`, trap cleanup
+- [x] Keep local mode unchanged (backwards compatible)
+- [x] Test local mode still works (run from repo root)
+- [x] Test remote mode (copy `install.sh` to `/tmp`, run from there)
+- [x] Update `README.md`: add one-liner install section before the local install section
+- [x] Update `README.md`: note that remote install requires `git` and `curl`
+- [ ] Commit
+
+**Done when:** `bash <(curl -fsSL .../install.sh)` from a machine with
+`git` and `curl` installs the skill without a prior clone, and
+`./install.sh` from within the repo still works as before.
+
+**Notes:** Executed in TDD mode. `DEVPLAN_REPO_URL` env var added for
+testability — tests point it at the local repo to avoid network dependency.
+`kiso-run/devplan` is the target repo URL — update if the GitHub home changes.
+Test suite: 21 tests (14 local, 7 remote), all green.
+
+---
+
 ## Out of scope for v0.1
 
 - Publishing to a public GitHub repo (local-only for now)

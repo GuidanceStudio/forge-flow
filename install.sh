@@ -3,16 +3,45 @@ set -euo pipefail
 
 # devplan skill installer
 # Copies the skill files into the target tool's skill directory.
+#
+# Local mode:  ./install.sh [OPTIONS] [TARGET]
+# Remote mode: bash <(curl -fsSL https://raw.githubusercontent.com/OWNER/devplan/main/install.sh)
+
+REPO_URL="${DEVPLAN_REPO_URL:-https://github.com/kiso-run/devplan.git}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-CLAUDE_SRC="$SCRIPT_DIR/claude/devplan"
-CODEX_SRC="$SCRIPT_DIR/codex/devplan"
+FORCE=false
+CLEANUP_DIR=""
+
+cleanup_temp() {
+    if [ -n "$CLEANUP_DIR" ] && [ -d "$CLEANUP_DIR" ]; then
+        rm -rf "$CLEANUP_DIR"
+    fi
+}
+trap cleanup_temp EXIT
+
+# Detect local vs remote mode
+if [ -d "$SCRIPT_DIR/claude/devplan" ] && [ -d "$SCRIPT_DIR/codex/devplan" ]; then
+    # Local mode — source dirs exist next to the script
+    SRC_ROOT="$SCRIPT_DIR"
+else
+    # Remote mode — clone the repo into a temp dir
+    if ! command -v git >/dev/null 2>&1; then
+        echo "Error: git is required for remote install." >&2
+        exit 1
+    fi
+    CLEANUP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/devplan-install-XXXXXX")"
+    echo "Cloning devplan into temporary directory..."
+    git clone --depth 1 --quiet "$REPO_URL" "$CLEANUP_DIR/devplan"
+    SRC_ROOT="$CLEANUP_DIR/devplan"
+fi
+
+CLAUDE_SRC="$SRC_ROOT/claude/devplan"
+CODEX_SRC="$SRC_ROOT/codex/devplan"
 
 CLAUDE_DEST="$HOME/.claude/skills/devplan"
 CODEX_DEST="$HOME/.codex/skills/devplan"
-
-FORCE=false
 
 usage() {
     cat <<'EOF'
