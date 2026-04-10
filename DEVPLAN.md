@@ -313,7 +313,7 @@ correctly describes the project, modes, install, usage, and layout.
 
 ---
 
-#### M9: Smoke test & v0.1 tag
+#### M9: Smoke test & v0.1 tag ✅
 
 **Why:** Before declaring v0.1 done, verify the whole thing actually installs
 and routes correctly end-to-end. Tagging v0.1 marks a stable reference point
@@ -326,13 +326,13 @@ to confirm each branch loads the right file. Fix anything broken. Tag the
 final commit as `v0.1`.
 
 **Tasks:**
-- [ ] Backup existing `~/.claude/skills/devplan-executor/` and `~/.codex/skills/devplan-executor/` if present
-- [ ] Run `./install.sh all` from the new repo
-- [ ] Verify all files landed in the right paths with correct contents
-- [ ] Mentally smoke-test each router branch
-- [ ] Fix any issue found (each fix gets its own micro-commit)
-- [ ] Tag `v0.1`
-- [ ] Commit & push (with tag)
+- [x] Backup existing `~/.claude/skills/devplan-executor/` and `~/.codex/skills/devplan-executor/` if present (skipped — install goes to new `devplan/` path, old `devplan-executor/` is untouched)
+- [x] Run `./install.sh all` from the new repo (dry-run with fake HOME)
+- [x] Verify all files landed in the right paths with correct contents (Claude: 5 files, Codex: 5 + agents/openai.yaml)
+- [x] Mentally smoke-test each router branch (7/7 branches verified)
+- [x] Fix any issue found (none found)
+- [x] Tag `v0.1`
+- [x] Commit (push skipped — no remote)
 
 **Done when:** A fresh install from this repo produces a working `/devplan`
 skill in both Claude Code and Codex, all router branches dispatch correctly,
