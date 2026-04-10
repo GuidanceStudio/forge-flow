@@ -16,6 +16,21 @@ One skill, three modes:
 
 ## Install
 
+One-liner (no clone required):
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/kiso-run/devplan/main/install.sh)
+```
+
+Requires `git` and `curl`. To install only one variant, append the target:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/kiso-run/devplan/main/install.sh) claude
+bash <(curl -fsSL https://raw.githubusercontent.com/kiso-run/devplan/main/install.sh) codex
+```
+
+From a local clone:
+
 ```bash
 ./install.sh            # install both variants (default)
 ./install.sh claude     # Claude Code only
