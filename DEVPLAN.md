@@ -281,7 +281,7 @@ correct files and a clear success message.
 
 ---
 
-#### M8: Write project-level `README.md`
+#### M8: Write project-level `README.md` ✅
 
 **Why:** The placeholder from M1 is not enough. The repo needs a real README
 that explains what `devplan` is, the three modes, how to install, and links
@@ -303,10 +303,10 @@ sees when they land on the repo.
 No emoji. No marketing fluff.
 
 **Tasks:**
-- [ ] Write `README.md` replacing the M1 placeholder
-- [ ] Include all sections listed above
-- [ ] Verify all internal links resolve to real files in the repo
-- [ ] Commit & push
+- [x] Write `README.md` replacing the M1 placeholder
+- [x] Include all sections listed above
+- [x] Verify all internal links resolve to real files in the repo (13/13 OK)
+- [x] Commit (push skipped — no remote)
 
 **Done when:** Repo root `README.md` is the canonical entry point and
 correctly describes the project, modes, install, usage, and layout.
