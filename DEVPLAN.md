@@ -82,7 +82,7 @@ was fully rewritten to reflect the new 3-mode routing and unified install.
 
 ---
 
-#### M3: Migrate Codex variant (TDD.md, IDD.md, README.md, agents/openai.yaml)
+#### M3: Migrate Codex variant (TDD.md, IDD.md, README.md, agents/openai.yaml) ✅
 
 **Why:** Same rationale as M2 but for the Codex variant, which has the
 additional `agents/openai.yaml` file. Keeping the two variants in lockstep is
@@ -94,17 +94,21 @@ README for the Codex variant keeps Codex-specific terminology
 (`$devplan` invocation, `~/.codex/skills/` path).
 
 **Tasks:**
-- [ ] Copy `TDD.md` → `codex/devplan/TDD.md`
-- [ ] Copy `IDD.md` → `codex/devplan/IDD.md`
-- [ ] Copy `README.md` → `codex/devplan/README.md`
-- [ ] Copy `agents/openai.yaml` → `codex/devplan/agents/openai.yaml`
-- [ ] Grep both playbooks for `devplan-executor` references and update to `devplan`
-- [ ] Update `codex/devplan/README.md`: skill name, install path, link back to project root
-- [ ] Verify the openai.yaml `name`/`description` fields match the new skill name
-- [ ] Commit & push
+- [x] Copy `TDD.md` → `codex/devplan/TDD.md`
+- [x] Copy `IDD.md` → `codex/devplan/IDD.md`
+- [x] Copy `README.md` → `codex/devplan/README.md`
+- [x] Copy `agents/openai.yaml` → `codex/devplan/agents/openai.yaml`
+- [x] Grep both playbooks for `devplan-executor` references and update to `devplan` (none found — clean)
+- [x] Update `codex/devplan/README.md`: skill name, install path, link back to project root
+- [x] Verify the openai.yaml `name`/`description` fields match the new skill name
+- [x] Commit (push skipped — no remote)
 
 **Done when:** `codex/devplan/` contains all 5 files (TDD/IDD/README + agents/openai.yaml)
 with all references updated.
+
+**Notes:** Executed in IDD mode (TDD fallback). Same as M2: playbooks had zero
+old-name references. Updated `openai.yaml` display_name to "Devplan" and
+description/prompt to reflect the 3-mode routing.
 
 ---
 
