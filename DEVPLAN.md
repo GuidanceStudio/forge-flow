@@ -114,7 +114,7 @@ description/prompt to reflect the 3-mode routing.
 
 ### Phase C — Build the design playbook
 
-#### M4: Write `DESIGN.md` for the Claude variant
+#### M4: Write `DESIGN.md` for the Claude variant ✅
 
 **Why:** The design playbook is the new value this repo brings. It codifies
 the user's existing planning workflow (discovery → propose → iterate → write
@@ -151,21 +151,26 @@ create new versions without ask, but **at ~50 milestones suggest in chat**
 that the user may want to close the version — final decision is theirs).
 
 **Tasks:**
-- [ ] Write `claude/devplan/DESIGN.md` with frontmatter (`name`, `description`)
-- [ ] Section: Discovery (with explicit list of artifacts to read in parallel)
-- [ ] Section: Clarification (with the "max 5, concrete options, recommend pick" rules)
-- [ ] Section: Plan proposal (with the exact chat template: Obiettivo/Approccio/Rischi/Fasi/Out of scope)
-- [ ] Section: Write rules (numbering continuity, append-only on version files, milestone format, no prep milestones)
-- [ ] Section: Validation (the self-check list)
-- [ ] Section: Modes (new / extend / refactor)
-- [ ] Section: Guardrails (the "never" list + the 50-milestone soft suggestion)
-- [ ] Section: Sinergia with TDD/IDD (shared milestone format = no translation needed)
-- [ ] Commit & push
+- [x] Write `claude/devplan/DESIGN.md` with frontmatter (`name`, `description`)
+- [x] Section: Discovery (with explicit list of artifacts to read in parallel)
+- [x] Section: Clarification (with the "max 5, concrete options, recommend pick" rules)
+- [x] Section: Plan proposal (with the exact chat template: Obiettivo/Approccio/Rischi/Fasi/Out of scope)
+- [x] Section: Write rules (numbering continuity, append-only on version files, milestone format, no prep milestones)
+- [x] Section: Validation (the self-check list)
+- [x] Section: Modes (new / extend / refactor)
+- [x] Section: Guardrails (the "never" list + the 50-milestone soft suggestion)
+- [x] Section: Sinergia with TDD/IDD (shared milestone format = no translation needed)
+- [x] Commit (push skipped — no remote)
 
 **Done when:** `claude/devplan/DESIGN.md` is a complete, self-contained
 playbook that a fresh Claude session could follow end-to-end without any
 additional context, and any milestone it produces is directly executable by
 `claude/devplan/TDD.md` or `IDD.md` without translation.
+
+**Notes:** Executed in IDD mode (TDD fallback) — content authoring, no testable
+code. The playbook is ~200 lines, fully self-contained. Dropped frontmatter
+(`name`/`description`) as the Claude skill system uses `SKILL.md` for metadata,
+not per-file frontmatter — SKILL.md router handles identification.
 
 ---
 
