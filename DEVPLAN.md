@@ -174,7 +174,7 @@ not per-file frontmatter — SKILL.md router handles identification.
 
 ---
 
-#### M5: Write `DESIGN.md` for the Codex variant
+#### M5: Write `DESIGN.md` for the Codex variant ✅
 
 **Why:** Mirror M4 for Codex so both tools have feature parity. Codex users
 deserve the same planning quality as Claude users.
@@ -187,17 +187,22 @@ skill systems. Content and structure stay identical. Update
 `agents/openai.yaml` if it needs to register the new playbook entry.
 
 **Tasks:**
-- [ ] Copy `claude/devplan/DESIGN.md` → `codex/devplan/DESIGN.md` as starting point
-- [ ] Replace Claude-specific invocation syntax with Codex equivalents
-- [ ] Replace Claude tool names with Codex tool equivalents
-- [ ] Update Codex-specific frontmatter if applicable
-- [ ] Update `codex/devplan/agents/openai.yaml` if it needs a DESIGN entry
-- [ ] Diff the two DESIGN.md files and confirm only intentional differences exist
-- [ ] Commit & push
+- [x] Copy `claude/devplan/DESIGN.md` → `codex/devplan/DESIGN.md` as starting point
+- [x] Replace Claude-specific invocation syntax with Codex equivalents
+- [x] Replace Claude tool names with Codex tool equivalents
+- [x] Update Codex-specific frontmatter if applicable (N/A — no frontmatter used)
+- [x] Update `codex/devplan/agents/openai.yaml` if it needs a DESIGN entry (already updated in M3)
+- [x] Diff the two DESIGN.md files and confirm only intentional differences exist
+- [x] Commit (push skipped — no remote)
 
 **Done when:** `codex/devplan/DESIGN.md` exists with structural and behavioral
 parity with the Claude version, only differing where Codex-specific syntax
 requires it.
+
+**Notes:** Executed in IDD mode (TDD fallback). Diff shows 7 change blocks, all
+intentional: heading style, section naming to match Codex TDD.md conventions,
+project docs discovery adapted for Codex instructions format, tool-agnostic
+wording for file search, guardrail formatting.
 
 ---
 
