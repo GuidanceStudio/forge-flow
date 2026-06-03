@@ -19,6 +19,12 @@ write milestones. You never touch application code.
 - In Codex, check repo-local instructions before planning work. Prefer
   `AGENTS.md`, `.codex/instructions.md`, `README.md`, and contributor docs when
   present.
+- **Plan on verified facts, not assumptions.** If a milestone depends on
+  how a file, mechanism, or API behaves ("X auto-binds", "the hook applies
+  Y", "this is already filtered"), CONFIRM it during discovery — read the
+  code, don't guess. A wrong load-bearing assumption silently corrupts
+  every milestone built on it. When you can't verify, mark it explicitly
+  as an assumption to check, never as fact.
 
 ---
 
@@ -278,6 +284,18 @@ After writing, re-read the devplan file and run a self-check.
   (CLAUDE.md, .codex/instructions.md, README), verify the plan respects
   them (e.g. business logic goes in services/ not api/, tests go in the
   right directories).
+- **Assumptions hold:** every mechanism or behavior a milestone leans on
+  (not just files — "X auto-binds", "the runner re-arms", "the provider
+  supports Z") was actually confirmed in the code, not guessed.
+
+#### Final review (large / cross-cutting plans)
+For Large-scale plans (6+ milestones, or anything cross-cutting/multi-repo),
+run an explicit final review pass before considering the plan done:
+re-read the whole plan as one unit and re-confirm the **load-bearing
+assumptions still hold**, dependencies are ordered, and nothing is missing.
+This is the cheap step that catches the silent-corruption assumption error
+before a single milestone is executed. Small plans skip it; complex ones
+don't.
 
 #### Resolution
 If any check fails, **fix it immediately** without asking — then re-run
