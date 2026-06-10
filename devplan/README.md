@@ -1,18 +1,19 @@
-# devplan — Claude Code variant
+# devplan — skill payload
 
-A [Claude Code](https://claude.ai/code) skill that handles the full devplan
-lifecycle: planning (`design`) and execution (`TDD` / `IDD`), fully
-autonomously — no interruptions, no confirmation prompts.
+An assistant-neutral skill that handles the full devplan lifecycle:
+planning (`design`) and execution (`TDD` / `IDD`). One flat folder,
+installable into any coding assistant that reads skills.
 
-> This is the Claude Code variant of the unified `devplan` skill.
-> See the [project README](../../README.md) for the full picture.
+> This is the skill payload. See the [project README](../README.md) for
+> install + the multi-assistant installer.
 
 ## What it does
 
 When invoked, `devplan` routes to one of three modes:
 
 - **`design`** — creates or updates a dev plan through a structured
-  discovery → proposal → write → validation workflow.
+  discovery → proposal → approval → write → validation workflow. Waits
+  for explicit approval before writing the devplan file.
 - **`TDD` (Test Driven Development) — DEFAULT.** For each milestone:
   state the business requirement → write tests at all applicable levels
   → confirm they fail (red) → implement until green → simplify → docs
@@ -30,25 +31,16 @@ In execution modes (TDD/IDD) the skill:
 5. Commits and pushes after each milestone
 6. Moves immediately to the next milestone without asking
 
-It stops only on unresolvable blocking errors.
+Execution modes are highly autonomous, but they still stop on real
+blockers (missing/contradictory requirements, conflicts with unknown
+user work, repo/session limits, commit/push/auth issues).
 
 ## Requirements
 
-- [Claude Code](https://claude.ai/code) CLI installed and authenticated
-- A project with a `DEVPLAN.md` (or equivalent Markdown plan file)
-- Git initialized and a remote configured (for push)
-
-## Installation
-
-Use the installer from the project root:
-
-```bash
-./install.sh claude
-```
-
-Or manually copy this directory into `~/.claude/skills/devplan/`.
-
-Claude Code auto-discovers skills in `~/.claude/skills/`. No extra configuration needed.
+- A coding assistant that loads skills (Claude Code, Codex, opencode,
+  Gemini CLI, …) — see the project README for install per assistant.
+- A project with a `DEVPLAN.md` (or equivalent Markdown plan file).
+- Git initialized; a remote configured if you want push.
 
 ## Skill files
 
@@ -56,23 +48,27 @@ Claude Code auto-discovers skills in `~/.claude/skills/`. No extra configuration
 - `DESIGN.md` — planning playbook (discovery, proposal, writing, validation)
 - `TDD.md` — Test Driven Development execution playbook (default)
 - `IDD.md` — Implementation Driven Development execution playbook
+- `agents/openai.yaml` — optional Codex interface metadata (ignored by
+  other assistants)
 
 `SKILL.md` loads only the playbook for the chosen mode, so the agent
 follows a single self-contained set of instructions per run.
 
 ## Usage
 
-Open Claude Code in your project directory and run:
+Invoke however your assistant invokes skills, then pick a mode:
 
 ```
 /devplan design                    # create or update a dev plan
 /devplan TDD                       # execute the plan (TDD, recommended)
 /devplan IDD                       # execute the plan (IDD, exploratory)
 /devplan TDD devplan/v0.9-wip.md   # TDD on a specific devplan file
-/devplan IDD devplan/v0.9-wip.md   # IDD on a specific devplan file
 /devplan devplan/v0.9-wip.md       # path alone → defaults to TDD
 /devplan                           # asks which mode to use
 ```
+
+(On assistants without slash commands, reference the skill from
+`AGENTS.md` and ask in those words.)
 
 ### Choosing a mode
 
@@ -85,7 +81,7 @@ Open Claude Code in your project directory and run:
 - Make sure your dev plan has clear, actionable milestones before invoking `TDD` or `IDD`
 - Pending milestones should use `- [ ]` checkboxes; completed ones use `- [x]`
 - The skill respects your project's existing test structure (unit, integration, e2e, etc.)
-- If you need to pause mid-run, just interrupt Claude Code (`Ctrl+C`)
+- To pause mid-run, just interrupt your assistant
 
 ## Devplan format
 

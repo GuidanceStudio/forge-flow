@@ -644,3 +644,95 @@ handoff suggestion, all tests green.
 - Templating/build machinery for variants (inline neutral phrasing instead)
 - CI on GitHub Actions (tests run locally; revisit if the repo gains contributors)
 - `uninstall` command, auto-update, telemetry (unchanged from v0.1)
+
+---
+
+## v0.3 — Flatten to one generic payload + multi-assistant installer
+
+**Obiettivo:** mirror the code-audit v0.3 packaging treatment. v0.2 made
+the four behavior files byte-identical across the `claude/` and `codex/`
+variants; research since confirmed `SKILL.md` is a cross-assistant
+standard (agentskills.io — Claude Code, Codex, opencode read the same
+folder verbatim). So the two-variant tree is now redundant: collapse it
+to ONE flat generic `devplan/` payload, and replace the claude/codex-only
+installer with a broad multi-assistant one.
+
+**Approccio:** the behavior files (`SKILL.md`, `DESIGN.md`, `TDD.md`,
+`IDD.md`) are already variant-neutral and identical — take them once
+into a top-level `devplan/`. Merge the two variant READMEs into one
+neutral doc. Keep `agents/openai.yaml` in the payload as optional Codex
+metadata (harmless to other assistants). The lockstep test becomes moot
+(no variants to keep in step) — retire it. Installer mirrors code-audit:
+claude/codex/opencode verbatim, gemini TOML, agents AGENTS.md, manual,
+with `--check` per target and the `.installed-from` SHA stamp.
+
+**Rischi:** the flatten deletes the variant dirs — anyone who installed
+the old `./install.sh claude|codex` flags needs the new `--target`
+flags; document in README. Mitigated: no external users beyond this
+workspace.
+
+### Phase G — Flatten
+
+#### M16: Collapse the two variants into one flat `devplan/` payload ✅
+
+**Why:** The claude/codex split exists only for historical reasons; the
+files are identical and the standard is shared. One payload is simpler,
+truly de-Claudized, and copyable anywhere.
+
+**Approach:** `git mv claude/devplan` → top-level `devplan/`; bring
+`agents/openai.yaml` across (optional Codex metadata); merge the two
+variant READMEs into one neutral `devplan/README.md` (drop "Claude
+variant"/"Codex variant" framing, keep the per-assistant invocation
+notes); remove the now-empty `claude/` and `codex/` trees. Update root
+`install.sh` source path, root `README.md` layout, and retire
+`tests/test_lockstep.sh` (no variants to lockstep). Behavior files are
+unchanged content.
+
+**Tasks:**
+- [x] `git mv claude/devplan devplan`; move `agents/openai.yaml` into it
+- [x] Merge variant READMEs → one neutral `devplan/README.md`
+- [x] Remove empty `claude/` and `codex/` dirs
+- [x] Retire `tests/test_lockstep.sh`; update root `README.md` layout tree
+- [x] Point `install.sh` source detection at the flat `devplan/`
+- [x] `bash tests/test_install.sh` still green (or updated in M17)
+
+**Done when:** the skill is one top-level `devplan/` folder, the
+variant dirs are gone, and `cp -r devplan ~/somewhere` is a complete
+skill.
+
+### Phase H — Multi-assistant installer
+
+#### M17: Broad multi-assistant installer + per-target tests
+
+**Why:** Match code-audit: one installer that places the payload for
+whichever assistant the user runs, plus manual-copy.
+
+**Approach:** Rewrite root `install.sh` mirroring code-audit's:
+`--target claude|codex|opencode|gemini|agents|manual|all` (interactive
+menu when no target on a TTY; default claude otherwise). claude →
+`~/.claude/skills/devplan/`, codex → `~/.codex/skills/devplan/`,
+opencode → `~/.config/opencode/skills/devplan/` (verbatim); gemini →
+`~/.gemini/commands/devplan.toml` + payload in `~/.config/devplan`;
+agents → AGENTS.md pointer + payload in `~/.config/devplan`; manual →
+print the flat path. Keep remote-clone mode, `--force`, `--check` per
+target, `.installed-from` SHA stamp. Rewrite `tests/test_install.sh`
+for the multi-target model (verbatim targets, gemini toml, agents
+pointer, manual no-write, --check drift).
+
+**Tasks:**
+- [ ] Rewrite `install.sh` with the multi-target dispatch + menu
+- [ ] Gemini TOML emitter + AGENTS.md pointer (idempotent) + manual print
+- [ ] `--check` per target; `.installed-from` stamp retained
+- [ ] Rewrite `tests/test_install.sh` for the new model (per-target + drift)
+- [ ] Root `README.md` install section rewritten for `--target` flow
+- [ ] Full test suite green
+
+**Done when:** `install.sh --target <x>` installs correctly for
+claude/codex/opencode/gemini/agents/manual, `--check` detects drift per
+target, and the test suite is green.
+
+## Out of scope for v0.3
+
+- Per-assistant behavior divergence (the whole point is one payload).
+- Native non-SKILL.md integrations beyond Gemini TOML + AGENTS.md.
+- uninstall / auto-update / telemetry (unchanged from v0.1/v0.2).

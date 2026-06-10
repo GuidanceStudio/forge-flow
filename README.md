@@ -104,31 +104,24 @@ unambiguous, but they are not the preferred format for reliable TDD/IDD runs.
 ```
 devplan/
 ├── README.md          ← you are here
-├── install.sh         ← installer script
+├── install.sh         ← multi-assistant installer
 ├── DEVPLAN.md         ← this project's own dev plan
-├── tests/             ← installer + lockstep test suites (bash tests/test_*.sh)
-├── claude/
-│   └── devplan/       ← Claude Code variant (→ ~/.claude/skills/devplan/)
-│       ├── SKILL.md   ← router (design / TDD / IDD)
-│       ├── DESIGN.md  ← planning playbook
-│       ├── TDD.md     ← test-first execution playbook
-│       ├── IDD.md     ← implementation-first execution playbook
-│       └── README.md  ← variant-specific docs
-└── codex/
-    └── devplan/       ← Codex variant (→ ~/.codex/skills/devplan/)
-        ├── SKILL.md
-        ├── DESIGN.md
-        ├── TDD.md
-        ├── IDD.md
-        ├── README.md
-        └── agents/
-            └── openai.yaml
+├── tests/             ← installer test suite (bash tests/test_install.sh)
+└── devplan/           ← the flat, assistant-neutral skill payload
+    ├── SKILL.md       ← router (design / TDD / IDD)
+    ├── DESIGN.md      ← planning playbook
+    ├── TDD.md         ← test-first execution playbook
+    ├── IDD.md         ← implementation-first execution playbook
+    ├── README.md      ← skill payload docs
+    └── agents/openai.yaml  ← optional Codex metadata
 ```
 
-## Per-variant docs
+`devplan/` is the whole skill — copy it anywhere your assistant reads
+skills, or use `install.sh`.
 
-- [Claude Code variant](claude/devplan/README.md)
-- [Codex variant](codex/devplan/README.md)
+## Skill docs
+
+- [Skill payload README](devplan/README.md)
 
 ## License
 

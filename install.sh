@@ -22,8 +22,8 @@ cleanup_temp() {
 trap cleanup_temp EXIT
 
 # Detect local vs remote mode
-if [ -d "$SCRIPT_DIR/claude/devplan" ] && [ -d "$SCRIPT_DIR/codex/devplan" ]; then
-    # Local mode — source dirs exist next to the script
+if [ -d "$SCRIPT_DIR/devplan" ]; then
+    # Local mode — flat payload exists next to the script
     SRC_ROOT="$SCRIPT_DIR"
 else
     # Remote mode — clone the repo into a temp dir
@@ -37,8 +37,9 @@ else
     SRC_ROOT="$CLEANUP_DIR/devplan"
 fi
 
-CLAUDE_SRC="$SRC_ROOT/claude/devplan"
-CODEX_SRC="$SRC_ROOT/codex/devplan"
+# One flat payload now serves every assistant (M16 flatten).
+CLAUDE_SRC="$SRC_ROOT/devplan"
+CODEX_SRC="$SRC_ROOT/devplan"
 
 CLAUDE_DEST="$HOME/.claude/skills/devplan"
 CODEX_DEST="$HOME/.codex/skills/devplan"
