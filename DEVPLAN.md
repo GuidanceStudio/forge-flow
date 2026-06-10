@@ -702,7 +702,7 @@ skill.
 
 ### Phase H — Multi-assistant installer
 
-#### M17: Broad multi-assistant installer + per-target tests
+#### M17: Broad multi-assistant installer + per-target tests ✅
 
 **Why:** Match code-audit: one installer that places the payload for
 whichever assistant the user runs, plus manual-copy.
@@ -720,12 +720,12 @@ for the multi-target model (verbatim targets, gemini toml, agents
 pointer, manual no-write, --check drift).
 
 **Tasks:**
-- [ ] Rewrite `install.sh` with the multi-target dispatch + menu
-- [ ] Gemini TOML emitter + AGENTS.md pointer (idempotent) + manual print
-- [ ] `--check` per target; `.installed-from` stamp retained
-- [ ] Rewrite `tests/test_install.sh` for the new model (per-target + drift)
-- [ ] Root `README.md` install section rewritten for `--target` flow
-- [ ] Full test suite green
+- [x] Rewrite `install.sh` with the multi-target dispatch + menu
+- [x] Gemini TOML emitter + AGENTS.md pointer (idempotent) + manual print
+- [x] `--check` per target; `.installed-from` stamp retained
+- [x] Rewrite `tests/test_install.sh` for the new model (per-target + drift)
+- [x] Root `README.md` install section rewritten for `--target` flow
+- [x] Full test suite green
 
 **Done when:** `install.sh --target <x>` installs correctly for
 claude/codex/opencode/gemini/agents/manual, `--check` detects drift per

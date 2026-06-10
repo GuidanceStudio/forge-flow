@@ -17,58 +17,52 @@ One skill, three modes:
 
 ## Install
 
-One-liner (no clone required):
+The installer is multi-assistant. Run it with no target for an
+interactive menu, or pass `--target`:
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/kiso-run/devplan/main/install.sh)
+git clone https://github.com/kiso-run/devplan.git && cd devplan
+./install.sh                      # interactive menu
+./install.sh --target claude      # ~/.claude/skills/devplan/
+./install.sh --target codex        # ~/.codex/skills/devplan/
+./install.sh --target opencode     # ~/.config/opencode/skills/devplan/
+./install.sh --target gemini        # ~/.gemini/commands/devplan.toml (+ payload)
+./install.sh --target agents        # AGENTS.md pointer for Cursor/Windsurf/Copilot/Aider/Continue
+./install.sh --target all           # claude + codex + opencode
+./install.sh --target manual        # print the folder path; copy it yourself
 ```
 
-Requires `git` and `curl`. To install only one variant, append the target:
+Remote one-liner (no clone; needs `git` + `curl`):
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/kiso-run/devplan/main/install.sh) claude
-bash <(curl -fsSL https://raw.githubusercontent.com/kiso-run/devplan/main/install.sh) codex
+bash <(curl -fsSL https://raw.githubusercontent.com/kiso-run/devplan/main/install.sh) --target claude
 ```
 
-From a local clone:
-
-```bash
-./install.sh            # install both variants (default)
-./install.sh claude     # Claude Code only
-./install.sh codex      # Codex only
-./install.sh --force    # overwrite existing install without prompting
-./install.sh --check    # compare installed copies against the source tree
-```
-
-`--check` makes no changes: it reports `OK` or `DRIFT` per variant and
-exits non-zero if an installed copy differs from the source (or is
-missing) — useful to spot hand-edited installs before they get wiped
-by the next `--force`.
-
-The installer copies the skill files into the target tool's skill directory:
-- Claude Code: `~/.claude/skills/devplan/`
-- Codex: `~/.codex/skills/devplan/`
+`claude`, `codex`, and `opencode` get the `devplan/` folder copied
+verbatim — it's the shared [agentskills.io](https://agentskills.io)
+`SKILL.md` standard, so one payload serves all three. `gemini` gets a
+generated TOML command; `agents` writes an [`AGENTS.md`](https://agents.md)
+pointer for the broad tier. Flags: `--force` (overwrite), `--check`
+(report `OK`/`DRIFT` vs source, per `--target`), `--agents-dir DIR`.
+Or skip the installer — `devplan/` is self-contained, copy it anywhere
+your tool reads skills.
 
 ## Usage
 
-| Tool | Command | What it does |
-|---|---|---|
-| Claude Code | `/devplan design` | Create or update the dev plan |
-| Claude Code | `/devplan TDD` | Execute milestones (test-first) |
-| Claude Code | `/devplan IDD` | Execute milestones (implementation-first) |
-| Claude Code | `/devplan` | Ask which mode to use |
-| Codex | `$devplan design` | Create or update the dev plan |
-| Codex | `$devplan TDD` | Execute milestones (test-first) |
-| Codex | `$devplan IDD` | Execute milestones (implementation-first) |
-| Codex | `$devplan` | Ask which mode to use |
+Invoke however your assistant invokes skills, then pick a mode:
 
-You can also pass a devplan file path directly:
+| Assistant | Invocation |
+|---|---|
+| Claude Code / Codex / opencode | `/devplan design`, `/devplan TDD`, `/devplan IDD`, or `/devplan` |
+| Gemini CLI | `/devplan` (installed as a TOML command) |
+| Cursor / Windsurf / Copilot / Aider | reference devplan from `AGENTS.md`, then ask |
+
+`design` creates/updates the plan; `TDD` (recommended) and `IDD`
+execute it. You can pass a devplan file path directly:
 
 ```
 /devplan TDD devplan/v0.3.md     # TDD on a specific file
 /devplan devplan/v0.3.md         # path alone defaults to TDD
-$devplan TDD devplan/v0.3.md     # Codex variant
-$devplan devplan/v0.3.md         # Codex variant, path alone defaults to TDD
 ```
 
 ## Devplan format
