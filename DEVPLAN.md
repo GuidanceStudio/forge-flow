@@ -755,3 +755,97 @@ green; a hand-broken installer would red the build.
 - Per-assistant behavior divergence (the whole point is one payload).
 - Native non-SKILL.md integrations beyond Gemini TOML + AGENTS.md.
 - uninstall / auto-update / telemetry (unchanged from v0.1/v0.2).
+
+---
+
+# Follow-up — Ponytail essentiality integration
+
+Adopt the decision model from
+[`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail)
+as native devplan behavior rather than installing its plugin. Devplan
+remains authoritative for scope, test policy, execution order, and
+completion gates. Ponytail is conceptual prior art under the MIT
+license; its lifecycle hooks, persistent modes, duplicate review
+skills, and "one small test" policy are not imported.
+
+Recommended order: M19 → M20. The milestones are independent of the
+completed v0.3 distribution work.
+
+## M19: Filter proposed milestones through an essentiality ladder ✅
+
+**Why:** DESIGN validates structure and codebase coherence, but it can
+still produce a well-formed plan for work that should be deleted,
+handled by the standard library, or solved by a native platform
+feature. Preventing speculative work at design time is cheaper than
+finding it in review after implementation.
+
+**Approach:** Add an essentiality checkpoint to
+`devplan/DESIGN.md` after discovery and before the final proposal. For
+each proposed milestone, test the options in order: does the work need
+to exist; does the standard library solve it; does the platform provide
+it natively; does an already-installed dependency cover it; can the
+custom approach be materially smaller. Delete or merge speculative
+milestones and record the selected lower-complexity strategy in the
+proposal's Approach/rationale. The checkpoint advises and simplifies;
+it never silently removes an explicit requirement, security control,
+trust-boundary validation, accessibility behavior, data-loss
+protection, or a project convention confirmed during discovery.
+Document the conceptual Ponytail source in both READMEs without making
+it an installation dependency.
+
+**Tasks:**
+- [x] Add the ordered essentiality checkpoint to the proposal flow in `devplan/DESIGN.md`
+- [x] Extend design validation to reject speculative preparation, avoidable dependencies, and single-use abstractions unless the plan records a verified reason
+- [x] State the non-negotiable explicit-requirement, correctness, security, accessibility, and project-convention boundaries
+- [x] Add Ponytail attribution and the no-runtime-dependency boundary to `README.md` and `devplan/README.md`
+- [x] Add `tests/test_content.sh` covering the DESIGN checkpoint, guardrails, and attribution
+- [x] Update CI and README test instructions so the installer and content-contract suites both run
+- [x] Test: run all shell test suites
+- [x] Commit & push
+
+**Done when:** a design-mode proposal must consider deletion, stdlib,
+native platform features, installed dependencies, and a smaller custom
+approach before adding milestones, while explicit requirements and
+existing safety/convention checks remain authoritative and CI enforces
+the contract.
+
+**Notes:** Executed in TDD mode. The new content-contract suite failed
+on the missing DESIGN checkpoint before implementation, then passed
+after the playbook, documentation, and CI updates. Done-when was
+verified with `tests/test_content.sh`; the existing installer suite
+also remains green (24 checks).
+
+## M20: Make TDD and IDD simplification Ponytail-aware
+
+**Why:** Both executors already contain a generic Simplify step, but
+they do not define what simplification means. A shared ordered pass
+makes implementation behavior predictable while preserving devplan's
+stronger test discipline.
+
+**Approach:** Expand the Simplify step in `devplan/TDD.md` and
+`devplan/IDD.md` with the same ladder used by DESIGN: delete only
+unneeded code, prefer stdlib and native platform behavior, reuse an
+installed dependency before adding one, inline unearned single-use
+abstractions, and reduce files/branches only when behavior stays
+unchanged. The executor must re-run every applicable test after the
+pass. Devplan's existing test policy wins over Ponytail's minimal-test
+guidance: do not cap coverage at one check, delete required test levels,
+or replace established project tests with demos. The same precedence
+applies to validation, error handling that prevents data loss,
+security, accessibility, explicit requirements, and the milestone's
+Done-when contract. No automatic `ponytail:` comments or persistent
+mode state are added.
+
+**Tasks:**
+- [ ] Expand the Simplify step in `devplan/TDD.md` with the ordered essentiality ladder and post-pass test requirement
+- [ ] Apply the same simplification contract to `devplan/IDD.md`
+- [ ] State explicit precedence for the existing test policy, safety controls, accessibility, requirements, and Done-when verification
+- [ ] Extend `tests/test_content.sh` to assert TDD/IDD parity and guard against importing one-test limits, persistent modes, or automatic Ponytail comments
+- [ ] Update `README.md` and `devplan/README.md` with the design → implement → simplify behavior
+- [ ] Test: run all shell test suites
+- [ ] Commit & push
+
+**Done when:** TDD and IDD apply the same deterministic simplification
+pass, all applicable tests are still required and re-run afterward,
+and CI fails if either executor weakens the established quality or
+completion gates.
