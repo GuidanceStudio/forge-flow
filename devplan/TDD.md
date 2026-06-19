@@ -86,8 +86,25 @@ Tests that cannot be run locally are exempt from the red check.
 
 - Run `/simplify` if the environment provides it; otherwise do an
   explicit simplification pass on code + tests by hand.
-- Structure only, no behavior changes.
-- Re-run tests: they must stay green.
+- Apply this ladder in order:
+  1. **Delete unneeded code** that is outside the milestone contract.
+  2. **Prefer the standard library** over custom helpers or a new
+     dependency.
+  3. **Prefer native platform behavior** from the browser, runtime,
+     framework, database, or operating system.
+  4. **Reuse an already-installed dependency** before adding another
+     package or parallel implementation.
+  5. **Inline unearned single-use abstractions** until a second real
+     implementation or caller exists.
+  6. **Reduce files and branches** when the same behavior remains clear.
+- Structure only; no behavior changes. Devplan's existing test policy
+  wins: keep all applicable tests and established test levels rather
+  than replacing them with demos or a smaller test count.
+- Never simplify away trust-boundary validation, error handling that
+  prevents data loss, security controls, accessibility, explicit
+  requirements, project conventions, or the milestone's **Done when**
+  contract.
+- Re-run all applicable tests: they must stay green.
 
 ### 6. 📝 Update documentation
 

@@ -15,6 +15,11 @@ One skill, three modes:
   write tests covering the finished code, simplify, docs, devplan, commit, and
   push when the repo/session allows it. Use for exploratory work.
 
+Across modes, the workflow is **design → implement → simplify**:
+design removes speculative work before it becomes a milestone, while
+TDD and IDD apply the same essentiality ladder after behavior is
+working and then re-run every applicable test.
+
 ## Install
 
 The installer is multi-assistant. Run it with no target for an
