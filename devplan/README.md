@@ -26,6 +26,11 @@ When invoked, `devplan` routes to one of three modes:
   implement → write tests covering the finished code → simplify → docs
   → devplan → commit & push. Use when the milestone is exploratory.
 
+Across modes, the workflow is **design → implement → simplify**:
+design removes speculative work before it becomes a milestone, while
+TDD and IDD apply the same essentiality ladder after behavior is
+working and then re-run every applicable test.
+
 In execution modes (TDD/IDD) the skill:
 
 1. Discovers and writes tests at all relevant levels (unit, integration, functional, e2e — whatever the project uses)

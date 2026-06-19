@@ -815,7 +815,7 @@ after the playbook, documentation, and CI updates. Done-when was
 verified with `tests/test_content.sh`; the existing installer suite
 also remains green (24 checks).
 
-## M20: Make TDD and IDD simplification Ponytail-aware
+## M20: Make TDD and IDD simplification Ponytail-aware ✅
 
 **Why:** Both executors already contain a generic Simplify step, but
 they do not define what simplification means. A shared ordered pass
@@ -837,15 +837,21 @@ Done-when contract. No automatic `ponytail:` comments or persistent
 mode state are added.
 
 **Tasks:**
-- [ ] Expand the Simplify step in `devplan/TDD.md` with the ordered essentiality ladder and post-pass test requirement
-- [ ] Apply the same simplification contract to `devplan/IDD.md`
-- [ ] State explicit precedence for the existing test policy, safety controls, accessibility, requirements, and Done-when verification
-- [ ] Extend `tests/test_content.sh` to assert TDD/IDD parity and guard against importing one-test limits, persistent modes, or automatic Ponytail comments
-- [ ] Update `README.md` and `devplan/README.md` with the design → implement → simplify behavior
-- [ ] Test: run all shell test suites
-- [ ] Commit & push
+- [x] Expand the Simplify step in `devplan/TDD.md` with the ordered essentiality ladder and post-pass test requirement
+- [x] Apply the same simplification contract to `devplan/IDD.md`
+- [x] State explicit precedence for the existing test policy, safety controls, accessibility, requirements, and Done-when verification
+- [x] Extend `tests/test_content.sh` to assert TDD/IDD parity and guard against importing one-test limits, persistent modes, or automatic Ponytail comments
+- [x] Update `README.md` and `devplan/README.md` with the design → implement → simplify behavior
+- [x] Test: run all shell test suites
+- [x] Commit & push
 
 **Done when:** TDD and IDD apply the same deterministic simplification
 pass, all applicable tests are still required and re-run afterward,
 and CI fails if either executor weakens the established quality or
 completion gates.
+
+**Notes:** Executed in TDD mode. The expanded content suite failed
+before TDD/IDD defined the ladder, then passed after both playbooks
+received the same ordered contract. Verification covers ladder order,
+quality boundaries, forbidden one-test/persistent-mode/comment
+behavior, both READMEs, and the unchanged installer suite (24 checks).
