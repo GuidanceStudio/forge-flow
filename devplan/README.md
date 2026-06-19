@@ -13,7 +13,11 @@ When invoked, `devplan` routes to one of three modes:
 
 - **`design`** — creates or updates a dev plan through a structured
   discovery → proposal → approval → write → validation workflow. Waits
-  for explicit approval before writing the devplan file.
+  for explicit approval before writing the devplan file. Candidate
+  milestones pass an essentiality checkpoint first: delete speculative
+  work, then prefer the standard library, native platform behavior, an
+  already-installed dependency, and finally the smallest custom
+  approach.
 - **`TDD` (Test Driven Development) — DEFAULT.** For each milestone:
   state the business requirement → write tests at all applicable levels
   → confirm they fail (red) → implement until green → simplify → docs
@@ -53,6 +57,14 @@ user work, repo/session limits, commit/push/auth issues).
 
 `SKILL.md` loads only the playbook for the chosen mode, so the agent
 follows a single self-contained set of instructions per run.
+
+## Ponytail integration
+
+[`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail)
+is Conceptual prior art for the essentiality ladder (MIT). Runtime
+dependency: none. Devplan does not install Ponytail hooks, persistent
+modes, duplicate review skills, or its minimal-test policy; devplan's
+scope, safety, test, and completion rules remain authoritative.
 
 ## Usage
 

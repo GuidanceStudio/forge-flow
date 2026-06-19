@@ -136,6 +136,34 @@ ask questions for the sake of asking.
 
 ### Phase 3: Plan Proposal (in chat, NOT on file)
 
+#### Essentiality checkpoint
+
+Before drafting the proposal, run every candidate milestone through
+this ordered ladder and stop at the first option that fully satisfies
+the requirement:
+
+1. **Does the work need to exist?** Delete speculative requirements,
+   branches, flags, or preparation-only work.
+2. **Does the standard library solve it?** Prefer the exact built-in
+   function or module over custom code or a new dependency.
+3. **Does the native platform solve it?** Prefer an existing browser,
+   runtime, framework, database, or operating-system feature.
+4. **Does an already-installed dependency solve it?** Reuse it before
+   adding another package or parallel implementation.
+5. **Is there a smaller custom approach?** Use the fewest files,
+   branches, abstractions, and moving parts that preserve the contract.
+
+Delete or merge milestones that fail the checkpoint. Record the chosen
+lower-complexity strategy in the proposal rationale or **Approach**, so
+the executor knows the simplification is intentional rather than an
+omission.
+
+The checkpoint advises and simplifies; it never silently removes an
+explicit requirement, correctness behavior, security control,
+trust-boundary validation, accessibility behavior, error handling that
+prevents data-loss, or a verified project convention. If the smaller
+option conflicts with one of these constraints, the constraint wins.
+
 Choose the template based on how many milestones the plan needs.
 
 #### Small plans (1-2 milestones)
@@ -279,6 +307,9 @@ After writing, re-read the devplan file and run a self-check.
 - Numbering is continuous from the last existing MNN
 - The plan covers all requirements from the original request
 - No preparation-only milestones exist
+- Every milestone passed the essentiality checkpoint: no speculative
+  work, avoidable dependency, or single-use abstraction remains unless
+  its verified reason is recorded in **Approach** or **Notes**
 
 #### Codebase coherence checks
 - **Files exist:** every file cited in Approach or Tasks exists in the

@@ -93,6 +93,14 @@ relevant tests are green.
 Simpler Markdown plans can still be executed when milestone intent is
 unambiguous, but they are not the preferred format for reliable TDD/IDD runs.
 
+## Ponytail integration
+
+[`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail)
+is Conceptual prior art for devplan's essentiality ladder (MIT).
+Runtime dependency: none. Devplan imports the decision model, not the
+plugin, hooks, persistent modes, duplicate review skills, or its
+minimal-test policy.
+
 ## Project layout
 
 ```
@@ -121,9 +129,10 @@ skills, or use `install.sh`.
 
 ```bash
 bash tests/test_install.sh
+bash tests/test_content.sh
 ```
 
-CI (GitHub Actions) runs this suite on every push and PR.
+CI (GitHub Actions) runs both suites on every push and PR.
 
 ## License
 
