@@ -100,14 +100,12 @@ unambiguous, but they are not the preferred format for reliable TDD/IDD runs.
 
 ## Inspiration
 
-- [`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail) (MIT) — essentiality ladder and structured debt tracking. Concepts imported: ordered simplification steps, `delete:`/`stdlib:`/`native:`/`yagni:`/`shrink:` taxonomy, `ponytail:` structured comments for intentional shortcuts, debt register.
-- [uxui-audit](https://github.com/GuidanceStudio/uxui-audit-skill) — UX-aware execution. Concepts imported: microcopy rules (i18n consistency, no jargon leak, actionable copy), `UX:` field on UI-touching milestones, UI sanity check in Done-when, state-coverage validation.
-- [tech-audit](https://github.com/GuidanceStudio/tech-audit-skill) — audit discipline. Concepts imported: severity calibration, finding triage, proof-before-emit.
+- [`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail) (MIT) — essentiality ladder and structured debt tracking. Concepts imported: ordered simplification steps, `delete:`/`stdlib:`/`native:`/`yagni:`/`shrink:` taxonomy, `ponytail:` structured comments, debt register.
+- [mastepanoski/nielsen-heuristics-audit](https://github.com/mastepanoski/claude-skills) — 0–4 severity rubric and Nielsen's 10 heuristics applied to finding triage.
 - [agentskills.io](https://agentskills.io) — cross-assistant `SKILL.md` standard.
 - TDD methodology (Kent Beck).
 
-Runtime dependency on any of the above: none. Forge-flow imports the concepts,
-not the code.
+Runtime dependency: none. Forge-flow imports the concepts, not the code.
 
 MIT licensed.
 
