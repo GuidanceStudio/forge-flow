@@ -315,6 +315,9 @@ After writing, re-read the devplan file and run a self-check.
 
 #### Form checks
 - Every milestone has **Why**, **Approach**, **Tasks**, **Done when**
+- Every milestone's Tasks include at least one test task
+  (`Test: <level> — <what>`) specifying the test level and behavior
+  to cover
 - Milestones touching UI (flagged in discovery) have a **UX** field
 - Every task is actionable (not vague like "improve X" or "handle Y")
 - Dependencies are resolved in order (no forward references)
