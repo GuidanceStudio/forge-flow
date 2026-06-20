@@ -50,6 +50,8 @@
   that include `Why`, `Approach`, `Tasks`, and `Done when`. If the plan
   is simpler, infer the missing structure only when the requirement is
   still unambiguous from the heading and tasks.
+- **State the business requirement in your own words** (1-2 sentences).
+  What user-visible behavior changes? What contract must hold?
 - Identify prerequisites from previous milestones and the current code
   state.
 - Announce: *"▶ Milestone X: [name] (IDD)"*
