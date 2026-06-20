@@ -2,11 +2,11 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-DESIGN="$REPO_ROOT/devplan/DESIGN.md"
-TDD="$REPO_ROOT/devplan/TDD.md"
-IDD="$REPO_ROOT/devplan/IDD.md"
+DESIGN="$REPO_ROOT/forge-flow/DESIGN.md"
+TDD="$REPO_ROOT/forge-flow/TDD.md"
+IDD="$REPO_ROOT/forge-flow/IDD.md"
 ROOT_README="$REPO_ROOT/README.md"
-SKILL_README="$REPO_ROOT/devplan/README.md"
+SKILL_README="$REPO_ROOT/forge-flow/README.md"
 WORKFLOW="$REPO_ROOT/.github/workflows/tests.yml"
 
 fail() {

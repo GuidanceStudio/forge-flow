@@ -1,10 +1,10 @@
-# devplan — Dev Plan
+# forge-flow — Dev Plan
 
-Unified skill for both **Claude Code** and **Codex** that handles the full devplan lifecycle:
+Unified skill for both **Claude Code** and **Codex** that handles the full forge-flow lifecycle:
 plan creation/maintenance (`design`) and plan execution (`TDD` / `IDD`).
 
-This project replaces the two standalone repos `claude-devplan-executor` and
-`codex-devplan-executor` with a single source of truth that ships both variants
+This project replaces the two standalone repos `claude-forge-flow-executor` and
+`codex-forge-flow-executor` with a single source of truth that ships both variants
 plus a shared installer.
 
 ## Milestone format
@@ -25,24 +25,24 @@ elsewhere. Every task is a markdown checkbox.
 git init and .gitignore upfront avoids committing junk later and gives every
 following milestone a stable place to land.
 
-**Approach:** Create the target-shaped directory tree (`claude/devplan/`,
-`codex/devplan/`, `codex/devplan/agents/`). Initialize git. Add a `.gitignore`
+**Approach:** Create the target-shaped directory tree (`claude/forge-flow/`,
+`codex/forge-flow/`, `codex/forge-flow/agents/`). Initialize git. Add a `.gitignore`
 that excludes the usual suspects (`.DS_Store`, editor swap files). Add a
 placeholder top-level `README.md` (full content lands in M8). No content for
 the variants yet — just empty directories ready to receive files.
 
 **Tasks:**
-- [x] Create directory tree: `claude/devplan/`, `codex/devplan/`, `codex/devplan/agents/`
-- [x] `git init` in `software/skills/devplan/`
+- [x] Create directory tree: `claude/forge-flow/`, `codex/forge-flow/`, `codex/forge-flow/agents/`
+- [x] `git init` in `software/skills/forge-flow/`
 - [x] Write `.gitignore` (`.DS_Store`, `*.swp`, `*.swo`, `.idea/`, `.vscode/`)
 - [x] Write placeholder `README.md` with title + 1-line description
 - [x] Commit (push skipped — no remote, see Notes)
 
-**Done when:** `software/skills/devplan/` exists, is a git repo with one
+**Done when:** `software/skills/forge-flow/` exists, is a git repo with one
 initial commit, and contains the empty directory tree ready for content.
 
 **Notes:** Executed in IDD mode (TDD fallback) — pure scaffolding has no testable
-business contract. `git push` skipped throughout this devplan: the repo is
+business contract. `git push` skipped throughout this forge-flow: the repo is
 local-only per the v0.1 out-of-scope (no remote configured).
 
 ---
@@ -51,33 +51,33 @@ local-only per the v0.1 out-of-scope (no remote configured).
 
 #### M2: Migrate Claude variant (TDD.md, IDD.md, README.md) ✅
 
-**Why:** The current Claude executor (`~/.claude/skills/devplan-executor/`) is
+**Why:** The current Claude executor (`~/.claude/skills/forge-flow-executor/`) is
 already battle-tested. We bring its source files into the new repo unchanged
 in behavior, just relocated and renamed for the new package layout. SKILL.md is
 intentionally NOT migrated here — it gets rewritten as the new router in M6.
 
 **Approach:** Copy `TDD.md`, `IDD.md`, and `README.md` (source files only, no
-`.git`) from `~/.claude/skills/devplan-executor/` into
-`claude/devplan/`. Update internal references inside `TDD.md`/`IDD.md` if any
-mention the old `devplan-executor` skill name — they should now refer to
-`devplan` (with the TDD/IDD mode being one of three router targets). Update
+`.git`) from `~/.claude/skills/forge-flow-executor/` into
+`claude/forge-flow/`. Update internal references inside `TDD.md`/`IDD.md` if any
+mention the old `forge-flow-executor` skill name — they should now refer to
+`forge-flow` (with the TDD/IDD mode being one of three router targets). Update
 the variant-level `README.md` to reflect the new skill name and the fact that
 this is now a sub-document of a unified skill (not a standalone install).
 
 **Tasks:**
-- [x] Copy `TDD.md` → `claude/devplan/TDD.md`
-- [x] Copy `IDD.md` → `claude/devplan/IDD.md`
-- [x] Copy `README.md` → `claude/devplan/README.md`
-- [x] Grep both playbooks for `devplan-executor` references and update to `devplan` (none found — clean)
-- [x] Update `claude/devplan/README.md`: skill name, install path, link back to project root
+- [x] Copy `TDD.md` → `claude/forge-flow/TDD.md`
+- [x] Copy `IDD.md` → `claude/forge-flow/IDD.md`
+- [x] Copy `README.md` → `claude/forge-flow/README.md`
+- [x] Grep both playbooks for `forge-flow-executor` references and update to `forge-flow` (none found — clean)
+- [x] Update `claude/forge-flow/README.md`: skill name, install path, link back to project root
 - [x] Verify no broken internal links remain
 - [x] Commit (push skipped — no remote)
 
-**Done when:** `claude/devplan/` contains TDD.md, IDD.md, README.md with all
+**Done when:** `claude/forge-flow/` contains TDD.md, IDD.md, README.md with all
 references updated to the new skill name.
 
 **Notes:** Executed in IDD mode (TDD fallback). TDD.md and IDD.md had zero
-references to `devplan-executor` — they were already self-contained. README.md
+references to `forge-flow-executor` — they were already self-contained. README.md
 was fully rewritten to reflect the new 3-mode routing and unified install.
 
 ---
@@ -91,19 +91,19 @@ the whole point of this repo — anything we do to Claude we mirror in Codex.
 **Approach:** Mirror M2 for the Codex source. Copy the markdown playbooks plus
 the `agents/openai.yaml`. Adapt internal references the same way. The
 README for the Codex variant keeps Codex-specific terminology
-(`$devplan` invocation, `~/.codex/skills/` path).
+(`$forge-flow` invocation, `~/.codex/skills/` path).
 
 **Tasks:**
-- [x] Copy `TDD.md` → `codex/devplan/TDD.md`
-- [x] Copy `IDD.md` → `codex/devplan/IDD.md`
-- [x] Copy `README.md` → `codex/devplan/README.md`
-- [x] Copy `agents/openai.yaml` → `codex/devplan/agents/openai.yaml`
-- [x] Grep both playbooks for `devplan-executor` references and update to `devplan` (none found — clean)
-- [x] Update `codex/devplan/README.md`: skill name, install path, link back to project root
+- [x] Copy `TDD.md` → `codex/forge-flow/TDD.md`
+- [x] Copy `IDD.md` → `codex/forge-flow/IDD.md`
+- [x] Copy `README.md` → `codex/forge-flow/README.md`
+- [x] Copy `agents/openai.yaml` → `codex/forge-flow/agents/openai.yaml`
+- [x] Grep both playbooks for `forge-flow-executor` references and update to `forge-flow` (none found — clean)
+- [x] Update `codex/forge-flow/README.md`: skill name, install path, link back to project root
 - [x] Verify the openai.yaml `name`/`description` fields match the new skill name
 - [x] Commit (push skipped — no remote)
 
-**Done when:** `codex/devplan/` contains all 5 files (TDD/IDD/README + agents/openai.yaml)
+**Done when:** `codex/forge-flow/` contains all 5 files (TDD/IDD/README + agents/openai.yaml)
 with all references updated.
 
 **Notes:** Executed in IDD mode (TDD fallback). Same as M2: playbooks had zero
@@ -118,7 +118,7 @@ description/prompt to reflect the 3-mode routing.
 
 **Why:** The design playbook is the new value this repo brings. It codifies
 the user's existing planning workflow (discovery → propose → iterate → write
-→ validate) so any session that invokes `/devplan design` follows the same
+→ validate) so any session that invokes `/forge-flow design` follows the same
 top-PM approach without needing to be re-explained. Without DESIGN.md the
 router has nothing to route to.
 
@@ -126,7 +126,7 @@ router has nothing to route to.
 follows the 5 phases agreed in chat:
 
 1. **Discovery** — read CLAUDE.md (root + global), README, docs/, find existing
-   devplan files, run `git log -20`, detect stack, identify likely-touched
+   forge-flow files, run `git log -20`, detect stack, identify likely-touched
    files via Grep/Glob. Output a 10-15 line Discovery Brief in chat.
 2. **Clarification** — only if real ambiguities exist, ask a max-5 numbered
    list with concrete A/B/C options and a recommended pick. Skip entirely if
@@ -134,7 +134,7 @@ follows the 5 phases agreed in chat:
 3. **Plan proposal in chat** — emit Obiettivo / Approccio / Rischi / Fasi
    (with milestones grouped) / Out of scope. Wait for explicit approval words
    ("ok", "vai", "scrivi", "procedi"). Never write to file in this phase.
-4. **Write to file** — append to current devplan version file (never close or
+4. **Write to file** — append to current forge-flow version file (never close or
    create versions without explicit ask). Use the milestone format: **Why /
    Approach / Tasks / Done when** (required) + optional **Notes**. Continue
    numbering from last existing `MNN`. No preparation milestones, no time
@@ -151,7 +151,7 @@ create new versions without ask, but **at ~50 milestones suggest in chat**
 that the user may want to close the version — final decision is theirs).
 
 **Tasks:**
-- [x] Write `claude/devplan/DESIGN.md` with frontmatter (`name`, `description`)
+- [x] Write `claude/forge-flow/DESIGN.md` with frontmatter (`name`, `description`)
 - [x] Section: Discovery (with explicit list of artifacts to read in parallel)
 - [x] Section: Clarification (with the "max 5, concrete options, recommend pick" rules)
 - [x] Section: Plan proposal (with the exact chat template: Obiettivo/Approccio/Rischi/Fasi/Out of scope)
@@ -162,10 +162,10 @@ that the user may want to close the version — final decision is theirs).
 - [x] Section: Sinergia with TDD/IDD (shared milestone format = no translation needed)
 - [x] Commit (push skipped — no remote)
 
-**Done when:** `claude/devplan/DESIGN.md` is a complete, self-contained
+**Done when:** `claude/forge-flow/DESIGN.md` is a complete, self-contained
 playbook that a fresh Claude session could follow end-to-end without any
 additional context, and any milestone it produces is directly executable by
-`claude/devplan/TDD.md` or `IDD.md` without translation.
+`claude/forge-flow/TDD.md` or `IDD.md` without translation.
 
 **Notes:** Executed in IDD mode (TDD fallback) — content authoring, no testable
 code. The playbook is ~200 lines, fully self-contained. Dropped frontmatter
@@ -179,23 +179,23 @@ not per-file frontmatter — SKILL.md router handles identification.
 **Why:** Mirror M4 for Codex so both tools have feature parity. Codex users
 deserve the same planning quality as Claude users.
 
-**Approach:** Port `claude/devplan/DESIGN.md` to `codex/devplan/DESIGN.md`,
-adapting only Codex-specific details: invocation syntax (`$devplan design`
-instead of `/devplan design`), tool names (Codex's file/search tools instead
+**Approach:** Port `claude/forge-flow/DESIGN.md` to `codex/forge-flow/DESIGN.md`,
+adapting only Codex-specific details: invocation syntax (`$forge-flow design`
+instead of `/forge-flow design`), tool names (Codex's file/search tools instead
 of Claude's Read/Grep/Glob), any frontmatter keys that differ between the two
 skill systems. Content and structure stay identical. Update
 `agents/openai.yaml` if it needs to register the new playbook entry.
 
 **Tasks:**
-- [x] Copy `claude/devplan/DESIGN.md` → `codex/devplan/DESIGN.md` as starting point
+- [x] Copy `claude/forge-flow/DESIGN.md` → `codex/forge-flow/DESIGN.md` as starting point
 - [x] Replace Claude-specific invocation syntax with Codex equivalents
 - [x] Replace Claude tool names with Codex tool equivalents
 - [x] Update Codex-specific frontmatter if applicable (N/A — no frontmatter used)
-- [x] Update `codex/devplan/agents/openai.yaml` if it needs a DESIGN entry (already updated in M3)
+- [x] Update `codex/forge-flow/agents/openai.yaml` if it needs a DESIGN entry (already updated in M3)
 - [x] Diff the two DESIGN.md files and confirm only intentional differences exist
 - [x] Commit (push skipped — no remote)
 
-**Done when:** `codex/devplan/DESIGN.md` exists with structural and behavioral
+**Done when:** `codex/forge-flow/DESIGN.md` exists with structural and behavioral
 parity with the Claude version, only differing where Codex-specific syntax
 requires it.
 
@@ -212,7 +212,7 @@ wording for file search, guardrail formatting.
 
 **Why:** This is the single entry point users invoke. Until M6 the new
 playbooks exist but nothing routes to them. After M6 the skill is functionally
-complete: `/devplan` works.
+complete: `/forge-flow` works.
 
 **Approach:** Write a short (~30-40 line) router for each variant. The router
 parses the first argument:
@@ -231,11 +231,11 @@ The router itself never executes work; it just selects and hands off. Each
 playbook stays self-contained.
 
 **Tasks:**
-- [x] Write `claude/devplan/SKILL.md` router with frontmatter and the 5-branch logic
-- [x] Write `codex/devplan/SKILL.md` router (same logic, Codex syntax)
+- [x] Write `claude/forge-flow/SKILL.md` router with frontmatter and the 5-branch logic
+- [x] Write `codex/forge-flow/SKILL.md` router (same logic, Codex syntax)
 - [x] Verify both routers explicitly recommend TDD as default execution mode
 - [x] Verify both routers load only one playbook per invocation (no eager loading)
-- [x] Update `codex/devplan/agents/openai.yaml` to point to the new SKILL.md if needed (already done in M3)
+- [x] Update `codex/forge-flow/agents/openai.yaml` to point to the new SKILL.md if needed (already done in M3)
 - [x] Manual smoke test: invoke each branch mentally against the router text
 - [x] Commit (push skipped — no remote)
 
@@ -255,8 +255,8 @@ both variants from a single command.
 
 **Approach:** A POSIX `bash` script at the repo root. Flags:
 
-- `./install.sh claude` → copy `claude/devplan/` → `~/.claude/skills/devplan/`
-- `./install.sh codex` → copy `codex/devplan/` → `~/.codex/skills/devplan/`
+- `./install.sh claude` → copy `claude/forge-flow/` → `~/.claude/skills/forge-flow/`
+- `./install.sh codex` → copy `codex/forge-flow/` → `~/.codex/skills/forge-flow/`
 - `./install.sh all` (default if no arg) → install both
 - `--force` → overwrite existing target without prompting
 - without `--force`, if target exists, prompt y/N before overwriting
@@ -276,7 +276,7 @@ failure.
 - [x] Commit (push skipped — no remote)
 
 **Done when:** Running `./install.sh all` from a clean checkout installs both
-variants into `~/.claude/skills/devplan/` and `~/.codex/skills/devplan/` with
+variants into `~/.claude/skills/forge-flow/` and `~/.codex/skills/forge-flow/` with
 correct files and a clear success message.
 
 ---
@@ -284,20 +284,20 @@ correct files and a clear success message.
 #### M8: Write project-level `README.md` ✅
 
 **Why:** The placeholder from M1 is not enough. The repo needs a real README
-that explains what `devplan` is, the three modes, how to install, and links
+that explains what `forge-flow` is, the three modes, how to install, and links
 to the per-variant docs. This is the first thing anyone (including future-you)
 sees when they land on the repo.
 
 **Approach:** A single markdown file at repo root. Sections:
 
-- **What is devplan** — 3-4 lines, agnostic of Claude vs Codex
+- **What is forge-flow** — 3-4 lines, agnostic of Claude vs Codex
 - **Three modes** — `design` / `TDD` / `IDD` with one-line each
 - **Install** — `./install.sh all` (and the flag variants)
-- **Usage** — `/devplan design`, `/devplan TDD`, `/devplan IDD`, with the
+- **Usage** — `/forge-flow design`, `/forge-flow TDD`, `/forge-flow IDD`, with the
   default-when-no-arg behavior
-- **Project layout** — short tree showing `claude/devplan/`, `codex/devplan/`
-- **Per-variant docs** — links to `claude/devplan/README.md` and
-  `codex/devplan/README.md`
+- **Project layout** — short tree showing `claude/forge-flow/`, `codex/forge-flow/`
+- **Per-variant docs** — links to `claude/forge-flow/README.md` and
+  `codex/forge-flow/README.md`
 - **License** — MIT (matching the existing executors)
 
 No emoji. No marketing fluff.
@@ -320,13 +320,13 @@ and routes correctly end-to-end. Tagging v0.1 marks a stable reference point
 to install from.
 
 **Approach:** Run `install.sh` against a temp `HOME` (or accept overwriting
-the existing `~/.claude/skills/devplan/` after backing it up), then mentally
-walk through `/devplan`, `/devplan design`, `/devplan TDD`, `/devplan IDD`
+the existing `~/.claude/skills/forge-flow/` after backing it up), then mentally
+walk through `/forge-flow`, `/forge-flow design`, `/forge-flow TDD`, `/forge-flow IDD`
 to confirm each branch loads the right file. Fix anything broken. Tag the
 final commit as `v0.1`.
 
 **Tasks:**
-- [x] Backup existing `~/.claude/skills/devplan-executor/` and `~/.codex/skills/devplan-executor/` if present (skipped — install goes to new `devplan/` path, old `devplan-executor/` is untouched)
+- [x] Backup existing `~/.claude/skills/forge-flow-executor/` and `~/.codex/skills/forge-flow-executor/` if present (skipped — install goes to new `forge-flow/` path, old `forge-flow-executor/` is untouched)
 - [x] Run `./install.sh all` from the new repo (dry-run with fake HOME)
 - [x] Verify all files landed in the right paths with correct contents (Claude: 5 files, Codex: 5 + agents/openai.yaml)
 - [x] Mentally smoke-test each router branch (7/7 branches verified)
@@ -334,7 +334,7 @@ final commit as `v0.1`.
 - [x] Tag `v0.1`
 - [x] Commit (push skipped — no remote)
 
-**Done when:** A fresh install from this repo produces a working `/devplan`
+**Done when:** A fresh install from this repo produces a working `/forge-flow`
 skill in both Claude Code and Codex, all router branches dispatch correctly,
 and the repo has a `v0.1` tag.
 
@@ -351,7 +351,7 @@ pending milestones, clarification triggers are vague, and validation only
 checks form (not substance). Fixing these makes the playbook proportional
 to the work and catches real planning errors.
 
-**Approach:** Edit both `claude/devplan/DESIGN.md` and `codex/devplan/DESIGN.md`
+**Approach:** Edit both `claude/forge-flow/DESIGN.md` and `codex/forge-flow/DESIGN.md`
 in-place. All 5 fixes modify existing sections — no new sections added, the
 playbook stays at 5 phases. Changes:
 
@@ -383,12 +383,12 @@ playbook stays at 5 phases. Changes:
    Notes warning to the milestone.
 
 **Tasks:**
-- [x] Update Phase 1 in `claude/devplan/DESIGN.md`: add scale assessment, make sources a catalog not a checklist, scale the Discovery Brief
-- [x] Update Phase 2 in `claude/devplan/DESIGN.md`: replace "real ambiguities" with the structural-impact criterion
-- [x] Update Phase 3 in `claude/devplan/DESIGN.md`: add lightweight template for 1-2 milestone plans
-- [x] Update Phase 4 in `claude/devplan/DESIGN.md`: add pending milestone check in extend mode
-- [x] Update Phase 5 in `claude/devplan/DESIGN.md`: add 3 codebase-coherence checks
-- [x] Port all 5 changes to `codex/devplan/DESIGN.md`
+- [x] Update Phase 1 in `claude/forge-flow/DESIGN.md`: add scale assessment, make sources a catalog not a checklist, scale the Discovery Brief
+- [x] Update Phase 2 in `claude/forge-flow/DESIGN.md`: replace "real ambiguities" with the structural-impact criterion
+- [x] Update Phase 3 in `claude/forge-flow/DESIGN.md`: add lightweight template for 1-2 milestone plans
+- [x] Update Phase 4 in `claude/forge-flow/DESIGN.md`: add pending milestone check in extend mode
+- [x] Update Phase 5 in `claude/forge-flow/DESIGN.md`: add 3 codebase-coherence checks
+- [x] Port all 5 changes to `codex/forge-flow/DESIGN.md`
 - [x] Diff both DESIGN.md files and confirm only intentional differences exist (same 7 blocks as before, all intentional)
 - [x] Commit (push skipped — no remote)
 
@@ -403,14 +403,14 @@ the actual codebase — not just format.
 
 **Why:** The current `install.sh` only works from a local clone. Users
 discovering the skill on GitHub should be able to install with a single
-command — `bash <(curl -fsSL https://raw.githubusercontent.com/OWNER/devplan/main/install.sh)` —
+command — `bash <(curl -fsSL https://raw.githubusercontent.com/OWNER/forge-flow/main/install.sh)` —
 without cloning the repo first. This is the standard distribution pattern
 for CLI tools and skills.
 
 **Approach:** Rewrite `install.sh` to auto-detect its execution context:
 
 1. **Local mode** (current behavior) — if the script detects that the
-   source directories (`claude/devplan/`, `codex/devplan/`) exist relative
+   source directories (`claude/forge-flow/`, `codex/forge-flow/`) exist relative
    to `SCRIPT_DIR`, it uses them directly via `cp -r`. Nothing changes for
    users who already clone.
 
@@ -421,11 +421,11 @@ for CLI tools and skills.
    - runs the install logic using the cloned files as source
    - cleans up the temp dir on exit (trap)
 
-Detection: check `[ -d "$SCRIPT_DIR/claude/devplan" ]`. If yes → local
+Detection: check `[ -d "$SCRIPT_DIR/claude/forge-flow" ]`. If yes → local
 mode. If no → remote mode.
 
 The repo URL should be a variable at the top of the script (`REPO_URL`)
-so it's easy to change. Default: `https://github.com/OWNER/devplan.git`
+so it's easy to change. Default: `https://github.com/OWNER/forge-flow.git`
 (placeholder until the repo is published).
 
 All existing flags (`claude`, `codex`, `all`, `--force`, `--help`) work
@@ -433,7 +433,7 @@ identically in both modes. The user-facing one-liner to document in the
 README:
 
 ```
-bash <(curl -fsSL https://raw.githubusercontent.com/OWNER/devplan/main/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/OWNER/forge-flow/main/install.sh)
 ```
 
 **Tasks:**
@@ -452,7 +452,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/OWNER/devplan/main/install.s
 
 **Notes:** Executed in TDD mode. `DEVPLAN_REPO_URL` env var added for
 testability — tests point it at the local repo to avoid network dependency.
-`kiso-run/devplan` is the target repo URL — update if the GitHub home changes.
+`kiso-run/forge-flow` is the target repo URL — update if the GitHub home changes.
 Test suite: 21 tests (14 local, 7 remote), all green.
 
 ---
@@ -461,7 +461,7 @@ Test suite: 21 tests (14 local, 7 remote), all green.
 
 - Publishing to a public GitHub repo (local-only for now)
 - CI / automated tests for the installer
-- A `devplan uninstall` command
+- A `forge-flow uninstall` command
 - Support for skill systems other than Claude Code and Codex
 - Auto-update mechanism
 - Telemetry of any kind
@@ -510,18 +510,18 @@ superior content adopted: path-token detection + ambiguity rule and
 fallback clause (SKILL), milestone executability validation with
 structure inference for simple plans, implementation standards, git
 behavior incl. push-blocker recording and "never discard unrelated
-user changes" (replaces `git add -A`), resumable-devplan standard,
+user changes" (replaces `git add -A`), resumable-forge-flow standard,
 completion report with tests-not-run + residual risks (TDD/IDD).
 Claude's kept: pre-approved autonomy block, red-check exemption,
 `/simplify` step, recap template, IDD-fallback detail. Write once into
-`claude/devplan/`, copy to `codex/devplan/`.
+`claude/forge-flow/`, copy to `codex/forge-flow/`.
 
 **Tasks:**
 - [x] Merge + neutralize `SKILL.md` (claude base + codex routing improvements)
 - [x] Merge + neutralize `TDD.md` (codex structure + claude specifics)
 - [x] Merge + neutralize `IDD.md` (same approach)
 - [x] Neutralize `DESIGN.md` (claude base is canonical post-M10; inline both instruction-file conventions, tool-agnostic wording)
-- [x] Copy the four files to `codex/devplan/`, verify byte-identical
+- [x] Copy the four files to `codex/forge-flow/`, verify byte-identical
 - [x] Check both variant READMEs + root README for statements the merge contradicts; fix (claude README `/simplify` line made conditional; codex README + root README already neutral)
 - [x] Commit & push
 
@@ -532,7 +532,7 @@ standards` sections from the Codex lineage; `git add -A` replaced by
 "stage the milestone's changes" + "never rewrite or discard unrelated
 user changes" (M14 adds the preflight).
 
-**Done when:** `diff claude/devplan/{SKILL,DESIGN,TDD,IDD}.md codex/devplan/` is empty and each merged file contains the named improvements from both lineages.
+**Done when:** `diff claude/forge-flow/{SKILL,DESIGN,TDD,IDD}.md codex/forge-flow/` is empty and each merged file contains the named improvements from both lineages.
 
 #### M13: Lockstep guard — identity test + install drift check
 
@@ -542,8 +542,8 @@ on the next edit, exactly like it did in v0.1.
 **Approach:** Extend the existing bash test suite with a lockstep
 check (the four behavior files byte-identical across variants) wired
 into `tests/test_install.sh` style. Add `install.sh --check`: compare
-the installed copies under `~/.claude/skills/devplan/` and
-`~/.codex/skills/devplan/` against the source tree and report drift
+the installed copies under `~/.claude/skills/forge-flow/` and
+`~/.codex/skills/forge-flow/` against the source tree and report drift
 without modifying anything; cover it with tests (fresh install →
 clean; hand-edited installed file → drift reported, non-zero exit).
 
@@ -575,10 +575,10 @@ proportional to its blast radius.
 **Approach:** Edit the unified TDD.md/IDD.md (and DESIGN.md where
 noted), then sync to codex/. Five behaviors: (1) preflight at
 execution start — if the worktree has uncommitted changes unrelated to
-the devplan, stop and ask once before touching anything; (2) stage
+the forge-flow, stop and ask once before touching anything; (2) stage
 only files touched by the milestone, never blanket-add; (3) before
 marking a milestone done, verify its **Done when** condition
-explicitly and record the verification in the devplan note; (4) read
+explicitly and record the verification in the forge-flow note; (4) read
 the repo's commit-message convention from `git log` and match it
 (default `MNN: title` when none), including trailers the repo uses;
 (5) resume protocol — on start, if a milestone is half-executed
@@ -594,7 +594,7 @@ existing conventions like `D5-4`).
 - [x] TDD.md + IDD.md: selective staging rule
 - [x] TDD.md + IDD.md: Done-when verification step before marking done (new dedicated loop step + Rules entries)
 - [x] TDD.md + IDD.md: commit-convention detection rule (in preflight + commit step)
-- [x] TDD.md + IDD.md: plan-drift rule — kept as bullet inside "Update the devplan" (a dedicated numbered step added no value), strengthened with "never rewrite completed milestones"
+- [x] TDD.md + IDD.md: plan-drift rule — kept as bullet inside "Update the forge-flow" (a dedicated numbered step added no value), strengthened with "never rewrite completed milestones"
 - [x] DESIGN.md: ID-scheme flexibility in the numbering rules
 - [x] Sync to codex/, lockstep test green
 - [x] Commit & push
@@ -615,13 +615,13 @@ English; discovery assumes a single repo; design mode ends without
 telling the user how to execute.
 
 **Approach:** Language rule stated once in SKILL.md (chat interactions
-in the user's language; devplan file content in English unless the
-project's existing devplan uses another language) — Italian strings
+in the user's language; forge-flow file content in English unless the
+project's existing forge-flow uses another language) — Italian strings
 become examples, not prescriptions. DESIGN.md discovery: when the
 target directory contains multiple git checkouts (sibling-repo
-workspace), enumerate them, confirm scope, locate the devplan home.
+workspace), enumerate them, confirm scope, locate the forge-flow home.
 DESIGN.md phase 5: after validation passes, suggest the execution
-handoff (`/devplan TDD <path>`). Sync to codex/.
+handoff (`/forge-flow TDD <path>`). Sync to codex/.
 
 **Tasks:**
 - [x] SKILL.md: language-adaptive rule (new `## Language` section); router question + approval words language-neutral with examples
@@ -654,12 +654,12 @@ the four behavior files byte-identical across the `claude/` and `codex/`
 variants; research since confirmed `SKILL.md` is a cross-assistant
 standard (agentskills.io — Claude Code, Codex, opencode read the same
 folder verbatim). So the two-variant tree is now redundant: collapse it
-to ONE flat generic `devplan/` payload, and replace the claude/codex-only
+to ONE flat generic `forge-flow/` payload, and replace the claude/codex-only
 installer with a broad multi-assistant one.
 
 **Approccio:** the behavior files (`SKILL.md`, `DESIGN.md`, `TDD.md`,
 `IDD.md`) are already variant-neutral and identical — take them once
-into a top-level `devplan/`. Merge the two variant READMEs into one
+into a top-level `forge-flow/`. Merge the two variant READMEs into one
 neutral doc. Keep `agents/openai.yaml` in the payload as optional Codex
 metadata (harmless to other assistants). The lockstep test becomes moot
 (no variants to keep in step) — retire it. Installer mirrors code-audit:
@@ -673,15 +673,15 @@ workspace.
 
 ### Phase G — Flatten
 
-#### M16: Collapse the two variants into one flat `devplan/` payload ✅
+#### M16: Collapse the two variants into one flat `forge-flow/` payload ✅
 
 **Why:** The claude/codex split exists only for historical reasons; the
 files are identical and the standard is shared. One payload is simpler,
 truly de-Claudized, and copyable anywhere.
 
-**Approach:** `git mv claude/devplan` → top-level `devplan/`; bring
+**Approach:** `git mv claude/forge-flow` → top-level `forge-flow/`; bring
 `agents/openai.yaml` across (optional Codex metadata); merge the two
-variant READMEs into one neutral `devplan/README.md` (drop "Claude
+variant READMEs into one neutral `forge-flow/README.md` (drop "Claude
 variant"/"Codex variant" framing, keep the per-assistant invocation
 notes); remove the now-empty `claude/` and `codex/` trees. Update root
 `install.sh` source path, root `README.md` layout, and retire
@@ -689,15 +689,15 @@ notes); remove the now-empty `claude/` and `codex/` trees. Update root
 unchanged content.
 
 **Tasks:**
-- [x] `git mv claude/devplan devplan`; move `agents/openai.yaml` into it
-- [x] Merge variant READMEs → one neutral `devplan/README.md`
+- [x] `git mv claude/forge-flow forge-flow`; move `agents/openai.yaml` into it
+- [x] Merge variant READMEs → one neutral `forge-flow/README.md`
 - [x] Remove empty `claude/` and `codex/` dirs
 - [x] Retire `tests/test_lockstep.sh`; update root `README.md` layout tree
-- [x] Point `install.sh` source detection at the flat `devplan/`
+- [x] Point `install.sh` source detection at the flat `forge-flow/`
 - [x] `bash tests/test_install.sh` still green (or updated in M17)
 
-**Done when:** the skill is one top-level `devplan/` folder, the
-variant dirs are gone, and `cp -r devplan ~/somewhere` is a complete
+**Done when:** the skill is one top-level `forge-flow/` folder, the
+variant dirs are gone, and `cp -r forge-flow ~/somewhere` is a complete
 skill.
 
 ### Phase H — Multi-assistant installer
@@ -710,10 +710,10 @@ whichever assistant the user runs, plus manual-copy.
 **Approach:** Rewrite root `install.sh` mirroring code-audit's:
 `--target claude|codex|opencode|gemini|agents|manual|all` (interactive
 menu when no target on a TTY; default claude otherwise). claude →
-`~/.claude/skills/devplan/`, codex → `~/.codex/skills/devplan/`,
-opencode → `~/.config/opencode/skills/devplan/` (verbatim); gemini →
-`~/.gemini/commands/devplan.toml` + payload in `~/.config/devplan`;
-agents → AGENTS.md pointer + payload in `~/.config/devplan`; manual →
+`~/.claude/skills/forge-flow/`, codex → `~/.codex/skills/forge-flow/`,
+opencode → `~/.config/opencode/skills/forge-flow/` (verbatim); gemini →
+`~/.gemini/commands/forge-flow.toml` + payload in `~/.config/forge-flow`;
+agents → AGENTS.md pointer + payload in `~/.config/forge-flow`; manual →
 print the flat path. Keep remote-clone mode, `--force`, `--check` per
 target, `.installed-from` SHA stamp. Rewrite `tests/test_install.sh`
 for the multi-target model (verbatim targets, gemini toml, agents
@@ -733,8 +733,8 @@ target, and the test suite is green.
 
 #### M18: CI — run the test suite on push ✅
 
-**Why:** code-audit and deck got GitHub Actions in this session; devplan's
-suite only runs locally. devplan is pure Markdown + a bash installer with
+**Why:** code-audit and deck got GitHub Actions in this session; forge-flow's
+suite only runs locally. forge-flow is pure Markdown + a bash installer with
 no external dependencies, so CI is a clean `bash tests/test_install.sh`
 on every push — no best-effort dep installs needed.
 
@@ -762,7 +762,7 @@ green; a hand-broken installer would red the build.
 
 Adopt the decision model from
 [`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail)
-as native devplan behavior rather than installing its plugin. Devplan
+as native forge-flow behavior rather than installing its plugin. Devplan
 remains authoritative for scope, test policy, execution order, and
 completion gates. Ponytail is conceptual prior art under the MIT
 license; its lifecycle hooks, persistent modes, duplicate review
@@ -780,7 +780,7 @@ feature. Preventing speculative work at design time is cheaper than
 finding it in review after implementation.
 
 **Approach:** Add an essentiality checkpoint to
-`devplan/DESIGN.md` after discovery and before the final proposal. For
+`forge-flow/DESIGN.md` after discovery and before the final proposal. For
 each proposed milestone, test the options in order: does the work need
 to exist; does the standard library solve it; does the platform provide
 it natively; does an already-installed dependency cover it; can the
@@ -794,10 +794,10 @@ Document the conceptual Ponytail source in both READMEs without making
 it an installation dependency.
 
 **Tasks:**
-- [x] Add the ordered essentiality checkpoint to the proposal flow in `devplan/DESIGN.md`
+- [x] Add the ordered essentiality checkpoint to the proposal flow in `forge-flow/DESIGN.md`
 - [x] Extend design validation to reject speculative preparation, avoidable dependencies, and single-use abstractions unless the plan records a verified reason
 - [x] State the non-negotiable explicit-requirement, correctness, security, accessibility, and project-convention boundaries
-- [x] Add Ponytail attribution and the no-runtime-dependency boundary to `README.md` and `devplan/README.md`
+- [x] Add Ponytail attribution and the no-runtime-dependency boundary to `README.md` and `forge-flow/README.md`
 - [x] Add `tests/test_content.sh` covering the DESIGN checkpoint, guardrails, and attribution
 - [x] Update CI and README test instructions so the installer and content-contract suites both run
 - [x] Test: run all shell test suites
@@ -819,11 +819,11 @@ also remains green (24 checks).
 
 **Why:** Both executors already contain a generic Simplify step, but
 they do not define what simplification means. A shared ordered pass
-makes implementation behavior predictable while preserving devplan's
+makes implementation behavior predictable while preserving forge-flow's
 stronger test discipline.
 
-**Approach:** Expand the Simplify step in `devplan/TDD.md` and
-`devplan/IDD.md` with the same ladder used by DESIGN: delete only
+**Approach:** Expand the Simplify step in `forge-flow/TDD.md` and
+`forge-flow/IDD.md` with the same ladder used by DESIGN: delete only
 unneeded code, prefer stdlib and native platform behavior, reuse an
 installed dependency before adding one, inline unearned single-use
 abstractions, and reduce files/branches only when behavior stays
@@ -837,11 +837,11 @@ Done-when contract. No automatic `ponytail:` comments or persistent
 mode state are added.
 
 **Tasks:**
-- [x] Expand the Simplify step in `devplan/TDD.md` with the ordered essentiality ladder and post-pass test requirement
-- [x] Apply the same simplification contract to `devplan/IDD.md`
+- [x] Expand the Simplify step in `forge-flow/TDD.md` with the ordered essentiality ladder and post-pass test requirement
+- [x] Apply the same simplification contract to `forge-flow/IDD.md`
 - [x] State explicit precedence for the existing test policy, safety controls, accessibility, requirements, and Done-when verification
 - [x] Extend `tests/test_content.sh` to assert TDD/IDD parity and guard against importing one-test limits, persistent modes, or automatic Ponytail comments
-- [x] Update `README.md` and `devplan/README.md` with the design → implement → simplify behavior
+- [x] Update `README.md` and `forge-flow/README.md` with the design → implement → simplify behavior
 - [x] Test: run all shell test suites
 - [x] Commit & push
 
@@ -879,7 +879,7 @@ when the code changes and the comment doesn't. The right comment says
 comments during simplification.
 
 **Approach:** Add a seventh rung to the simplify ladder in both
-`devplan/TDD.md` and `devplan/IDD.md`:
+`forge-flow/TDD.md` and `forge-flow/IDD.md`:
 
 ```
 7. **Compress or delete comments that don't carry their weight.**
@@ -894,8 +894,8 @@ It never removes ponytail: comments (those are intentional debt, not
 dead weight) or public API documentation.
 
 **Tasks:**
-- [ ] Add the seventh rung to the simplify ladder in `devplan/TDD.md`
-- [ ] Add the same rung to `devplan/IDD.md`
+- [ ] Add the seventh rung to the simplify ladder in `forge-flow/TDD.md`
+- [ ] Add the same rung to `forge-flow/IDD.md`
 - [ ] Extend `tests/test_content.sh` to assert the comment-weight rung exists in both playbooks
 - [ ] Verify lockstep: TDD.md and IDD.md simplify sections match
 - [ ] Commit & push
@@ -915,7 +915,7 @@ instruction in the playbooks — turns a silent trade-off into a machine-
 readable breadcrumb that both humans and D01 audits can act on.
 
 **Approach:** Add a paragraph after the simplify ladder in both
-`devplan/TDD.md` and `devplan/IDD.md`:
+`forge-flow/TDD.md` and `forge-flow/IDD.md`:
 
 ```
 **ponytail: comment convention.** When a simplification leaves a known
@@ -933,8 +933,8 @@ intentional trade-offs only.
 ```
 
 **Tasks:**
-- [ ] Add the ponytail: convention paragraph to `devplan/TDD.md` after the simplify ladder
-- [ ] Add the same paragraph to `devplan/IDD.md`
+- [ ] Add the ponytail: convention paragraph to `forge-flow/TDD.md` after the simplify ladder
+- [ ] Add the same paragraph to `forge-flow/IDD.md`
 - [ ] Extend `tests/test_content.sh` to assert the convention is documented in both playbooks
 - [ ] Verify lockstep: both playbooks describe the same convention
 - [ ] Commit & push
@@ -953,7 +953,7 @@ automated expiry.
 
 **Approach:**
 
-1. Add a step after simplify in `devplan/TDD.md` and `devplan/IDD.md`:
+1. Add a step after simplify in `forge-flow/TDD.md` and `forge-flow/IDD.md`:
 
 ```
 **Register intentional debt.** When the simplify pass produced a
@@ -975,8 +975,8 @@ Debt registered: N items (see .code-audit/debt.tsv)
 ```
 
 **Tasks:**
-- [ ] Add the debt-registration step to `devplan/TDD.md` (after simplify, before docs)
-- [ ] Add the same step to `devplan/IDD.md`
+- [ ] Add the debt-registration step to `forge-flow/TDD.md` (after simplify, before docs)
+- [ ] Add the same step to `forge-flow/IDD.md`
 - [ ] Add the debt-count line to both completion recaps
 - [ ] Extend `tests/test_content.sh` to assert the registration step and recap line exist
 - [ ] Verify lockstep: both playbooks match

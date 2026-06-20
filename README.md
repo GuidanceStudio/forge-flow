@@ -1,6 +1,6 @@
-# devplan
+# forge-flow
 
-Unified skill for coding agents that handles the full devplan
+Unified skill for coding agents that handles the full forge-flow
 lifecycle: planning (`design`) and execution (`TDD` / `IDD`).
 
 One skill, three modes:
@@ -10,9 +10,9 @@ One skill, three modes:
   approval.
 - **`TDD`** (recommended default) — test-first execution. For each milestone:
   state the requirement, write tests, run them red, implement until green,
-  simplify, docs, devplan, commit, and push when the repo/session allows it.
+  simplify, docs, forge-flow, commit, and push when the repo/session allows it.
 - **`IDD`** — implementation-first execution. For each milestone: implement,
-  write tests covering the finished code, simplify, docs, devplan, commit, and
+  write tests covering the finished code, simplify, docs, forge-flow, commit, and
   push when the repo/session allows it. Use for exploratory work.
 
 Across modes, the workflow is **design → implement → simplify**:
@@ -26,12 +26,12 @@ The installer is multi-assistant. Run it with no target for an
 interactive menu, or pass `--target`:
 
 ```bash
-git clone https://github.com/kiso-run/devplan.git && cd devplan
+git clone https://github.com/GuidanceStudio/forge-flow.git && cd forge-flow
 ./install.sh                      # interactive menu
-./install.sh --target claude      # ~/.claude/skills/devplan/
-./install.sh --target codex        # ~/.codex/skills/devplan/
-./install.sh --target opencode     # ~/.config/opencode/skills/devplan/
-./install.sh --target gemini        # ~/.gemini/commands/devplan.toml (+ payload)
+./install.sh --target claude      # ~/.claude/skills/forge-flow/
+./install.sh --target codex        # ~/.codex/skills/forge-flow/
+./install.sh --target opencode     # ~/.config/opencode/skills/forge-flow/
+./install.sh --target gemini        # ~/.gemini/commands/forge-flow.toml (+ payload)
 ./install.sh --target agents        # AGENTS.md pointer for Cursor/Windsurf/Copilot/Aider/Continue
 ./install.sh --target all           # claude + codex + opencode
 ./install.sh --target manual        # print the folder path; copy it yourself
@@ -40,16 +40,16 @@ git clone https://github.com/kiso-run/devplan.git && cd devplan
 Remote one-liner (no clone; needs `git` + `curl`):
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/kiso-run/devplan/main/install.sh) --target claude
+bash <(curl -fsSL https://raw.githubusercontent.com/GuidanceStudio/forge-flow/main/install.sh) --target claude
 ```
 
-`claude`, `codex`, and `opencode` get the `devplan/` folder copied
+`claude`, `codex`, and `opencode` get the `forge-flow/` folder copied
 verbatim — it's the shared [agentskills.io](https://agentskills.io)
 `SKILL.md` standard, so one payload serves all three. `gemini` gets a
 generated TOML command; `agents` writes an [`AGENTS.md`](https://agents.md)
 pointer for the broad tier. Flags: `--force` (overwrite), `--check`
 (report `OK`/`DRIFT` vs source, per `--target`), `--agents-dir DIR`.
-Or skip the installer — `devplan/` is self-contained, copy it anywhere
+Or skip the installer — `forge-flow/` is self-contained, copy it anywhere
 your tool reads skills.
 
 ## Usage
@@ -58,16 +58,16 @@ Invoke however your assistant invokes skills, then pick a mode:
 
 | Assistant | Invocation |
 |---|---|
-| Claude Code / Codex / opencode | `/devplan design`, `/devplan TDD`, `/devplan IDD`, or `/devplan` |
-| Gemini CLI | `/devplan` (installed as a TOML command) |
-| Cursor / Windsurf / Copilot / Aider | reference devplan from `AGENTS.md`, then ask |
+| Claude Code / Codex / opencode | `/forge-flow design`, `/forge-flow TDD`, `/forge-flow IDD`, or `/forge-flow` |
+| Gemini CLI | `/forge-flow` (installed as a TOML command) |
+| Cursor / Windsurf / Copilot / Aider | reference forge-flow from `AGENTS.md`, then ask |
 
 `design` creates/updates the plan; `TDD` (recommended) and `IDD`
-execute it. You can pass a devplan file path directly:
+execute it. You can pass a forge-flow file path directly:
 
 ```
-/devplan TDD devplan/v0.3.md     # TDD on a specific file
-/devplan devplan/v0.3.md         # path alone defaults to TDD
+/forge-flow TDD forge-flow/v0.3.md     # TDD on a specific file
+/forge-flow forge-flow/v0.3.md         # path alone defaults to TDD
 ```
 
 ## Devplan format
@@ -101,7 +101,7 @@ unambiguous, but they are not the preferred format for reliable TDD/IDD runs.
 ## Ponytail integration
 
 [`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail)
-is Conceptual prior art for devplan's essentiality ladder (MIT).
+is Conceptual prior art for forge-flow's essentiality ladder (MIT).
 Runtime dependency: none. Devplan imports the decision model, not the
 plugin, hooks, persistent modes, duplicate review skills, or its
 minimal-test policy.
@@ -109,12 +109,12 @@ minimal-test policy.
 ## Project layout
 
 ```
-devplan/
+forge-flow/
 ├── README.md          ← you are here
 ├── install.sh         ← multi-assistant installer
 ├── DEVPLAN.md         ← this project's own dev plan
 ├── tests/             ← installer test suite (bash tests/test_install.sh)
-└── devplan/           ← the flat, assistant-neutral skill payload
+└── forge-flow/           ← the flat, assistant-neutral skill payload
     ├── SKILL.md       ← router (design / TDD / IDD)
     ├── DESIGN.md      ← planning playbook
     ├── TDD.md         ← test-first execution playbook
@@ -123,12 +123,12 @@ devplan/
     └── agents/openai.yaml  ← optional Codex metadata
 ```
 
-`devplan/` is the whole skill — copy it anywhere your assistant reads
+`forge-flow/` is the whole skill — copy it anywhere your assistant reads
 skills, or use `install.sh`.
 
 ## Skill docs
 
-- [Skill payload README](devplan/README.md)
+- [Skill payload README](forge-flow/README.md)
 
 ## Tests
 

@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# devplan skill installer — multi-assistant.
+# forge-flow skill installer — multi-assistant.
 #
-# `devplan/` is a flat, assistant-neutral skill payload. This installer
+# `forge-flow/` is a flat, assistant-neutral skill payload. This installer
 # places it where your coding assistant looks for skills, or wraps it for
 # assistants that use a different convention.
 #
 # Local mode:  ./install.sh [OPTIONS]
-# Remote mode: bash <(curl -fsSL https://raw.githubusercontent.com/kiso-run/devplan/main/install.sh) --target claude
+# Remote mode: bash <(curl -fsSL https://raw.githubusercontent.com/GuidanceStudio/forge-flow/main/install.sh) --target claude
 
-REPO_URL="${DEVPLAN_REPO_URL:-https://github.com/kiso-run/devplan.git}"
+REPO_URL="${FORGE_FLOW_REPO_URL:-https://github.com/GuidanceStudio/forge-flow.git}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 FORCE=false
@@ -19,11 +19,11 @@ TARGET=""           # claude|codex|opencode|gemini|agents|manual|all (empty → 
 AGENTS_DIR="$PWD"   # where the `agents` target writes AGENTS.md
 CLEANUP_DIR=""
 
-CLAUDE_DEST="$HOME/.claude/skills/devplan"
-CODEX_DEST="$HOME/.codex/skills/devplan"
-OPENCODE_DEST="$HOME/.config/opencode/skills/devplan"
-NEUTRAL_HOME="$HOME/.config/devplan"
-GEMINI_TOML="$HOME/.gemini/commands/devplan.toml"
+CLAUDE_DEST="$HOME/.claude/skills/forge-flow"
+CODEX_DEST="$HOME/.codex/skills/forge-flow"
+OPENCODE_DEST="$HOME/.config/opencode/skills/forge-flow"
+NEUTRAL_HOME="$HOME/.config/forge-flow"
+GEMINI_TOML="$HOME/.gemini/commands/forge-flow.toml"
 
 cleanup_temp() {
     if [ -n "$CLEANUP_DIR" ] && [ -d "$CLEANUP_DIR" ]; then
@@ -34,7 +34,7 @@ trap cleanup_temp EXIT
 
 usage() {
     cat <<EOF
-Install the devplan skill into your coding assistant.
+Install the forge-flow skill into your coding assistant.
 
 Usage:
     ./install.sh [OPTIONS]
@@ -49,15 +49,15 @@ Options:
     --help          Show this message.
 
 Targets:
-    claude    → ~/.claude/skills/devplan/          (SKILL.md standard, verbatim)
-    codex     → ~/.codex/skills/devplan/           (SKILL.md standard, verbatim)
-    opencode  → ~/.config/opencode/skills/devplan/  (SKILL.md standard, verbatim)
-    gemini    → ~/.gemini/commands/devplan.toml     (TOML wrapper) + payload in ~/.config/devplan
-    agents    → AGENTS.md pointer (Cursor/Windsurf/Copilot/Aider/Continue) + payload in ~/.config/devplan
+    claude    → ~/.claude/skills/forge-flow/          (SKILL.md standard, verbatim)
+    codex     → ~/.codex/skills/forge-flow/           (SKILL.md standard, verbatim)
+    opencode  → ~/.config/opencode/skills/forge-flow/  (SKILL.md standard, verbatim)
+    gemini    → ~/.gemini/commands/forge-flow.toml     (TOML wrapper) + payload in ~/.config/forge-flow
+    agents    → AGENTS.md pointer (Cursor/Windsurf/Copilot/Aider/Continue) + payload in ~/.config/forge-flow
     manual    → print the flat payload path; copy it wherever your tool reads skills
 
 Environment:
-    DEVPLAN_REPO_URL   Override the remote-mode clone URL.
+    FORGE_FLOW_REPO_URL   Override the remote-mode clone URL.
 EOF
 }
 
@@ -75,19 +75,19 @@ while [ $# -gt 0 ]; do
 done
 
 # Resolve the source payload (local checkout or remote clone)
-if [ -d "$SCRIPT_DIR/devplan" ]; then
-    SRC_ROOT="$SCRIPT_DIR/devplan"
+if [ -d "$SCRIPT_DIR/forge-flow" ]; then
+    SRC_ROOT="$SCRIPT_DIR/forge-flow"
 else
     if ! command -v git >/dev/null 2>&1; then
         echo "error: remote install requires 'git' on PATH" >&2
         exit 1
     fi
-    CLEANUP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/devplan-install-XXXXXX")"
-    echo "Cloning devplan into a temporary directory..."
-    git clone --depth 1 --quiet "$REPO_URL" "$CLEANUP_DIR/devplan"
-    SRC_ROOT="$CLEANUP_DIR/devplan/devplan"
+    CLEANUP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/forge-flow-install-XXXXXX")"
+    echo "Cloning forge-flow into a temporary directory..."
+    git clone --depth 1 --quiet "$REPO_URL" "$CLEANUP_DIR/forge-flow"
+    SRC_ROOT="$CLEANUP_DIR/forge-flow/forge-flow"
     if [ ! -d "$SRC_ROOT" ]; then
-        echo "error: cloned repo does not contain devplan/" >&2
+        echo "error: cloned repo does not contain forge-flow/" >&2
         exit 1
     fi
 fi
@@ -111,16 +111,16 @@ copy_payload() {  # <dest>
     cp -r "$SRC_ROOT" "$dest"
     local sha; sha="$(src_sha)"
     [ -n "$sha" ] && printf '%s\n' "$sha" > "$dest/.installed-from"
-    echo "✅ Installed devplan payload → $dest"
+    echo "✅ Installed forge-flow payload → $dest"
 }
 
 write_gemini_toml() {
     copy_payload "$NEUTRAL_HOME" || return 0
     mkdir -p "$(dirname "$GEMINI_TOML")"
     cat > "$GEMINI_TOML" <<TOML
-description = "devplan — design or execute a Markdown dev plan (design / TDD / IDD)"
+description = "forge-flow — design or execute a Markdown dev plan (design / TDD / IDD)"
 prompt = """
-You are the devplan skill. Follow the router and playbooks in the skill
+You are the forge-flow skill. Follow the router and playbooks in the skill
 payload, reading files on demand as it directs.
 
 Router: @{$NEUTRAL_HOME/SKILL.md}
@@ -131,8 +131,8 @@ TOML
     echo "✅ Wrote Gemini command → $GEMINI_TOML (payload in $NEUTRAL_HOME)"
 }
 
-AGENTS_MARK_START="<!-- devplan:start -->"
-AGENTS_MARK_END="<!-- devplan:end -->"
+AGENTS_MARK_START="<!-- forge-flow:start -->"
+AGENTS_MARK_END="<!-- forge-flow:end -->"
 
 write_agents_pointer() {  # <agents-dir>
     local dir="$1" file="$1/AGENTS.md"
@@ -143,14 +143,14 @@ write_agents_pointer() {  # <agents-dir>
     fi
     cat >> "$file" <<AGENTS
 $AGENTS_MARK_START
-## devplan skill
+## forge-flow skill
 
 When asked to plan work or execute a dev plan milestone by milestone, act
-as the devplan skill: read \`$NEUTRAL_HOME/SKILL.md\` and follow its
+as the forge-flow skill: read \`$NEUTRAL_HOME/SKILL.md\` and follow its
 routing (design / TDD / IDD).
 $AGENTS_MARK_END
 AGENTS
-    echo "✅ Added devplan pointer → $file (payload in $NEUTRAL_HOME)"
+    echo "✅ Added forge-flow pointer → $file (payload in $NEUTRAL_HOME)"
 }
 
 check_copy() {  # <dest> <label>
@@ -200,11 +200,11 @@ run_install() {  # <target>
 
 interactive_menu() {
     cat <<EOF
-Where should devplan be installed?
-  1) claude     ~/.claude/skills/devplan
-  2) codex      ~/.codex/skills/devplan
-  3) opencode   ~/.config/opencode/skills/devplan
-  4) gemini     ~/.gemini/commands/devplan.toml
+Where should forge-flow be installed?
+  1) claude     ~/.claude/skills/forge-flow
+  2) codex      ~/.codex/skills/forge-flow
+  3) opencode   ~/.config/opencode/skills/forge-flow
+  4) gemini     ~/.gemini/commands/forge-flow.toml
   5) agents     AGENTS.md pointer (Cursor/Windsurf/Copilot/Aider/Continue)
   6) all        claude + codex + opencode
   7) manual     just print the folder path to copy yourself

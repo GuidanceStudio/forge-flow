@@ -1,9 +1,9 @@
 ---
-name: devplan
-description: Design or execute a Markdown dev plan. Routes to one of three modes — `design` (create/update the plan), `TDD` (test-first execution, recommended default), or `IDD` (implementation-first execution for exploratory work). Use when the user wants to plan work, or execute an existing devplan milestone by milestone with strong autonomy.
+name: forge-flow
+description: Design a Markdown dev plan or execute one milestone by milestone with strong autonomy. Three modes — `design` (create/update the plan), `TDD` (test-first execution, recommended default), or `IDD` (implementation-first execution for exploratory work). Closed loop: plan → test → implement → simplify → verify → commit → push. Use when the user wants to plan work, or execute an existing devplan end-to-end without asking.
 ---
 
-# Devplan — Router
+# Forge-flow — Router
 
 This skill has three modes:
 
