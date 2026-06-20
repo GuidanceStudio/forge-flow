@@ -1,6 +1,6 @@
 # devplan
 
-Unified skill for **Claude Code** and **Codex** that handles the full devplan
+Unified skill for coding agents that handles the full devplan
 lifecycle: planning (`design`) and execution (`TDD` / `IDD`).
 
 One skill, three modes:
