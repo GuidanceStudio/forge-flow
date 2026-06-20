@@ -170,6 +170,10 @@ same location+title pair already exists (idempotent).
   access not currently available, record the exact blocker in the
   devplan and surface it clearly — then continue with the next
   milestone only if that is safe.
+- If the push succeeds but CI reports a failure later, add a note to
+  the devplan with the failing job link and continue; CI failures
+  after a pushed milestone are a separate follow-up, not a reason to
+  block the current run.
 - Never rewrite or discard unrelated user changes.
 - Announce: *"✅ Milestone X complete — moving to Milestone Y"* and
   **immediately proceed to the next milestone**.
