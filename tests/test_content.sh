@@ -68,6 +68,7 @@ steps = (
     "Reuse an already-installed dependency",
     "Inline unearned single-use abstractions",
     "Reduce files and branches",
+    "Compress or delete comments",
 )
 boundaries = (
     "all applicable tests",
@@ -94,12 +95,38 @@ for forbidden in \
     "ONE runnable check" \
     "one small test" \
     "Trivial one-liners need no test" \
-    "ACTIVE EVERY RESPONSE" \
-    "ponytail:"
+    "ACTIVE EVERY RESPONSE"
 do
     if grep -qF "$forbidden" "$TDD" "$IDD"; then
         fail "executor imported forbidden Ponytail behavior: $forbidden"
     fi
+done
+
+# ---- M21-M23: comment essentiality, ponytail: convention, debt tracking ----
+
+# Comment-weight rung present (7th rung of simplify ladder)
+for playbook in "$TDD" "$IDD"; do
+    contains "$playbook" "Compress or delete comments that don't carry their weight"
+    contains "$playbook" "ponytail: comments"
+done
+
+# ponytail: comment convention documented
+for playbook in "$TDD" "$IDD"; do
+    contains "$playbook" "ponytail: comment convention"
+    contains "$playbook" "Ceiling:"
+    contains "$playbook" "Upgrade:"
+    contains "$playbook" "measurable threshold"
+done
+
+# Debt registration step present
+for playbook in "$TDD" "$IDD"; do
+    contains "$playbook" "Register intentional debt"
+    contains "$playbook" ".code-audit/debt.tsv"
+done
+
+# Debt count in completion recaps
+for playbook in "$TDD" "$IDD"; do
+    contains "$playbook" "debt registered"
 done
 
 contains_flat "$ROOT_README" "design → implement → simplify"
