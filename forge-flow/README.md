@@ -9,47 +9,25 @@ installable into any coding assistant that reads skills.
 
 ## What it does
 
-When invoked, `devplan` routes to one of three modes:
+Three modes (see `SKILL.md` for full details):
+- **`design`** — structured discovery → proposal → approval → write → validate.
+  Passes milestones through an essentiality checkpoint.
+- **`TDD` (DEFAULT)** — test-first per milestone: requirement → red tests →
+  green implementation → simplify → commit & push.
+- **`IDD`** — implement-first: code → tests → simplify → commit. For
+  exploratory milestones.
 
-- **`design`** — creates or updates a dev plan through a structured
-  discovery → proposal → approval → write → validation workflow. Waits
-  for explicit approval before writing the devplan file. Candidate
-  milestones pass an essentiality checkpoint first: delete speculative
-  work, then prefer the standard library, native platform behavior, an
-  already-installed dependency, and finally the smallest custom
-  approach.
-- **`TDD` (Test Driven Development) — DEFAULT.** For each milestone:
-  state the business requirement → write tests at all applicable levels
-  → confirm they fail (red) → implement until green → simplify → docs
-  → devplan → commit & push.
-- **`IDD` (Implementation Driven Development).** For each milestone:
-  implement → write tests covering the finished code → simplify → docs
-  → devplan → commit & push. Use when the milestone is exploratory.
+Execution modes run autonomously milestone by milestone, committing and
+pushing after each, stopping only on real blockers.
 
-Across modes, the workflow is **design → implement → simplify**:
-design removes speculative work before it becomes a milestone, while
-TDD and IDD apply the same essentiality ladder after behavior is
-working and then re-run every applicable test.
-
-In execution modes (TDD/IDD) the skill:
-
-1. Discovers and writes tests at all relevant levels (unit, integration, functional, e2e — whatever the project uses)
-2. Simplifies code and tests without changing behavior (via `/simplify` when available)
-3. Updates documentation
-4. Updates the devplan checkboxes
-5. Commits and pushes after each milestone
-6. Moves immediately to the next milestone without asking
-
-Execution modes are highly autonomous, but they still stop on real
-blockers (missing/contradictory requirements, conflicts with unknown
-user work, repo/session limits, commit/push/auth issues).
+Across modes: **design → implement → simplify** — design removes
+speculative work; execution applies the essentiality ladder and re-runs
+all applicable tests.
 
 ## Requirements
 
-- A coding assistant that loads skills (Claude Code, Codex, opencode,
-  Gemini CLI, …) — see the project README for install per assistant.
-- A project with a `DEVPLAN.md` (or equivalent Markdown plan file).
-- Git initialized; a remote configured if you want push.
+A coding assistant that loads skills; a project with a Markdown devplan
+file; Git with a remote for push.
 
 ## Skill files
 
@@ -57,6 +35,8 @@ user work, repo/session limits, commit/push/auth issues).
 - `DESIGN.md` — planning playbook (discovery, proposal, writing, validation)
 - `TDD.md` — Test Driven Development execution playbook (default)
 - `IDD.md` — Implementation Driven Development execution playbook
+- `EXECUTOR-CORE.md` — shared behavior for execution modes (operating mode,
+  preflight, simplify ladder, ponytail, debt registration, test policy, etc.)
 - `agents/openai.yaml` — optional Codex interface metadata (ignored by
   other assistants)
 
@@ -65,40 +45,32 @@ follows a single self-contained set of instructions per run.
 
 ## Ponytail integration
 
-[`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail)
-is Conceptual prior art for the essentiality ladder (MIT). Runtime
-dependency: none. Devplan does not install Ponytail hooks, persistent
-modes, duplicate review skills, or its minimal-test policy; devplan's
-scope, safety, test, and completion rules remain authoritative.
+[`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail) is
+Conceptual prior art for the essentiality ladder (MIT). Runtime dependency:
+none. Devplan imports concepts, not code; its scope, safety, test, and
+completion rules remain authoritative.
 
 ## Usage
 
 Invoke however your assistant invokes skills, then pick a mode:
 
 ```
-/devplan design                    # create or update a dev plan
-/devplan TDD                       # execute the plan (TDD, recommended)
-/devplan IDD                       # execute the plan (IDD, exploratory)
-/devplan TDD devplan/v0.9-wip.md   # TDD on a specific devplan file
-/devplan devplan/v0.9-wip.md       # path alone → defaults to TDD
-/devplan                           # asks which mode to use
+/forge-flow design                  # create or update a dev plan
+/forge-flow TDD                     # execute TDD (recommended default)
+/forge-flow IDD                     # execute IDD (exploratory)
+/forge-flow TDD devplan/v0.9.md     # TDD on a specific devplan file
+/forge-flow devplan/v0.9.md         # path alone defaults to TDD
 ```
 
-(On assistants without slash commands, reference the skill from
-`AGENTS.md` and ask in those words.)
-
-### Choosing a mode
-
-- **Use `design`** to create a new plan, extend an existing one, or refactor milestones. The skill investigates the codebase, proposes the plan in chat, waits for approval, then writes it.
-- **Use `TDD` (default)** for milestones with clear, testable requirements: bug fixes, new features with defined behavior, refactors with preserved contracts.
-- **Use `IDD`** for exploratory work where the requirement cannot be stated as a contract upfront: spikes, prototypes, investigations, code archaeology. The skill can also fall back to IDD per-milestone automatically when it cannot articulate the requirement clearly in TDD mode.
+- **TDD** for clear, testable requirements (bug fixes, features, refactors).
+- **IDD** for exploratory work (spikes, prototypes). The skill can fall back
+  to IDD per-milestone automatically when TDD can't articulate the requirement.
 
 ### Tips
 
-- Make sure your dev plan has clear, actionable milestones before invoking `TDD` or `IDD`
-- Pending milestones should use `- [ ]` checkboxes; completed ones use `- [x]`
-- The skill respects your project's existing test structure (unit, integration, e2e, etc.)
-- To pause mid-run, just interrupt your assistant
+- Milestones need clear, actionable checkboxes (`- [ ]` pending, `- [x]` done)
+- The skill respects your project's existing test structure
+- Interrupt your assistant to pause mid-run
 
 ## Devplan format
 

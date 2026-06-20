@@ -103,13 +103,10 @@ Write a brief in chat, scaled to the request:
 
 Example (medium, with UI):
 
-> *Nuxt+FastAPI repo, current devplan `devplan/v0.3.md`, last
-> milestone M47 (auth refactor, completed). Commit convention:
-> `MNN: title`. Tests: pytest unit/integration + Playwright e2e. The
-> request likely touches `backend/app/api/billing.py` and
-> `frontend/pages/checkout.vue`. ⚠️ UI-surface: checkout page —
-> microcopy/i18n rules apply. No work in progress on those files
-> (clean git status).*
+> *Nuxt+FastAPI repo, current devplan `devplan/v0.3.md`, last milestone
+> M47 (auth refactor). Commit: `MNN: title`. Tests: pytest + Playwright
+> e2e. Likely touches `billing.py` and `checkout.vue`. ⚠️ UI-surface —
+> microcopy/i18n rules apply. Clean git.*
 
 This brief proves you understood the context before proposing the plan.
 
@@ -117,27 +114,12 @@ This brief proves you understood the context before proposing the plan.
 
 ### Phase 2: Clarification
 
-After discovery, identify ambiguities that affect the **structure** of
-the plan. Ask only when the answer changes:
-
-- **How many milestones** (e.g. "all in one or split auth and authz?")
-- **Which modules are involved** (e.g. "backend only or also frontend?")
-- **Which architectural approach** (e.g. "new endpoint or extend existing?")
+Ask only when the answer changes plan structure (milestone count,
+modules, architecture). Format as numbered A/B with recommendation.
+Skip if clear.
 
 **Do NOT ask** when the answer only affects implementation details
 (naming, test placement, variable choices) — the executor decides those.
-
-If structural ambiguities exist (max 3-5), present each as:
-
-```
-1. <question>
-   (A) <option> — <1-line reason>
-   (B) <option> — <1-line reason>
-   → recommend <letter>: <why>
-```
-
-**If the request is already clear, skip this phase entirely.** Do not
-ask questions for the sake of asking.
 
 ---
 
@@ -145,31 +127,17 @@ ask questions for the sake of asking.
 
 #### Essentiality checkpoint
 
-Before drafting the proposal, run every candidate milestone through
-this ordered ladder and stop at the first option that fully satisfies
-the requirement:
+Run the simplification ladder from EXECUTOR-CORE.md against each
+candidate milestone (delete → stdlib → native → existing-dep →
+smaller-custom). Delete or merge milestones that fail the checkpoint.
+Record the chosen lower-complexity strategy in the proposal rationale or
+**Approach**.
 
-1. **Does the work need to exist?** Delete speculative requirements,
-   branches, flags, or preparation-only work.
-2. **Does the standard library solve it?** Prefer the exact built-in
-   function or module over custom code or a new dependency.
-3. **Does the native platform solve it?** Prefer an existing browser,
-   runtime, framework, database, or operating-system feature.
-4. **Does an already-installed dependency solve it?** Reuse it before
-   adding another package or parallel implementation.
-5. **Is there a smaller custom approach?** Use the fewest files,
-   branches, abstractions, and moving parts that preserve the contract.
-
-Delete or merge milestones that fail the checkpoint. Record the chosen
-lower-complexity strategy in the proposal rationale or **Approach**, so
-the executor knows the simplification is intentional rather than an
-omission.
-
-The checkpoint advises and simplifies; it never silently removes an
-explicit requirement, correctness behavior, security control,
-trust-boundary validation, accessibility behavior, error handling that
-prevents data-loss, or a verified project convention. If the smaller
-option conflicts with one of these constraints, the constraint wins.
+The checkpoint simplifies; it never silently removes an explicit requirement,
+security control, trust-boundary validation, accessibility behavior,
+or error handling that prevents data-loss. It also never removes a
+verified project convention. If the smaller option conflicts with one
+of these constraints, the constraint wins.
 
 Choose the template based on how many milestones the plan needs.
 
@@ -313,59 +281,26 @@ elsewhere (gotchas, external links, decisions to revisit later).
 
 After writing, re-read the devplan file and run a self-check.
 
-#### Form checks
-- Every milestone has **Why**, **Approach**, **Tasks**, **Done when**
-- Every milestone's Tasks include at least one test task
-  (`Test: <level> — <what>`) specifying the test level and behavior
-  to cover
-- Milestones touching UI (flagged in discovery) have a **UX** field
-- Every task is actionable (not vague like "improve X" or "handle Y")
-- Dependencies are resolved in order (no forward references)
-- Numbering is continuous from the last existing MNN
-- The plan covers all requirements from the original request
-- No preparation-only milestones exist
-- Every milestone passed the essentiality checkpoint: no speculative
-  work, avoidable dependency, or single-use abstraction remains unless
-  its verified reason is recorded in **Approach** or **Notes**
-- **State-coverage check** — for plans touching UI (flagged by
-  discovery): does each user-facing milestone cover empty, error, and
-  loading states, or at minimum note which states are deferred? The
-  default "happy path only" plan is the #1 source of post-release UX
-  regressions.
+**Form checks:** every milestone has Why/Approach/Tasks/Done-when; Tasks
+include a test task (`Test: <level> — <what>`); UI milestones have a UX
+field; no forward deps; numbering continuous; no prep-only milestones;
+every milestone passed the EXECUTOR-CORE.md essentiality ladder.
 
-#### Codebase coherence checks
-- **Files exist:** every file cited in Approach or Tasks exists in the
-  repo, or is explicitly created by a prior milestone in the plan. If a
-  milestone says "modify billing.py" but that file does not exist and no
-  earlier milestone creates it, flag and correct.
-- **Module ordering:** if multiple milestones touch the same module or
-  file, verify the order makes sense (no milestone overwrites or
-  contradicts a later one's assumptions).
-- **Convention compliance:** if the project has documented conventions
-  (CLAUDE.md, .codex/instructions.md, README), verify the plan respects
-  them (e.g. business logic goes in services/ not api/, tests go in the
-  right directories).
-- **Assumptions hold:** every mechanism or behavior a milestone leans on
-  (not just files — "X auto-binds", "the runner re-arms", "the provider
-  supports Z") was actually confirmed in the code, not guessed.
+**Structure and coherence:** files cited in Approach/Tasks exist or are
+created by a prior milestone; module ordering makes sense (no overwrite
+contradictions); project conventions respected; every load-bearing
+assumption was confirmed in the code, not guessed.
 
-#### Final review (large / cross-cutting plans)
-For Large-scale plans (6+ milestones, or anything cross-cutting/multi-repo),
-run an explicit final review pass before considering the plan done:
-re-read the whole plan as one unit and re-confirm the **load-bearing
-assumptions still hold**, dependencies are ordered, and nothing is missing.
-This is the cheap step that catches the silent-corruption assumption error
-before a single milestone is executed. Small plans skip it; complex ones
-don't.
+**State coverage:** for UI plans, verify empty/error/loading states are
+covered or explicitly deferred.
 
-#### Resolution
-If any check fails, **fix it immediately** without asking — then re-run
-the check. If a coherence issue cannot be auto-corrected (e.g. unclear
-whether a file will exist), add a **Notes** warning to the affected
-milestone. Only report the final passing results to the user.
+For large plans (6+ milestones), re-read as one unit re-confirming
+load-bearing assumptions, ordering, and completeness.
 
-Close by suggesting the execution handoff: `/devplan TDD <path>`
-(or `IDD` for exploratory plans).
+**Resolution:** fix any failure immediately without asking. If a
+coherence issue cannot be auto-corrected, add a **Notes** warning to the
+affected milestone. Close by suggesting the execution handoff:
+`/devplan TDD <path>` (or `IDD` for exploratory plans).
 
 ---
 
@@ -381,20 +316,3 @@ Close by suggesting the execution handoff: `/devplan TDD <path>`
 - **Estimate time** — never predict how long anything takes
 - **Close or create version files** without explicit user request
   (suggesting is fine, deciding is not)
-
----
-
-## Synergy with TDD / IDD
-
-The milestone format produced by this playbook is designed to be
-directly executable by the `TDD` and `IDD` playbooks:
-
-- **Why** → TDD reads this to articulate the business requirement and
-  decide whether tests can be written upfront (TDD) or the milestone
-  is exploratory (IDD fallback)
-- **Approach** → both playbooks use this to orient implementation
-- **Tasks** → checkboxes that get marked `[x]` during execution
-- **Done when** → the exit condition that TDD checks after tests are
-  green
-
-No translation or reformatting is needed between design and execution.
