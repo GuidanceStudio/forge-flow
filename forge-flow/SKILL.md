@@ -1,30 +1,19 @@
 ---
 name: forge-flow
-description: Design a Markdown dev plan or execute one milestone by milestone with strong autonomy. Three modes — `design` (create/update the plan), `TDD` (test-first execution, recommended default), or `IDD` (implementation-first execution for exploratory work). Closed loop: plan → test → implement → simplify → verify → commit → push. Use when the user wants to plan work, or execute an existing devplan end-to-end without asking.
+description: Design a Markdown dev plan or execute it milestone by milestone with full autonomy. Three modes: `design` (plan), `TDD` (test-first, default), `IDD` (exploratory). Closed loop: plan → test → implement → simplify → verify → commit → push. Use when planning work or executing a devplan end-to-end.
 ---
 
 # Forge-flow — Router
 
 This skill has three modes:
 
-- **`design`** — create, extend, or refactor a dev plan. Investigates
-  the codebase, proposes milestones in chat, writes to file only after
-  approval.
-- **`TDD` (Test Driven Development) — RECOMMENDED DEFAULT.** Write
-  tests first based on the business requirement, run them red, implement
-  until green, simplify, docs, devplan, commit & push. Use for
-  milestones with clear, testable requirements.
-- **`IDD` (Implementation Driven Development).** Implement first, write
-  tests covering the finished code, simplify, docs, devplan, commit &
-  push. Use for exploratory work (spikes, prototypes, investigations).
+- **`design`** — create or update a dev plan. Proposes in chat, writes only after approval.
+- **`TDD` (RECOMMENDED DEFAULT)** — test-first: write tests, run red, implement green, simplify, commit.
+- **`IDD`** — implement-first for exploratory work: code then tests, simplify, commit.
 
 ## Scope
 
-This skill covers ALL code changes — features, refactors, AND bug fixes.
-Bug fixes are not exempt from the devplan workflow. A bug fix is a small
-plan (`design` mode detects this automatically via scale assessment).
-The rule is: investigate freely, but write to devplan and get approval
-before changing any code.
+All code changes — features, refactors, and bug fixes — go through this skill.
 
 ## Mode selection
 
@@ -38,14 +27,9 @@ Parse the first token of the args:
   `design` (create/update the plan) or execution — `TDD` (recommended)
   or `IDD` (exploratory)
 
-A token counts as a devplan path if any of these are true:
-
-- it contains `/`
-- it ends with `.md` or `.markdown` (case-insensitive)
-- its basename starts with `DEVPLAN` (case-insensitive)
-
-If the token is ambiguous, prefer asking once rather than silently
-routing to the wrong mode.
+A token counts as a devplan path if it contains `/`, ends with `.md` or
+`.markdown`, or has a basename starting with `DEVPLAN` (case-insensitive).
+If ambiguous, ask rather than routing silently.
 
 ## Language
 

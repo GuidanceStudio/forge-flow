@@ -3,22 +3,12 @@
 Unified skill for coding agents that handles the full forge-flow
 lifecycle: planning (`design`) and execution (`TDD` / `IDD`).
 
-One skill, three modes:
+One skill, three modes (see `forge-flow/SKILL.md` for full details):
+- **`design`** — plan milestones; **`TDD`** (default) — test-first; **`IDD`** — implement-first for exploration.
 
-- **`design`** — create, extend, or refactor a dev plan. Investigates the
-  codebase, proposes milestones in chat, and writes to file only after explicit
-  approval.
-- **`TDD`** (recommended default) — test-first execution. For each milestone:
-  state the requirement, write tests, run them red, implement until green,
-  simplify, docs, forge-flow, commit, and push when the repo/session allows it.
-- **`IDD`** — implementation-first execution. For each milestone: implement,
-  write tests covering the finished code, simplify, docs, forge-flow, commit, and
-  push when the repo/session allows it. Use for exploratory work.
-
-Across modes, the workflow is **design → implement → simplify**:
-design removes speculative work before it becomes a milestone, while
-TDD and IDD apply the same essentiality ladder after behavior is
-working and then re-run every applicable test.
+Across modes: **design → implement → simplify** — design removes
+speculative work before it becomes a milestone; execution applies the
+essentiality ladder after behavior is working, then re-runs every test.
 
 ## Install
 
@@ -29,28 +19,20 @@ interactive menu, or pass `--target`:
 git clone https://github.com/GuidanceStudio/forge-flow.git && cd forge-flow
 ./install.sh                      # interactive menu
 ./install.sh --target claude      # ~/.claude/skills/forge-flow/
-./install.sh --target codex        # ~/.codex/skills/forge-flow/
-./install.sh --target opencode     # ~/.config/opencode/skills/forge-flow/
-./install.sh --target gemini        # ~/.gemini/commands/forge-flow.toml (+ payload)
-./install.sh --target agents        # AGENTS.md pointer for Cursor/Windsurf/Copilot/Aider/Continue
-./install.sh --target all           # claude + codex + opencode
-./install.sh --target manual        # print the folder path; copy it yourself
+./install.sh --target opencode    # ~/.config/opencode/skills/forge-flow/
+./install.sh --target all         # claude + codex + opencode
 ```
 
-Remote one-liner (no clone; needs `git` + `curl`):
+Remote one-liner:
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/GuidanceStudio/forge-flow/main/install.sh) --target claude
 ```
 
 `claude`, `codex`, and `opencode` get the `forge-flow/` folder copied
-verbatim — it's the shared [agentskills.io](https://agentskills.io)
-`SKILL.md` standard, so one payload serves all three. `gemini` gets a
-generated TOML command; `agents` writes an [`AGENTS.md`](https://agents.md)
-pointer for the broad tier. Flags: `--force` (overwrite), `--check`
-(report `OK`/`DRIFT` vs source, per `--target`), `--agents-dir DIR`.
-Or skip the installer — `forge-flow/` is self-contained, copy it anywhere
-your tool reads skills.
+verbatim — one payload serves all three. Flags: `--force` (overwrite),
+`--check` (report `OK`/`DRIFT` vs source). Or skip the installer —
+`forge-flow/` is self-contained, copy it anywhere your tool reads skills.
 
 ## Usage
 
@@ -105,9 +87,10 @@ unambiguous, but they are not the preferred format for reliable TDD/IDD runs.
 - **[Kent Beck](https://en.wikipedia.org/wiki/Kent_Beck)** — TDD (red-green-refactor
   cycle, tests first, business requirement articulation), YAGNI principle.
 - **[DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)**
-  (MIT) — essentiality ladder (`delete:` / `stdlib:` / `native:` / `yagni:` /
-  `shrink:`), `ponytail:` structured comments for intentional shortcuts, debt
-  register, simplification step order, comment-weight scan.
+  (MIT) — Conceptual prior art for the essentiality ladder (`delete:` /
+  `stdlib:` / `native:` / `yagni:` / `shrink:`), `ponytail:` structured
+  comments for intentional shortcuts, debt register, simplification step
+  order, comment-weight scan.
 - **[Jez Humble & Dave Farley — Continuous Delivery](https://continuousdelivery.com/)** —
   shippable milestones, commit-and-push per increment, never-break-main discipline.
 
@@ -130,8 +113,7 @@ unambiguous, but they are not the preferred format for reliable TDD/IDD runs.
 - **Agile / Scrum** — definition-of-done (Done-when verification), iterative
   delivery, no-preparation-milestones rule.
 
-Runtime dependency on any of the above: none. Forge-flow imports the concepts,
-not the code.
+Runtime dependency: none. Forge-flow imports the concepts, not the code.
 
 MIT licensed.
 

@@ -985,3 +985,128 @@ Debt registered: N items (see .code-audit/debt.tsv)
 **Done when:** TDD and IDD both register intentional debt to
 `.code-audit/debt.tsv`, the completion recap includes the debt count,
 and CI verifies the contract.
+
+---
+
+## Follow-up — Cross-skill coherence fixes (2026-06-20)
+
+Issues found during coherence audit across forge-flow, uxui-audit, and
+tech-audit. Fixes belong here.
+
+### M24: Fix debt.tsv column order mismatch between TDD.md and IDD.md
+
+**Why:** The two playbooks write to the same `.code-audit/debt.tsv` file
+but use different column orders — TDD.md:135 has `dim⇥location⇥title`,
+while IDD.md:119 has `dim⇥title⇥location`. Rows produced by the two modes
+would have misaligned columns, making the file unreadable.
+
+**Approach:** Standardize on TDD.md's order (`dim⇥location⇥title` —
+location before title), which matches the M23 spec. Fix IDD.md and add a
+lockstep assertion to `tests/test_content.sh` so the mismatch can't
+recur.
+
+**Tasks:**
+- [ ] Fix column order in `forge-flow/IDD.md` debt-registration step to match `dim⇥location⇥title⇥ceiling⇥revisit_by`
+- [ ] Add lockstep assertion to `tests/test_content.sh`: both playbooks specify the same TSV column order
+- [ ] Commit & push
+
+**Done when:** Both TDD.md and IDD.md specify `dim⇥location⇥title⇥ceiling⇥revisit_by` and tests verify it.
+
+---
+
+## v0.4 — Token essentiality pass
+
+Cross-skill audit found ~30% of the skill payload is wasted on duplication
+and verbose prose. All three skills (forge-flow, uxui-audit, tech-audit) are
+one family — this pass applies D01-style essentiality to the skill instructions
+themselves. Same concepts, same behavior, fewer tokens.
+
+Recommended order: M25 → M26 → M27 → M28.
+
+### M25: Extract EXECUTOR-CORE.md — deduplicate TDD.md + IDD.md
+
+**Why:** TDD.md and IDD.md are ~70% identical (~200 shared lines). Preflight,
+simplify ladder, ponytail, debt registration, test policy, implementation
+standards, completion recap, and rules are copy-pasted. Only the execution
+loop (test-before vs test-after, 4 numbered steps) is genuinely different.
+Every edit to a shared section must be done twice.
+
+**Approach:** Create `forge-flow/EXECUTOR-CORE.md` containing: operating mode,
+preflight, simplify ladder, ponytail convention, debt registration, test policy,
+implementation standards (incl. microcopy rule), completion recap template, rules.
+TDD.md and IDD.md keep only their execution loop + a "Read EXECUTOR-CORE.md"
+directive at the top. README updated to document the new file.
+
+**Tasks:**
+- [ ] Create `forge-flow/EXECUTOR-CORE.md` with all shared sections
+- [ ] Strip shared content from `forge-flow/TDD.md`, add load directive
+- [ ] Strip shared content from `forge-flow/IDD.md`, add load directive
+- [ ] Update `tests/test_content.sh` lockstep checks to verify new structure
+- [ ] Update `forge-flow/README.md`
+- [ ] Commit & push
+
+**Done when:** TDD.md and IDD.md are ~90 lines each; EXECUTOR-CORE.md contains
+all shared behavior once; both playbooks produce identical results.
+
+### M26: Unify simplify/essentiality ladder across DESIGN.md, TDD.md, IDD.md
+
+**Why:** The same "delete → stdlib → native → existing dep → custom" logic
+appears in DESIGN.md (essentiality checkpoint, lines 149-172), TDD.md (simplify
+step, lines 90-110), and IDD.md (simplify step, lines 75-99). After M25, the
+executor version lives in EXECUTOR-CORE.md. DESIGN.md's version differs slightly
+— it's a checkpoint during planning, not a post-implementation pass.
+
+**Approach:** Make EXECUTOR-CORE.md the canonical ladder source. DESIGN.md
+references it: "Run the simplification ladder from EXECUTOR-CORE.md against
+each candidate milestone." Keep DESIGN.md's non-negotiable boundary list
+(explicit requirements, security, a11y) since that's design-mode-specific.
+
+**Tasks:**
+- [ ] In DESIGN.md, replace the essentiality checkpoint prose with a reference to EXECUTOR-CORE.md
+- [ ] Preserve DESIGN.md's boundary list (explicit-requirements, security, a11y, data-loss)
+- [ ] Verify `tests/test_content.sh` still passes
+- [ ] Commit & push
+
+**Done when:** One canonical ladder, cited from all three playbooks.
+
+### M27: Compress DESIGN.md + SKILL.md prose
+
+**Why:** DESIGN.md has verbose sections: "Synergy with TDD/IDD" (13 lines, self-
+evident), Validation section (43 lines, many checks implicit in executor),
+discovery brief example (9 lines → 4). SKILL.md mode descriptions restate what
+the playbooks already say. Scope section duplicates base CLAUDE.md rule.
+
+**Approach:**
+- Delete DESIGN.md "Synergy with TDD/IDD" section (lines 387-399)
+- Compress Validation section to ~15 lines (most impactful checks only)
+- Compress discovery brief example from 9 lines to 4
+- SKILL.md: mode descriptions from 7 lines to 3; scope from 5 lines to 1
+- Compress SKILL.md devplan path detection from 8 lines to 3
+- Trim SKILL.md frontmatter description
+
+**Tasks:**
+- [ ] Delete DESIGN.md § Synergy with TDD/IDD
+- [ ] Compress DESIGN.md § Validation
+- [ ] Compress discovery brief example
+- [ ] Compress SKILL.md mode descriptions + scope + path detection
+- [ ] Update `tests/test_content.sh` to match compressed form
+- [ ] Commit & push
+
+**Done when:** DESIGN.md is ~330 lines (from ~400), SKILL.md is ~55 lines (from ~67).
+
+### M28: Trim READMEs
+
+**Why:** Top-level README and variant README contain redundant install
+instructions and duplicated mode descriptions.
+
+**Approach:** Top-level README: compress install section, merge duplicate
+descriptions. Variant README: remove content that duplicates agentskills.io
+standard info. Target ~20% reduction.
+
+**Tasks:**
+- [ ] Compress top-level `README.md`
+- [ ] Compress `forge-flow/README.md`
+- [ ] Verify all links resolve
+- [ ] Commit & push
+
+**Done when:** READMEs convey same information with fewer words.
