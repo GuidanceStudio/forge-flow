@@ -100,12 +100,38 @@ unambiguous, but they are not the preferred format for reliable TDD/IDD runs.
 
 ## Inspiration
 
-- [`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail) (MIT) — essentiality ladder and structured debt tracking. Concepts imported: ordered simplification steps, `delete:`/`stdlib:`/`native:`/`yagni:`/`shrink:` taxonomy, `ponytail:` structured comments, debt register.
-- [mastepanoski/nielsen-heuristics-audit](https://github.com/mastepanoski/claude-skills) — 0–4 severity rubric and Nielsen's 10 heuristics applied to finding triage.
-- [agentskills.io](https://agentskills.io) — cross-assistant `SKILL.md` standard.
-- TDD methodology (Kent Beck).
+### Core methodology
 
-Runtime dependency: none. Forge-flow imports the concepts, not the code.
+- **[Kent Beck](https://en.wikipedia.org/wiki/Kent_Beck)** — TDD (red-green-refactor
+  cycle, tests first, business requirement articulation), YAGNI principle.
+- **[DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)**
+  (MIT) — essentiality ladder (`delete:` / `stdlib:` / `native:` / `yagni:` /
+  `shrink:`), `ponytail:` structured comments for intentional shortcuts, debt
+  register, simplification step order, comment-weight scan.
+- **[Jez Humble & Dave Farley — Continuous Delivery](https://continuousdelivery.com/)** —
+  shippable milestones, commit-and-push per increment, never-break-main discipline.
+
+### Severity & triage
+
+- **[mastepanoski/nielsen-heuristics-audit](https://github.com/mastepanoski/claude-skills)** —
+  0–4 severity rubric and finding triage discipline applied to milestone
+  validation.
+
+### Agent-skill patterns
+
+- **[agentskills.io](https://agentskills.io)** / **[Anthropic engineering skills](https://github.com/anthropics/knowledge-work-plugins)** —
+  `SKILL.md` standard, cross-assistant portability, progressive disclosure
+  (router + playbooks), discovery-before-proposal, never-write-without-approval.
+
+### Project conventions
+
+- **[Conventional Commits](https://www.conventionalcommits.org/)** — commit-message
+  convention detection, `MNN: title` prefix pattern.
+- **Agile / Scrum** — definition-of-done (Done-when verification), iterative
+  delivery, no-preparation-milestones rule.
+
+Runtime dependency on any of the above: none. Forge-flow imports the concepts,
+not the code.
 
 MIT licensed.
 
