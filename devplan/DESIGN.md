@@ -68,20 +68,26 @@ Estimate the likely number of milestones from the request:
 2. **Surface area** — grep/glob for files likely touched by the
    request. Use terms from the user's description.
    *(always needed)*
-3. **Project docs** — read the project's instruction files
+3. **UI-surface flag** — if the surface-area scan reveals files that
+   render user-facing output (page components, templates, views,
+   route handlers that return HTML/JSON to a UI, form validation
+   messages, error pages, email templates), note it. The plan and
+   executor will need to apply i18n consistency, microcopy quality,
+   and no-jargon-leak rules. *(always, 1 line)*
+4. **Project docs** — read the project's instruction files
    (`CLAUDE.md` — root and global — for Claude Code; `AGENTS.md` /
    `.codex/instructions.md` for Codex), `README.md`, and any docs
    relevant to the request (e.g. `docs/architecture.md`,
    `docs/data-model.md`). *(medium+ scale)*
-4. **Git context** — `git log --oneline -20`, `git status`, current
+5. **Git context** — `git log --oneline -20`, `git status`, current
    branch. *(medium+ scale)*
-5. **Test inventory** — scan for test directories and levels (unit,
+6. **Test inventory** — scan for test directories and levels (unit,
    integration, e2e, etc.). Note the runner and structure.
    *(medium+ scale, or if the request is test-related)*
-6. **Stack detection** — identify the tech stack from manifest files
+7. **Stack detection** — identify the tech stack from manifest files
    (package.json, pyproject.toml, Cargo.toml, etc.).
    *(large scale, or if unfamiliar with the project)*
-7. **Workspace detection** — if the working directory contains multiple
+8. **Workspace detection** — if the working directory contains multiple
    git checkouts (sibling-repo workspace), enumerate them, confirm with
    the user which repos are in scope, and locate where the devplan
    lives (it may sit in one repo while planning work across several).
@@ -95,13 +101,14 @@ Write a brief in chat, scaled to the request:
 - **Large:** 10-15 lines — full context including stack, architecture,
   and git state.
 
-Example (medium):
+Example (medium, with UI):
 
 > *Nuxt+FastAPI repo, current devplan `devplan/v0.3.md`, last
 > milestone M47 (auth refactor, completed). Commit convention:
 > `MNN: title`. Tests: pytest unit/integration + Playwright e2e. The
 > request likely touches `backend/app/api/billing.py` and
-> `frontend/pages/checkout.vue`. No work in progress on those files
+> `frontend/pages/checkout.vue`. ⚠️ UI-surface: checkout page —
+> microcopy/i18n rules apply. No work in progress on those files
 > (clean git status).*
 
 This brief proves you understood the context before proposing the plan.
@@ -258,6 +265,12 @@ What changes for whom.
 **Approach:** 2-4 sentences on the technical strategy. Which files or
 modules are touched. Key design decisions.
 
+**UX:** (ONLY when the milestone changes user-facing text, layout,
+navigation, error messages, or empty states) 1 line: what the user
+sees change, in which language, and what the copy should say/avoid.
+Example: `UX: error message now "Email o password non validi" (IT),
+no class names, actionable tone.`
+
 **Tasks:**
 - [ ] Task 1 (verb + object, atomic)
 - [ ] Task 2
@@ -302,6 +315,7 @@ After writing, re-read the devplan file and run a self-check.
 
 #### Form checks
 - Every milestone has **Why**, **Approach**, **Tasks**, **Done when**
+- Milestones touching UI (flagged in discovery) have a **UX** field
 - Every task is actionable (not vague like "improve X" or "handle Y")
 - Dependencies are resolved in order (no forward references)
 - Numbering is continuous from the last existing MNN

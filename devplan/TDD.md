@@ -97,6 +97,13 @@ Tests that cannot be run locally are exempt from the red check.
   5. **Inline unearned single-use abstractions** until a second real
      implementation or caller exists.
   6. **Reduce files and branches** when the same behavior remains clear.
+  7. **Compress or delete comments that don't carry their weight.**
+     Delete comments that restate the code (the code is the "what").
+     Compress verbose docstrings that paraphrase the function
+     signature. Keep only: why (intent, trade-off, context the code
+     can't express), gotchas (non-obvious behavior), and public-API
+     contracts. Never remove ponytail: comments — those are
+     intentional debt, not dead weight.
 - Structure only; no behavior changes. Devplan's existing test policy
   wins: keep all applicable tests and established test levels rather
   than replacing them with demos or a smaller test count.
@@ -105,6 +112,34 @@ Tests that cannot be run locally are exempt from the red check.
   requirements, project conventions, or the milestone's **Done when**
   contract.
 - Re-run all applicable tests: they must stay green.
+
+**ponytail: comment convention.** When a simplification leaves a known
+ceiling — an O(n) scan fine at current scale, a global lock fine at
+current concurrency, a regex fine for the current input format — leave
+a structured comment above the simplified code:
+
+```
+# ponytail: <what was simplified and why>.
+# Ceiling: <measurable threshold>. Upgrade: <what to do when exceeded>.
+```
+
+The ceiling must be measurable (record count, request rate, input
+complexity) so an automated audit can compare against current state.
+Never use ponytail: to excuse bugs or missing validation — it marks
+intentional trade-offs only.
+
+**Register intentional debt.** When the simplify pass produced a
+ponytail: comment, append a row to `.code-audit/debt.tsv` in the
+project root. Schema: `dim⇥location⇥title⇥ceiling⇥revisit_by`.
+
+- `dim`: D01 (essentiality), D10 (performance), or D14 (correctness).
+- `location`: `file:line`.
+- `title`: one-line summary of the simplification.
+- `ceiling`: the measurable threshold from the ponytail: comment.
+- `revisit_by`: optional ISO date; omit for permanent shortcuts.
+
+If the file doesn't exist, create it with the header row. Skip if the
+same location+title pair already exists (idempotent).
 
 ### 6. 📝 Update documentation
 
@@ -119,6 +154,11 @@ Tests that cannot be run locally are exempt from the red check.
 - If the condition cannot be verified locally (needs credentials,
   external services), record precisely what remains to be verified
   manually.
+- **UI sanity check:** if the milestone has a `UX:` field, render the
+  affected page(s) and verify: titles/labels/buttons are in the
+  expected language, no class-name or internal-ID leaks in visible text,
+  error/empty states use actionable copy. This catches the most common
+  UX regressions without a full audit.
 
 ### 8. ✅ Update the devplan
 
@@ -188,6 +228,13 @@ confirm the runnable ones fail.
 - Keep changes narrow, composable, and reversible.
 - Preserve existing user-facing behavior unless the milestone
   explicitly changes it.
+- **Microcopy rule:** when writing user-facing strings (labels, error
+  messages, button text, empty states, placeholders), follow the
+  project's language conventions (detect from existing UI or
+  CLAUDE.md/AGENTS.md). Use the project's language consistently; never
+  leak class names, file paths, ticket codes, or internal IDs into
+  visible text. Error messages say what happened and what to do.
+  Empty states guide the next action.
 
 ---
 
@@ -209,6 +256,7 @@ Documentation: updated ✅
 [list of milestones with one-line summary each]
 [tests written but not run locally, and why]
 [any intentional TODOs, tech debt, or residual risks left behind]
+[debt registered: N items → .code-audit/debt.tsv]
 [follow-up work already added back into the devplan]
 ```
 

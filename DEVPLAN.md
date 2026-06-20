@@ -855,3 +855,133 @@ before TDD/IDD defined the ladder, then passed after both playbooks
 received the same ordered contract. Verification covers ladder order,
 quality boundaries, forbidden one-test/persistent-mode/comment
 behavior, both READMEs, and the unchanged installer suite (24 checks).
+
+---
+
+## Follow-up — Comment essentiality, ponytail: convention, debt tracking
+
+Complete the Ponytail integration with the three remaining concepts
+identified in the 2026-06-20 gap analysis: comments that carry their
+weight, the `ponytail:` structured-comment convention for intentional
+simplifications, and a debt-tracking file that bridges design-time
+decisions with audit-time verification.
+
+Recommended order: M21 → M22 → M23.
+
+### M21: Comment essentiality — add a comment-weight step to the simplify ladder
+
+**Why:** The simplify ladder (TDD step 5, IDD step 4) covers code,
+dependencies, files, and abstractions, but not comments. A comment that
+restates the code line-by-line is technical debt just like a single-use
+abstraction: it occupies cognitive space, must be maintained, and lies
+when the code changes and the comment doesn't. The right comment says
+**why**, not **what**. The ladder must recognize and reduce dead-weight
+comments during simplification.
+
+**Approach:** Add a seventh rung to the simplify ladder in both
+`devplan/TDD.md` and `devplan/IDD.md`:
+
+```
+7. **Compress or delete comments that don't carry their weight.**
+   - Delete comments that restate the code (the code is the "what").
+   - Compress verbose docstrings that paraphrase the function signature.
+   - Keep only: why (intent, trade-off, context the code can't express),
+     gotchas (non-obvious behavior), and public-API contracts.
+```
+
+This is the last rung — it runs only when there is material to clean.
+It never removes ponytail: comments (those are intentional debt, not
+dead weight) or public API documentation.
+
+**Tasks:**
+- [ ] Add the seventh rung to the simplify ladder in `devplan/TDD.md`
+- [ ] Add the same rung to `devplan/IDD.md`
+- [ ] Extend `tests/test_content.sh` to assert the comment-weight rung exists in both playbooks
+- [ ] Verify lockstep: TDD.md and IDD.md simplify sections match
+- [ ] Commit & push
+
+**Done when:** both TDD.md and IDD.md instruct the simplify pass to
+compress or delete comments that restate the code, and CI verifies the
+rung is present.
+
+### M22: `ponytail:` comment convention — document intentional simplifications in code
+
+**Why:** Today when TDD/IDD makes a simplification with a known ceiling
+(e.g. O(n) scan instead of hash map because today there are 50 elements),
+the reasoning lives only in the session transcript. Six months later
+nobody knows that the O(n) is intentional, what the ceiling is, or when
+to upgrade. A structured `ponytail:` comment — documented as an explicit
+instruction in the playbooks — turns a silent trade-off into a machine-
+readable breadcrumb that both humans and D01 audits can act on.
+
+**Approach:** Add a paragraph after the simplify ladder in both
+`devplan/TDD.md` and `devplan/IDD.md`:
+
+```
+**ponytail: comment convention.** When a simplification leaves a known
+ceiling — an O(n) scan fine at current scale, a global lock fine at
+current concurrency, a regex fine for the current input format — leave
+a structured comment above the simplified code:
+
+  # ponytail: <what was simplified and why>.
+  # Ceiling: <measurable threshold>. Upgrade: <what to do when exceeded>.
+
+The ceiling must be measurable (record count, request rate, input
+complexity) so an automated audit can compare against current state.
+Never use ponytail: to excuse bugs or missing validation — it marks
+intentional trade-offs only.
+```
+
+**Tasks:**
+- [ ] Add the ponytail: convention paragraph to `devplan/TDD.md` after the simplify ladder
+- [ ] Add the same paragraph to `devplan/IDD.md`
+- [ ] Extend `tests/test_content.sh` to assert the convention is documented in both playbooks
+- [ ] Verify lockstep: both playbooks describe the same convention
+- [ ] Commit & push
+
+**Done when:** both TDD.md and IDD.md document the `ponytail:` comment
+structure with measurable ceiling + upgrade path, and CI verifies it.
+
+### M23: Debt tracking — `.code-audit/debt.tsv` populated during simplification
+
+**Why:** The `ponytail:` comments document individual simplifications,
+but they provide no aggregate visibility. A debt-tracking file populated
+during development gives a flat, filterable list with revisit dates that
+the audit can cross-reference automatically. Without this file, debt is
+visible only by grepping the codebase — no dashboard, no trend, no
+automated expiry.
+
+**Approach:**
+
+1. Add a step after simplify in `devplan/TDD.md` and `devplan/IDD.md`:
+
+```
+**Register intentional debt.** When the simplify pass produced a
+ponytail: comment, append a row to `.code-audit/debt.tsv` in the
+project root. Schema: `dim⇥location⇥title⇥ceiling⇥revisit_by`.
+- dim: D01 (essentiality), D10 (performance), or D14 (correctness).
+- location: file:line.
+- title: one-line summary of the simplification.
+- ceiling: the measurable threshold from the ponytail: comment.
+- revisit_by: optional ISO date. Omit for permanent shortcuts.
+If the file doesn't exist, create it with the header row. Skip if the
+same location+title pair already exists (idempotent).
+```
+
+2. Add to the completion recap in both playbooks:
+
+```
+Debt registered: N items (see .code-audit/debt.tsv)
+```
+
+**Tasks:**
+- [ ] Add the debt-registration step to `devplan/TDD.md` (after simplify, before docs)
+- [ ] Add the same step to `devplan/IDD.md`
+- [ ] Add the debt-count line to both completion recaps
+- [ ] Extend `tests/test_content.sh` to assert the registration step and recap line exist
+- [ ] Verify lockstep: both playbooks match
+- [ ] Commit & push
+
+**Done when:** TDD and IDD both register intentional debt to
+`.code-audit/debt.tsv`, the completion recap includes the debt count,
+and CI verifies the contract.
