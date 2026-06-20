@@ -98,13 +98,16 @@ relevant tests are green.
 Simpler Markdown plans can still be executed when milestone intent is
 unambiguous, but they are not the preferred format for reliable TDD/IDD runs.
 
-## Ponytail integration
+## Inspiration
 
-[`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail)
-is Conceptual prior art for forge-flow's essentiality ladder (MIT).
-Runtime dependency: none. Devplan imports the decision model, not the
-plugin, hooks, persistent modes, duplicate review skills, or its
-minimal-test policy.
+- [`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail) (MIT) — essentiality ladder and structured decision model. Concepts imported: ordered simplification steps, `delete:`/`stdlib:`/`native:`/`yagni:`/`shrink:` taxonomy, `ponytail:` structured comments for intentional shortcuts.
+- [agentskills.io](https://agentskills.io) — cross-assistant `SKILL.md` standard.
+- TDD (Kent Beck) and IDD methodology.
+
+Runtime dependency on Ponytail: none. Forge-flow imports the decision model,
+not the plugin, hooks, persistent modes, or duplicate skills.
+
+MIT licensed.
 
 ## Project layout
 
