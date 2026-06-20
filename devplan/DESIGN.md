@@ -324,6 +324,11 @@ After writing, re-read the devplan file and run a self-check.
 - Every milestone passed the essentiality checkpoint: no speculative
   work, avoidable dependency, or single-use abstraction remains unless
   its verified reason is recorded in **Approach** or **Notes**
+- **State-coverage check** — for plans touching UI (flagged by
+  discovery): does each user-facing milestone cover empty, error, and
+  loading states, or at minimum note which states are deferred? The
+  default "happy path only" plan is the #1 source of post-release UX
+  regressions.
 
 #### Codebase coherence checks
 - **Files exist:** every file cited in Approach or Tasks exists in the
