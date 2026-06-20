@@ -13,7 +13,7 @@ fake_home() { mktemp -d; }
 cleanup() { rm -rf "$1"; }
 
 create_snapshot_repo() {
-    # A throwaway git repo whose root contains the flat devplan/ payload,
+    # A throwaway git repo whose root contains the flat forge-flow/ payload,
     # used as a local clone source for remote-mode tests.
     local root repo
     root="$(mktemp -d)"; repo="$root/repo"
@@ -44,9 +44,9 @@ echo "=== Verbatim targets (claude/codex/opencode) ==="
 for t in claude codex opencode; do
     H="$(fake_home)"
     case "$t" in
-        claude)   D="$H/.claude/skills/devplan" ;;
-        codex)    D="$H/.codex/skills/devplan" ;;
-        opencode) D="$H/.config/opencode/skills/devplan" ;;
+        claude)   D="$H/.claude/skills/forge-flow" ;;
+        codex)    D="$H/.codex/skills/forge-flow" ;;
+        opencode) D="$H/.config/opencode/skills/forge-flow" ;;
     esac
     echo "--- $t ---"
     HOME="$H" bash "$INSTALL_SH" --force --target "$t" >/dev/null
@@ -61,13 +61,13 @@ done
 echo "=== Default target (non-interactive → claude) ==="
 H="$(fake_home)"
 HOME="$H" bash "$INSTALL_SH" --force >/dev/null
-assert_dir "$H/.claude/skills/devplan" "default installs claude"
+assert_dir "$H/.claude/skills/forge-flow" "default installs claude"
 cleanup "$H"
 
 echo "=== Back-compat bare target word ==="
 H="$(fake_home)"
 HOME="$H" bash "$INSTALL_SH" --force claude >/dev/null
-assert_dir "$H/.claude/skills/devplan" "bare 'claude' word still works"
+assert_dir "$H/.claude/skills/forge-flow" "bare 'claude' word still works"
 cleanup "$H"
 
 echo "=== --check on missing install ==="
@@ -78,9 +78,9 @@ cleanup "$H"
 echo "=== Gemini TOML wrapper ==="
 H="$(fake_home)"
 HOME="$H" bash "$INSTALL_SH" --force --target gemini >/dev/null
-assert_file "$H/.gemini/commands/devplan.toml" "gemini: toml written"
-assert_file "$H/.config/devplan/SKILL.md" "gemini: payload in neutral home"
-if grep -q 'prompt' "$H/.gemini/commands/devplan.toml" && grep -q 'SKILL.md' "$H/.gemini/commands/devplan.toml"; then
+assert_file "$H/.gemini/commands/forge-flow.toml" "gemini: toml written"
+assert_file "$H/.config/forge-flow/SKILL.md" "gemini: payload in neutral home"
+if grep -q 'prompt' "$H/.gemini/commands/forge-flow.toml" && grep -q 'SKILL.md' "$H/.gemini/commands/forge-flow.toml"; then
     echo "  PASS: gemini: toml references the router"; PASS=$((PASS+1))
 else echo "  FAIL: gemini: toml missing prompt/SKILL.md"; FAIL=$((FAIL+1)); fi
 HOME="$H" assert_run 0 "OK" "gemini: --check clean" -- --check --target gemini
@@ -91,14 +91,14 @@ H="$(fake_home)"; PROJ="$(mktemp -d)"
 HOME="$H" bash "$INSTALL_SH" --force --target agents --agents-dir "$PROJ" >/dev/null
 assert_file "$PROJ/AGENTS.md" "agents: AGENTS.md written"
 HOME="$H" bash "$INSTALL_SH" --force --target agents --agents-dir "$PROJ" >/dev/null
-n="$(grep -cF 'devplan:start' "$PROJ/AGENTS.md")"
+n="$(grep -cF 'forge-flow:start' "$PROJ/AGENTS.md")"
 if [ "$n" -eq 1 ]; then echo "  PASS: agents: pointer not duplicated"; PASS=$((PASS+1));
 else echo "  FAIL: agents: pointer duplicated ($n)"; FAIL=$((FAIL+1)); fi
 cleanup "$H"; cleanup "$PROJ"
 
 echo "=== Manual (prints path, writes nothing) ==="
 H="$(fake_home)"
-HOME="$H" assert_run 0 "devplan" "manual prints payload path" -- --target manual
+HOME="$H" assert_run 0 "forge-flow" "manual prints payload path" -- --target manual
 assert_nofile "$H/.claude" "manual wrote nothing under HOME"
 cleanup "$H"
 
@@ -107,7 +107,7 @@ SNAP="$(create_snapshot_repo)"
 H="$(fake_home)"; ISO="$(mktemp -d)"
 cp "$INSTALL_SH" "$ISO/install.sh"
 HOME="$H" DEVPLAN_REPO_URL="$SNAP/repo" bash "$ISO/install.sh" --force --target claude >/dev/null
-assert_file "$H/.claude/skills/devplan/SKILL.md" "remote: SKILL.md installed via clone"
+assert_file "$H/.claude/skills/forge-flow/SKILL.md" "remote: SKILL.md installed via clone"
 cleanup "$H"; cleanup "$ISO"; cleanup "$SNAP"
 
 echo ""
