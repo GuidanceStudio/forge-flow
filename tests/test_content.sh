@@ -8,6 +8,7 @@ IDD="$REPO_ROOT/forge-flow/IDD.md"
 EXECUTOR_CORE="$REPO_ROOT/forge-flow/EXECUTOR-CORE.md"
 SCAFFOLD="$REPO_ROOT/forge-flow/SCAFFOLD.md"
 SKILL="$REPO_ROOT/forge-flow/SKILL.md"
+OPENAI_YAML="$REPO_ROOT/forge-flow/agents/openai.yaml"
 ROOT_README="$REPO_ROOT/README.md"
 SKILL_README="$REPO_ROOT/forge-flow/README.md"
 WORKFLOW="$REPO_ROOT/.github/workflows/tests.yml"
@@ -257,6 +258,17 @@ contains "$SCAFFOLD" "wire the idiom to call it"
 contains "$EXECUTOR_CORE" "Verify the devplan shipped in the commit"
 contains "$EXECUTOR_CORE" "git show --stat HEAD"
 contains "$EXECUTOR_CORE" "## MNN: <title> ✅"
+
+# ---- M37: documentation surfaces aligned to skill name + scaffold route ----
+# openai.yaml advertises forge-flow + scaffold, not the pre-rename skill name
+contains "$OPENAI_YAML" "forge-flow"
+contains "$OPENAI_YAML" "scaffold"
+if grep -qF '$devplan' "$OPENAI_YAML"; then fail "openai.yaml still uses old \$devplan invocation"; fi
+if grep -qF 'Devplan' "$OPENAI_YAML"; then fail "openai.yaml still uses old Devplan display name"; fi
+# SKILL.md frontmatter description advertises the scaffold route
+if ! head -6 "$SKILL" | grep -qi 'scaffold'; then fail "SKILL.md frontmatter omits scaffold"; fi
+# payload README no longer titled with the pre-rename skill name
+if grep -qF '# devplan — skill payload' "$SKILL_README"; then fail "payload README still titled devplan"; fi
 
 # ---- M33: bookkeeping verification gate ----
 # Marking a milestone done is a verified, committed gate, not advisory.

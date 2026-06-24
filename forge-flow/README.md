@@ -1,6 +1,6 @@
-# devplan — skill payload
+# forge-flow — skill payload
 
-An assistant-neutral skill that handles the full devplan lifecycle:
+An assistant-neutral skill that handles the full forge-flow lifecycle:
 planning (`design`) and execution (`TDD` / `IDD`). One flat folder,
 installable into any coding assistant that reads skills.
 
@@ -51,7 +51,7 @@ follows a single self-contained set of instructions per run.
 
 [`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail) is
 Conceptual prior art for the essentiality ladder (MIT). Runtime dependency:
-none. Devplan imports concepts, not code; its scope, safety, test, and
+none. forge-flow imports concepts, not code; its scope, safety, test, and
 completion rules remain authoritative.
 
 ## Usage

@@ -125,7 +125,7 @@ forge-flow/
 ├── README.md          ← you are here
 ├── install.sh         ← multi-assistant installer
 ├── DEVPLAN.md         ← this project's own dev plan
-├── tests/             ← installer test suite (bash tests/test_install.sh)
+├── tests/             ← test suites (test_install.sh + test_content.sh)
 └── forge-flow/           ← the flat, assistant-neutral skill payload
     ├── SKILL.md       ← router (design / TDD / IDD / scaffold)
     ├── DESIGN.md      ← planning playbook

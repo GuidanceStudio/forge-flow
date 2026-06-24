@@ -1,4 +1,4 @@
 interface:
-  display_name: "Devplan"
-  short_description: "Design or execute a devplan (design / TDD / IDD)"
-  default_prompt: "Use $devplan to manage the current devplan: in design mode, investigate and propose milestones before writing; in TDD/IDD modes, execute milestones with tests, docs, and commits while respecting repo-local instructions and session limits."
+  display_name: "forge-flow"
+  short_description: "Plan or execute a dev plan (design / TDD / IDD), or scaffold a project's operational spine"
+  default_prompt: "Use $forge-flow to manage the current dev plan: in design mode, investigate and propose milestones before writing; in TDD/IDD modes, execute milestones with tests, docs, and commits while respecting repo-local instructions and session limits. The scaffold route mounts a one-command bring-up and tiered test runner for runnable apps."
