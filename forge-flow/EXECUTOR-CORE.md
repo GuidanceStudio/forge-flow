@@ -147,6 +147,13 @@ same location+title pair already exists (idempotent).
 
 - Mark the milestone as done:
   `- [x] Milestone X: Name ✅`
+- **Verify the bookkeeping landed.** Re-read the milestone block and
+  confirm every task is checked (`- [x]`) and the heading carries its
+  done marker. The rule:
+  no unchecked task may remain for the milestone being closed.
+  If a box is still unchecked, fix it now — the plan must report what is
+  actually done. This is a gate, not advice: a green milestone with
+  `- [ ]` tasks is an incomplete milestone.
 - Note important deviations, decisions made, and how "Done when" was
   verified.
 - Keep the devplan accurate enough that another agent could resume
@@ -160,6 +167,10 @@ same location+title pair already exists (idempotent).
 
 - Stage ONLY the files touched by this milestone (explicit paths —
   never `git add -A` / `git add .`).
+- **Stage the devplan with the milestone.** The checkbox and heading
+  updates from the previous step are part of this milestone's changes —
+  include the devplan file in the same commit, never as a later catch-up
+  commit. The work and the record that it is done ship together.
 - Commit following the repo's convention detected in preflight
   (default `MNN: <title>`).
 - Push to the active branch when network/auth/repo policy allows it.
@@ -232,7 +243,12 @@ When all milestones are done:
 
 1. Run the broadest local test set that is practical (all levels you
    can run locally) to verify everything works together.
-2. Show the final recap:
+2. **Sweep the devplan for unfinished bookkeeping:** every milestone
+   closed during this run must show `- [x]` for all its tasks and a done
+   marker on its heading. Fix any milestone still showing an unchecked
+   task before the recap — the run is not complete while the plan still
+   misreports its own state.
+3. Show the final recap:
 
 ```
 🎉 DevPlan complete!
@@ -248,7 +264,7 @@ Documentation: updated ✅
 [follow-up work already added back into the devplan]
 ```
 
-3. Ensure the final completed state has already been committed and
+4. Ensure the final completed state has already been committed and
    pushed (or the exact blocker recorded in the devplan).
 
 ---
@@ -262,6 +278,8 @@ Documentation: updated ✅
 - ❌ Never mark a milestone done without verifying its **Done when**
   condition
 - ❌ Never stage with `git add -A` / `git add .` — explicit paths only
+- ❌ Never commit a milestone whose devplan tasks and heading aren't
+  marked done — the bookkeeping ships in the milestone commit
 - ✅ Encode the business requirement in tests, not the implementation
 - ✅ Ambiguity → choose and proceed
 - ✅ Milestone too large → decompose internally without flagging it
