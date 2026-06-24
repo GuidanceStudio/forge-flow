@@ -1441,7 +1441,7 @@ EXECUTOR-CORE.md edits to green). Dogfooded the new rung: after committing this
 milestone I ran `git show --stat HEAD` and confirmed `DEVPLAN.md` is listed.
 Done-when verified; suite green (content + 24/24 install).
 
-### M36: SCAFFOLD.md — runnable tiers + dispatcher-to-script wiring
+### M36: SCAFFOLD.md — runnable tiers + dispatcher-to-script wiring ✅
 
 **Why:** The smoke test found two spots where a literal follower of SCAFFOLD.md
 must improvise: (a) Phase 2.4 creates empty `tests/integration|live/` dirs, so
@@ -1457,12 +1457,18 @@ non-trivial logic, put the logic in a script (e.g. `dev.sh`) and wire the idiom 
 call it. Add `tests/test_content.sh` assertions for both.
 
 **Tasks:**
-- [ ] Phase 2.4: seed one TODO-marked smoke test per tier so tiers are runnable
-- [ ] Phase 2.1: add the dispatcher-to-script wiring rule
-- [ ] Extend `tests/test_content.sh` to assert both additions
-- [ ] Run all shell test suites
-- [ ] Commit & push
+- [x] Phase 2.4: seed one TODO-marked smoke test per tier so tiers are runnable
+- [x] Phase 2.1: add the dispatcher-to-script wiring rule
+- [x] Extend `tests/test_content.sh` to assert both additions
+- [x] Run all shell test suites
+- [x] Commit & push
 
 **Done when:** SCAFFOLD.md seeds a runnable smoke test per tier and tells the
 follower to wire a thin idiom to a logic script; `tests/test_content.sh` asserts
 both; suite green.
+
+**Notes:** Executed in TDD mode (four content assertions red-first, then two
+SCAFFOLD.md edits to green). Phase 2.4 now seeds a TODO-marked smoke test per tier
+so tiers are immediately runnable; Phase 2.1 adds the thin-dispatcher → logic-
+script wiring rule (the exact two improvisations the smoke test had to make).
+Suite green (content + 24/24 install).

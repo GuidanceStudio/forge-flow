@@ -41,6 +41,11 @@ Read, in parallel, what reveals how the project is built and run:
   - a `dev.sh` / `scripts/` directory → add scripts,
   - `package.json` scripts → add scripts,
   - `docker-compose.yml` → drive it from the bring-up.
+  When the idiom is a thin one-line dispatcher (an npm script, a Make
+  target) but the bring-up needs non-trivial logic (readiness-poll,
+  `--fresh`/`--down`, env parsing), put that logic in a script
+  (e.g. `dev.sh`) and wire the idiom to call it (`"dev": "./dev.sh"`).
+  The dispatcher stays the entry point; the script holds the behavior.
 - **External services:** databases, queues, caches, third-party APIs — these
   decide whether a prod-isolation skeleton is needed.
 - **Existing tests:** current `tests/` layout, runner, and any CI config, so
@@ -83,6 +88,11 @@ Standard scope:
 
 4. **`tests/` tier directories** (`tests/unit/`, `tests/integration/`,
    `tests/live/`) matching the runner, created only if missing.
+   **Seed one TODO-marked smoke test per tier** (a health-endpoint check
+   for integration, a real-call check for live) so every tier is
+   immediately runnable — an empty tier dir can only ever skip, never
+   demonstrate a pass. Mark each seed with a `TODO:` so it reads as a
+   starting point to flesh out, not finished coverage.
 
 5. **Prod-isolation skeleton** — when the stack has external services, generate
    a `.env.test` (or `docker-compose.test.yml`) so the live tier runs against
