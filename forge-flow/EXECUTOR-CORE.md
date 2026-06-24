@@ -134,6 +134,11 @@ same location+title pair already exists (idempotent).
 - Verify the milestone's **Done when** condition explicitly — run the
   command, hit the endpoint, observe the behavior it describes. Green
   tests alone do not count unless the condition says exactly that.
+- **Use the scaffolded bring-up** when the milestone needs the app
+  running: start the stack with the one-command bring-up, never a manual
+  sequence, and verify behavior against the running service. If no
+  bring-up exists, run `forge-flow scaffold` to create it (or extend it)
+  rather than starting things by hand.
 - If the condition cannot be verified locally (needs credentials,
   external services), record precisely what remains to be verified
   manually.
@@ -207,6 +212,14 @@ Then apply this rule:
   behavior, cross-module integration, workflows, or recovery paths.
   Prefer the highest already-established level in the repo
   (integration, live, functional, e2e).
+- **Live tier (first-class, not a fallback).** When a milestone touches a
+  real external dependency, add a live test that makes
+  real, non-prod calls verifying the true use case end-to-end.
+  Isolate from production: use test/sandbox credentials, separate keys
+  or a dedicated `.env.test`, and dedicated test resources —
+  never run the live tier against prod. When the credentials or service
+  are absent or still placeholders, skip-with-reason rather than fail.
+  Unit coverage stays mandatory; the live tier is additive.
 - For tests that cannot be run locally (credentials, external services,
   special infrastructure): write them when justified, verify they parse
   (`--collect-only` or equivalent), and note in the devplan that they
@@ -225,6 +238,13 @@ behavioral class instead.
   is structurally detectable.
 - Avoid special cases that exist only to satisfy one test.
 - Keep changes narrow, composable, and reversible.
+- **No manual setup — always replicable.** Never bring the stack up by
+  hand or apply ad-hoc, one-off setup. Drive the scaffolded bring-up to
+  start the app, and encode any setup or environment change in the
+  bring-up or test script (or run `forge-flow scaffold` to extend it),
+  never a manual step — so the next run reproduces the state. If a needed
+  script is absent, create or extend it (or record a ponytail/debt note
+  when that is genuinely out of the milestone's scope).
 - Preserve existing user-facing behavior unless the milestone
   explicitly changes it.
 - **Microcopy rule:** when writing user-facing strings (labels, error

@@ -224,6 +224,18 @@ contains "$DESIGN" "never add a scaffolding milestone"
 contains "$DESIGN" "opt-out"
 contains "$DESIGN" "runnable apps"
 
+# ---- M31: executor reproducibility guardrails ----
+# No manual setup — encode in scripts; drive the scaffolded bring-up.
+contains "$EXECUTOR_CORE" "No manual setup"
+contains "$EXECUTOR_CORE" "never a manual step"
+contains "$EXECUTOR_CORE" "Use the scaffolded bring-up"
+# First-class live tier with prod isolation.
+contains "$EXECUTOR_CORE" "Live tier (first-class, not a fallback)"
+contains "$EXECUTOR_CORE" "real, non-prod calls"
+contains "$EXECUTOR_CORE" "never run the live tier against prod"
+contains "$EXECUTOR_CORE" "skip-with-reason"
+contains "$EXECUTOR_CORE" ".env.test"
+
 # ---- M33: bookkeeping verification gate ----
 # Marking a milestone done is a verified, committed gate, not advisory.
 contains "$EXECUTOR_CORE" "Verify the bookkeeping landed"
