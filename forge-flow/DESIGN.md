@@ -81,8 +81,12 @@ Estimate the likely number of milestones from the request:
    `docs/data-model.md`). *(medium+ scale)*
 5. **Git context** — `git log --oneline -20`, `git status`, current
    branch. *(medium+ scale)*
-6. **Test inventory** — scan for test directories and levels (unit,
-   integration, e2e, etc.). Note the runner and structure.
+6. **Reproducibility & test inventory** — scan for test directories and
+   levels (unit, integration, live/e2e, etc.) and the **operational
+   spine**: a one-command bring-up (`make up`, `dev.sh`, compose, a
+   `dev`/`start` script), a replicable test runner (`run_tests.sh` or
+   equivalent), and a live/e2e tier. Note the runner, the structure, and
+   which spine pieces are **present vs missing**.
    *(medium+ scale, or if the request is test-related)*
 7. **Stack detection** — identify the tech stack from manifest files
    (package.json, pyproject.toml, Cargo.toml, etc.).
@@ -138,6 +142,24 @@ security control, trust-boundary validation, accessibility behavior,
 or error handling that prevents data-loss. It also never removes a
 verified project convention. If the smaller option conflicts with one
 of these constraints, the constraint wins.
+
+#### Reproducibility spine pointer
+
+For **runnable apps/services** at **Medium+ scale, or when the plan
+establishes or extends foundations**, check the spine inventory from
+discovery (source 6). If a one-command bring-up, a replicable test
+runner, or a live/e2e tier is **missing**, emit a single line in the
+proposal:
+
+> No one-command bring-up / replicable runner / live/e2e tier detected —
+> consider forge-flow scaffold before executing.
+
+This is a pointer, not a milestone. **Never auto-run scaffold**, and
+never add a scaffolding milestone to the plan (that would be a
+preparation milestone, which this skill forbids). It is **opt-out** — a single
+explicit "no" drops it, recorded under **Out of scope**. Stay silent for
+small tweaks and for non-runnable projects (libraries, skills, static
+sites).
 
 Choose the template based on how many milestones the plan needs.
 

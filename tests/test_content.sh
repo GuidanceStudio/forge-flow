@@ -214,6 +214,16 @@ contains "$SCAFFOLD" "TODO"
 contains "$ROOT_README" "scaffold"
 contains "$SKILL_README" "scaffold"
 
+# ---- M30: DESIGN scaffold pointer ----
+contains "$DESIGN" "Reproducibility & test inventory"
+contains "$DESIGN" "one-command bring-up"
+contains "$DESIGN" "live/e2e tier"
+contains "$DESIGN" "Reproducibility spine pointer"
+contains "$DESIGN" "consider forge-flow scaffold before executing"
+contains "$DESIGN" "never add a scaffolding milestone"
+contains "$DESIGN" "opt-out"
+contains "$DESIGN" "runnable apps"
+
 # ---- M33: bookkeeping verification gate ----
 # Marking a milestone done is a verified, committed gate, not advisory.
 contains "$EXECUTOR_CORE" "Verify the bookkeeping landed"
