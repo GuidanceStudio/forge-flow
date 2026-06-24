@@ -1272,7 +1272,7 @@ app must run, (3) Test policy gained a first-class "Live tier" paragraph (real
 non-prod calls end-to-end, `.env.test`/sandbox isolation, skip-with-reason, never
 against prod; unit stays mandatory). Suite green (content + 24/24 install).
 
-### M32: DESIGN adds a live/e2e test task for real external dependencies
+### M32: DESIGN adds a live/e2e test task for real external dependencies ✅
 
 **Why:** A plan that only ever asks for unit tests cannot prove the feature works
 against the real world. When a milestone integrates a real external dependency,
@@ -1287,15 +1287,23 @@ repo deliberately mocks everything and has no live tier, do not force one (point
 to `scaffold` instead). Gated (pure-logic milestones stay unit-only); opt-out.
 
 **Tasks:**
-- [ ] Add the external-dependency → live-test rule to DESIGN.md, using the scaffolded live tier
-- [ ] State the gate + defer-to-convention (no forcing on deliberate mock-only repos) + opt-out
-- [ ] Test: content — assert the live-test rule exists in DESIGN.md
-- [ ] Update docs if needed
-- [ ] Commit & push
+- [x] Add the external-dependency → live-test rule to DESIGN.md, using the scaffolded live tier
+- [x] State the gate + defer-to-convention (no forcing on deliberate mock-only repos) + opt-out
+- [x] Test: content — assert the live-test rule exists in DESIGN.md
+- [x] Update docs if needed (none — guidance lives in DESIGN.md; live tier already in READMEs via M29/M31)
+- [x] Commit & push
 
 **Done when:** a milestone integrating an external API gets both a unit task and a
 `Test: live — …` task referencing non-prod credentials; a deliberate mock-only
 repo is not forced; pure-logic milestones stay unit-only.
+
+**Notes:** Executed in TDD mode. Seven content assertions written red-first
+(failed on "Live test task for external dependencies"), then a "Live test task for
+external dependencies" subsection added to DESIGN.md's Milestone format: real
+external dependency → a `Test: live — <real use case, non-prod credentials>` task
+alongside unit, on the scaffolded live tier. Gated (pure-logic stays unit-only),
+defers to convention (mock-only repos not forced → point to scaffold), opt-out
+(recorded under Notes). Suite green (content + 24/24 install).
 
 ---
 
