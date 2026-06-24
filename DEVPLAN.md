@@ -1233,7 +1233,7 @@ explicit "no" is honored and noted out-of-scope.
 auto-run, never a scaffolding milestone. Done-when verified against the playbook
 text; suite green (content + 24/24 install).
 
-### M31: EXECUTOR reproducibility guardrails — no manual steps + first-class live tier
+### M31: EXECUTOR reproducibility guardrails — no manual steps + first-class live tier ✅
 
 **Why:** The executor must not bring the stack up by hand or apply ad-hoc setup;
 it should drive and extend the scaffolded scripts so the next run reproduces the
@@ -1252,16 +1252,25 @@ skip-with-reason when absent or placeholder, never prod). Unit-always stays; liv
 is additive.
 
 **Tasks:**
-- [ ] Add no-manual / encode-in-scripts rule to EXECUTOR-CORE.md implementation standards
-- [ ] Tie Verify "Done when" to the scripted bring-up when the app must run
-- [ ] Rewrite the live-test paragraph in Test policy: first-class live tier + prod-isolation conventions
-- [ ] Test: content — assert both the no-manual rule and the live-tier/isolation language exist
-- [ ] Update docs if needed
-- [ ] Commit & push
+- [x] Add no-manual / encode-in-scripts rule to EXECUTOR-CORE.md implementation standards
+- [x] Tie Verify "Done when" to the scripted bring-up when the app must run
+- [x] Rewrite the live-test paragraph in Test policy: first-class live tier + prod-isolation conventions
+- [x] Test: content — assert both the no-manual rule and the live-tier/isolation language exist
+- [x] Update docs if needed (none — executor-internal behavior; READMEs already note the live tier via M29)
+- [x] Commit & push
 
 **Done when:** a milestone needing the app running uses the scaffolded bring-up;
 any environment change lands in a script, not a manual step; Test policy documents
 the live tier and its prod-isolation rules; `tests/test_content.sh` passes.
+
+**Notes:** Executed in TDD mode. Eight content assertions written red-first
+(failed on "No manual setup"), then three EXECUTOR-CORE.md edits made them green:
+(1) Implementation standards gained a "No manual setup — always replicable" rule
+(drive the scaffolded bring-up; encode env/setup in scripts; never a manual
+step), (2) Verify "Done when" now says to use the scaffolded bring-up when the
+app must run, (3) Test policy gained a first-class "Live tier" paragraph (real
+non-prod calls end-to-end, `.env.test`/sandbox isolation, skip-with-reason, never
+against prod; unit stays mandatory). Suite green (content + 24/24 install).
 
 ### M32: DESIGN adds a live/e2e test task for real external dependencies
 
