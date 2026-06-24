@@ -236,6 +236,15 @@ contains "$EXECUTOR_CORE" "never run the live tier against prod"
 contains "$EXECUTOR_CORE" "skip-with-reason"
 contains "$EXECUTOR_CORE" ".env.test"
 
+# ---- M32: DESIGN live test task for external dependencies ----
+contains "$DESIGN" "Live test task for external dependencies"
+contains "$DESIGN" "real external dependency"
+contains "$DESIGN" "Test: live"
+contains "$DESIGN" "non-prod credentials"
+contains "$DESIGN" "scaffolded live tier"
+contains "$DESIGN" "deliberately mocks everything"
+contains "$DESIGN" "opt-out"
+
 # ---- M33: bookkeeping verification gate ----
 # Marking a milestone done is a verified, committed gate, not advisory.
 contains "$EXECUTOR_CORE" "Verify the bookkeeping landed"

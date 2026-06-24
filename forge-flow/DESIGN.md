@@ -275,6 +275,24 @@ endpoint responds, UI shows X).
 Optional fifth section — **Notes:** — only when something doesn't fit
 elsewhere (gotchas, external links, decisions to revisit later).
 
+#### Live test task for external dependencies
+
+When a milestone integrates a real external dependency
+(a third-party API, a database, a queue, an external service), add a
+live test task alongside the unit task, targeting the
+scaffolded live tier with non-prod credentials:
+
+```markdown
+- [ ] Test: unit — <logic, mocked>
+- [ ] Test: live — <real use case end-to-end, non-prod credentials>
+```
+
+This is **gated**: pure-logic milestones (no external dependency) stay
+unit-only. It **defers to project convention** — if the repo
+deliberately mocks everything and has no live tier, do not force one;
+point to forge-flow scaffold instead. It is **opt-out** — an explicit
+"no" drops the live task, recorded under the milestone's Notes.
+
 #### Granularity rules
 - Each milestone must be **shippable**: commit + push without breaking
   main.
