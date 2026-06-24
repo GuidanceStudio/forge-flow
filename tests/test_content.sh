@@ -247,6 +247,11 @@ contains "$DESIGN" "deliberately mocks everything"
 # M32-unique opt-out clause (M30 says "drops it, recorded under" instead)
 contains "$DESIGN" "drops the live task"
 
+# ---- M35: commit-inclusion verification + heading-style done marker ----
+contains "$EXECUTOR_CORE" "Verify the devplan shipped in the commit"
+contains "$EXECUTOR_CORE" "git show --stat HEAD"
+contains "$EXECUTOR_CORE" "## MNN: <title> ✅"
+
 # ---- M33: bookkeeping verification gate ----
 # Marking a milestone done is a verified, committed gate, not advisory.
 contains "$EXECUTOR_CORE" "Verify the bookkeeping landed"

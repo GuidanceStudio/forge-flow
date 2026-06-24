@@ -1398,3 +1398,71 @@ satisfy — with milestone-unique opt-out clauses: M30 → "drops it, recorded u
 M32 → "drops the live task". Red path verified: deleting M30's clause fails only
 the M30 anchor, deleting M32's fails only the M32 anchor (DESIGN.md restored from
 git after each). Suite green (content + 24/24 install).
+
+---
+
+## Follow-up — Behavioral smoke findings (2026-06-24)
+
+Found by the `/tmp` behavioral smoke test (a subagent generated a Node spine by
+following SCAFFOLD.md, then executed a 2-milestone devplan to exercise the M33
+gate). Both phases passed; these close the residual seams it surfaced.
+Recommended order: M35 → M36.
+
+### M35: Close the M33 commit-inclusion seam + align the done-marker example ✅
+
+**Why:** The smoke test confirmed M33's gate holds when followed, but exposed one
+game-able seam: the "DEVPLAN.md ships in the milestone commit" requirement is
+*asserted*, never *verified*. The checkbox/heading bookkeeping is re-read and
+double-checked, but nothing inspects the commit afterward — so an executor that
+omits the devplan from its explicit staged paths recreates exactly the forbidden
+catch-up commit, and the only net (the Completion sweep) runs once, at the very
+end. Separately, the done-marker example `- [x] Milestone X: Name ✅` shows a
+checkbox-list item while real milestones are `## MNN: title` headings — misleading.
+
+**Approach:** In EXECUTOR-CORE.md "Commit & push", add a post-commit verification
+rung mirroring "verify the bookkeeping landed": after committing, run
+`git show --stat HEAD` and confirm the active devplan file is listed; if absent,
+`git commit --amend` to include it before moving on. Fix the done-marker example
+to `## MNN: <title> ✅`. Add a `tests/test_content.sh` assertion for the new rung.
+
+**Tasks:**
+- [x] Add the post-commit `git show --stat HEAD` devplan-inclusion check (amend if absent) to EXECUTOR-CORE.md "Commit & push"
+- [x] Align the done-marker example to the heading format `## MNN: <title> ✅`
+- [x] Extend `tests/test_content.sh` to assert the post-commit verification rung
+- [x] Run all shell test suites
+- [x] Commit & push
+
+**Done when:** EXECUTOR-CORE.md tells the executor to verify, after committing,
+that the devplan is in the commit and amend if not; the done-marker example uses
+heading format; `tests/test_content.sh` asserts the rung; suite green.
+
+**Notes:** Executed in TDD mode (three content assertions red-first, then two
+EXECUTOR-CORE.md edits to green). Dogfooded the new rung: after committing this
+milestone I ran `git show --stat HEAD` and confirmed `DEVPLAN.md` is listed.
+Done-when verified; suite green (content + 24/24 install).
+
+### M36: SCAFFOLD.md — runnable tiers + dispatcher-to-script wiring
+
+**Why:** The smoke test found two spots where a literal follower of SCAFFOLD.md
+must improvise: (a) Phase 2.4 creates empty `tests/integration|live/` dirs, so
+those tiers can only ever skip, never demonstrate a PASS, until the agent invents
+a test; (b) Phase 2.1 says reuse the command idiom (npm script / Make target) but
+a one-line dispatcher cannot hold readiness-poll / `--fresh` / `--down` / env-parse
+logic, and the playbook never says to put that logic in a script the idiom calls.
+
+**Approach:** (a) Phase 2.4 — instruct scaffold to seed one TODO-marked smoke test
+per tier (a health/smoke check) so every tier is immediately runnable. (b) Phase
+2.1 — add: when the idiom is a thin one-line dispatcher but the bring-up needs
+non-trivial logic, put the logic in a script (e.g. `dev.sh`) and wire the idiom to
+call it. Add `tests/test_content.sh` assertions for both.
+
+**Tasks:**
+- [ ] Phase 2.4: seed one TODO-marked smoke test per tier so tiers are runnable
+- [ ] Phase 2.1: add the dispatcher-to-script wiring rule
+- [ ] Extend `tests/test_content.sh` to assert both additions
+- [ ] Run all shell test suites
+- [ ] Commit & push
+
+**Done when:** SCAFFOLD.md seeds a runnable smoke test per tier and tells the
+follower to wire a thin idiom to a logic script; `tests/test_content.sh` asserts
+both; suite green.
