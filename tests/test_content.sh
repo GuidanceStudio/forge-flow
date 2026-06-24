@@ -247,6 +247,12 @@ contains "$DESIGN" "deliberately mocks everything"
 # M32-unique opt-out clause (M30 says "drops it, recorded under" instead)
 contains "$DESIGN" "drops the live task"
 
+# ---- M36: SCAFFOLD runnable tiers + dispatcher-to-script wiring ----
+contains "$SCAFFOLD" "Seed one TODO-marked smoke test per tier"
+contains "$SCAFFOLD" "immediately runnable"
+contains "$SCAFFOLD" "thin one-line dispatcher"
+contains "$SCAFFOLD" "wire the idiom to call it"
+
 # ---- M35: commit-inclusion verification + heading-style done marker ----
 contains "$EXECUTOR_CORE" "Verify the devplan shipped in the commit"
 contains "$EXECUTOR_CORE" "git show --stat HEAD"
