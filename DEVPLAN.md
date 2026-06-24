@@ -868,7 +868,7 @@ decisions with audit-time verification.
 
 Recommended order: M21 → M22 → M23.
 
-### M21: Comment essentiality — add a comment-weight step to the simplify ladder
+### M21: Comment essentiality — add a comment-weight step to the simplify ladder ✅
 
 **Why:** The simplify ladder (TDD step 5, IDD step 4) covers code,
 dependencies, files, and abstractions, but not comments. A comment that
@@ -894,17 +894,22 @@ It never removes ponytail: comments (those are intentional debt, not
 dead weight) or public API documentation.
 
 **Tasks:**
-- [ ] Add the seventh rung to the simplify ladder in `forge-flow/TDD.md`
-- [ ] Add the same rung to `forge-flow/IDD.md`
-- [ ] Extend `tests/test_content.sh` to assert the comment-weight rung exists in both playbooks
-- [ ] Verify lockstep: TDD.md and IDD.md simplify sections match
-- [ ] Commit & push
+- [x] Add the seventh rung to the simplify ladder in `forge-flow/TDD.md`
+- [x] Add the same rung to `forge-flow/IDD.md`
+- [x] Extend `tests/test_content.sh` to assert the comment-weight rung exists in both playbooks
+- [x] Verify lockstep: TDD.md and IDD.md simplify sections match
+- [x] Commit & push
 
 **Done when:** both TDD.md and IDD.md instruct the simplify pass to
 compress or delete comments that restate the code, and CI verifies the
 rung is present.
 
-### M22: `ponytail:` comment convention — document intentional simplifications in code
+**Notes:** Marked done retroactively (2026-06-24 bookkeeping). The 7th
+rung shipped in the shared `EXECUTOR-CORE.md` (simplify ladder, rung 7)
+during the M25 extraction rather than as a standalone TDD/IDD edit; both
+playbooks inherit it. Enforced by `tests/test_content.sh`.
+
+### M22: `ponytail:` comment convention — document intentional simplifications in code ✅
 
 **Why:** Today when TDD/IDD makes a simplification with a known ceiling
 (e.g. O(n) scan instead of hash map because today there are 50 elements),
@@ -933,16 +938,20 @@ intentional trade-offs only.
 ```
 
 **Tasks:**
-- [ ] Add the ponytail: convention paragraph to `forge-flow/TDD.md` after the simplify ladder
-- [ ] Add the same paragraph to `forge-flow/IDD.md`
-- [ ] Extend `tests/test_content.sh` to assert the convention is documented in both playbooks
-- [ ] Verify lockstep: both playbooks describe the same convention
-- [ ] Commit & push
+- [x] Add the ponytail: convention paragraph to `forge-flow/TDD.md` after the simplify ladder
+- [x] Add the same paragraph to `forge-flow/IDD.md`
+- [x] Extend `tests/test_content.sh` to assert the convention is documented in both playbooks
+- [x] Verify lockstep: both playbooks describe the same convention
+- [x] Commit & push
 
 **Done when:** both TDD.md and IDD.md document the `ponytail:` comment
 structure with measurable ceiling + upgrade path, and CI verifies it.
 
-### M23: Debt tracking — `.code-audit/debt.tsv` populated during simplification
+**Notes:** Marked done retroactively (2026-06-24 bookkeeping). The
+`ponytail:` convention lives in the shared `EXECUTOR-CORE.md`; TDD.md and
+IDD.md inherit it. Enforced by `tests/test_content.sh`.
+
+### M23: Debt tracking — `.code-audit/debt.tsv` populated during simplification ✅
 
 **Why:** The `ponytail:` comments document individual simplifications,
 but they provide no aggregate visibility. A debt-tracking file populated
@@ -975,16 +984,21 @@ Debt registered: N items (see .code-audit/debt.tsv)
 ```
 
 **Tasks:**
-- [ ] Add the debt-registration step to `forge-flow/TDD.md` (after simplify, before docs)
-- [ ] Add the same step to `forge-flow/IDD.md`
-- [ ] Add the debt-count line to both completion recaps
-- [ ] Extend `tests/test_content.sh` to assert the registration step and recap line exist
-- [ ] Verify lockstep: both playbooks match
-- [ ] Commit & push
+- [x] Add the debt-registration step to `forge-flow/TDD.md` (after simplify, before docs)
+- [x] Add the same step to `forge-flow/IDD.md`
+- [x] Add the debt-count line to both completion recaps
+- [x] Extend `tests/test_content.sh` to assert the registration step and recap line exist
+- [x] Verify lockstep: both playbooks match
+- [x] Commit & push
 
 **Done when:** TDD and IDD both register intentional debt to
 `.code-audit/debt.tsv`, the completion recap includes the debt count,
 and CI verifies the contract.
+
+**Notes:** Marked done retroactively (2026-06-24 bookkeeping). The
+debt-registration step and the `[debt registered: N items …]` recap line
+live in the shared `EXECUTOR-CORE.md`; both modes inherit them. Enforced
+by `tests/test_content.sh`.
 
 ---
 
@@ -993,7 +1007,7 @@ and CI verifies the contract.
 Issues found during coherence audit across forge-flow, uxui-audit, and
 tech-audit. Fixes belong here.
 
-### M24: Fix debt.tsv column order mismatch between TDD.md and IDD.md
+### M24: Fix debt.tsv column order mismatch between TDD.md and IDD.md ✅
 
 **Why:** The two playbooks write to the same `.code-audit/debt.tsv` file
 but use different column orders — TDD.md:135 has `dim⇥location⇥title`,
@@ -1006,11 +1020,16 @@ lockstep assertion to `tests/test_content.sh` so the mismatch can't
 recur.
 
 **Tasks:**
-- [ ] Fix column order in `forge-flow/IDD.md` debt-registration step to match `dim⇥location⇥title⇥ceiling⇥revisit_by`
-- [ ] Add lockstep assertion to `tests/test_content.sh`: both playbooks specify the same TSV column order
-- [ ] Commit & push
+- [x] Fix column order in `forge-flow/IDD.md` debt-registration step to match `dim⇥location⇥title⇥ceiling⇥revisit_by`
+- [x] Add lockstep assertion to `tests/test_content.sh`: both playbooks specify the same TSV column order
+- [x] Commit & push
 
 **Done when:** Both TDD.md and IDD.md specify `dim⇥location⇥title⇥ceiling⇥revisit_by` and tests verify it.
+
+**Notes:** Marked done retroactively (2026-06-24 bookkeeping). The
+mismatch became moot once M25 unified the debt schema into a single
+canonical `EXECUTOR-CORE.md` source (`dim⇥location⇥title⇥ceiling⇥revisit_by`),
+so the two modes can no longer diverge. Enforced by `tests/test_content.sh`.
 
 ---
 
@@ -1023,7 +1042,7 @@ themselves. Same concepts, same behavior, fewer tokens.
 
 Recommended order: M25 → M26 → M27 → M28.
 
-### M25: Extract EXECUTOR-CORE.md — deduplicate TDD.md + IDD.md
+### M25: Extract EXECUTOR-CORE.md — deduplicate TDD.md + IDD.md ✅
 
 **Why:** TDD.md and IDD.md are ~70% identical (~200 shared lines). Preflight,
 simplify ladder, ponytail, debt registration, test policy, implementation
@@ -1038,17 +1057,17 @@ TDD.md and IDD.md keep only their execution loop + a "Read EXECUTOR-CORE.md"
 directive at the top. README updated to document the new file.
 
 **Tasks:**
-- [ ] Create `forge-flow/EXECUTOR-CORE.md` with all shared sections
-- [ ] Strip shared content from `forge-flow/TDD.md`, add load directive
-- [ ] Strip shared content from `forge-flow/IDD.md`, add load directive
-- [ ] Update `tests/test_content.sh` lockstep checks to verify new structure
-- [ ] Update `forge-flow/README.md`
-- [ ] Commit & push
+- [x] Create `forge-flow/EXECUTOR-CORE.md` with all shared sections
+- [x] Strip shared content from `forge-flow/TDD.md`, add load directive
+- [x] Strip shared content from `forge-flow/IDD.md`, add load directive
+- [x] Update `tests/test_content.sh` lockstep checks to verify new structure
+- [x] Update `forge-flow/README.md`
+- [x] Commit & push
 
 **Done when:** TDD.md and IDD.md are ~90 lines each; EXECUTOR-CORE.md contains
 all shared behavior once; both playbooks produce identical results.
 
-### M26: Unify simplify/essentiality ladder across DESIGN.md, TDD.md, IDD.md
+### M26: Unify simplify/essentiality ladder across DESIGN.md, TDD.md, IDD.md ✅
 
 **Why:** The same "delete → stdlib → native → existing dep → custom" logic
 appears in DESIGN.md (essentiality checkpoint, lines 149-172), TDD.md (simplify
@@ -1062,14 +1081,14 @@ each candidate milestone." Keep DESIGN.md's non-negotiable boundary list
 (explicit requirements, security, a11y) since that's design-mode-specific.
 
 **Tasks:**
-- [ ] In DESIGN.md, replace the essentiality checkpoint prose with a reference to EXECUTOR-CORE.md
-- [ ] Preserve DESIGN.md's boundary list (explicit-requirements, security, a11y, data-loss)
-- [ ] Verify `tests/test_content.sh` still passes
-- [ ] Commit & push
+- [x] In DESIGN.md, replace the essentiality checkpoint prose with a reference to EXECUTOR-CORE.md
+- [x] Preserve DESIGN.md's boundary list (explicit-requirements, security, a11y, data-loss)
+- [x] Verify `tests/test_content.sh` still passes
+- [x] Commit & push
 
 **Done when:** One canonical ladder, cited from all three playbooks.
 
-### M27: Compress DESIGN.md + SKILL.md prose
+### M27: Compress DESIGN.md + SKILL.md prose ✅
 
 **Why:** DESIGN.md has verbose sections: "Synergy with TDD/IDD" (13 lines, self-
 evident), Validation section (43 lines, many checks implicit in executor),
@@ -1085,16 +1104,16 @@ the playbooks already say. Scope section duplicates base CLAUDE.md rule.
 - Trim SKILL.md frontmatter description
 
 **Tasks:**
-- [ ] Delete DESIGN.md § Synergy with TDD/IDD
-- [ ] Compress DESIGN.md § Validation
-- [ ] Compress discovery brief example
-- [ ] Compress SKILL.md mode descriptions + scope + path detection
-- [ ] Update `tests/test_content.sh` to match compressed form
-- [ ] Commit & push
+- [x] Delete DESIGN.md § Synergy with TDD/IDD
+- [x] Compress DESIGN.md § Validation
+- [x] Compress discovery brief example
+- [x] Compress SKILL.md mode descriptions + scope + path detection
+- [x] Update `tests/test_content.sh` to match compressed form
+- [x] Commit & push
 
 **Done when:** DESIGN.md is ~330 lines (from ~400), SKILL.md is ~55 lines (from ~67).
 
-### M28: Trim READMEs
+### M28: Trim READMEs ✅
 
 **Why:** Top-level README and variant README contain redundant install
 instructions and duplicated mode descriptions.
@@ -1104,9 +1123,193 @@ descriptions. Variant README: remove content that duplicates agentskills.io
 standard info. Target ~20% reduction.
 
 **Tasks:**
-- [ ] Compress top-level `README.md`
-- [ ] Compress `forge-flow/README.md`
-- [ ] Verify all links resolve
-- [ ] Commit & push
+- [x] Compress top-level `README.md`
+- [x] Compress `forge-flow/README.md`
+- [x] Verify all links resolve
+- [x] Commit & push
 
 **Done when:** READMEs convey same information with fewer words.
+
+## v0.5 — Reproducibility doctrine
+
+Sibling repos (cerase, lca-tool, social-scraper, md2) converge on the same
+operational spine: one command brings the whole stack up (`dev.sh`), one command
+runs tiered tests (`run_tests.sh`), live/e2e tests exercise real use cases with
+real but non-prod credentials, and setup is never manual — it's codified in the
+scripts. forge-flow plans and executes work but never steers toward this spine,
+and folding scaffolding into the plan would breach its own "no preparation
+milestones" rule. This version adds a dedicated **`scaffold`** route that mounts
+the spine outside the milestone loop; DESIGN merely points to it (opt-out,
+scale-gated, runnable apps only); the executor enforces scripted, non-manual
+setup and a first-class live tier.
+
+Recommended order: M29 → M30 → M31 → M32.
+
+### M29: Add the `scaffold` route — mount the operational spine
+
+**Why:** Every project needs the same spine (one-command bring-up, tiered test
+runner, live tests with non-prod creds), but forge-flow can't mount it — the user
+hand-writes it each time, or it leaks into the devplan as prep milestones the
+skill forbids. A dedicated route centralizes the convention knowledge distilled
+from the sibling repos and keeps the spine out of the feature plan.
+
+**Approach:** SKILL.md router learns a fourth token `scaffold` → new
+`forge-flow/SCAFFOLD.md` playbook. SCAFFOLD.md is a generation *playbook* (like
+DESIGN.md), not a template library: it detects the stack and the project's
+existing idiom (Makefile targets vs `dev.sh` vs `package.json` scripts vs
+docker-compose) and generates, idempotently (extend, never clobber) — standard
+scope: a one-command bring-up (readiness-poll, `.env` bootstrap from
+`.env.example`, `--fresh`/`--down`), a tiered `run_tests.sh` (unit/integration/
+live, skip-with-reason gating, scriptable exit codes, pass/fail/skip recap),
+`.env.example` with test-credential placeholders, `tests/` tier dirs, and a
+prod-isolation skeleton (`.env.test` or `docker-compose.test.yml`) when the stack
+has external services. Project-specific bits are left as explicit TODO markers
+rather than guessed. Verifies by running the generated test-runner (and bring-up
+where possible); reuses EXECUTOR-CORE.md verify/commit discipline. Scoped to
+runnable apps/services — refuses on a pure library/skill/static project with a
+clear message.
+
+**Tasks:**
+- [ ] Add `scaffold` token dispatch to SKILL.md router
+- [ ] Write `forge-flow/SCAFFOLD.md`: stack + idiom detection, idempotent generation, standard scope, explicit TODO markers, runnable-app guard
+- [ ] Encode the sibling-repo conventions (readiness-poll, skip-with-reason, exit codes, prod isolation) as the generation contract
+- [ ] Test: content — `tests/test_content.sh` asserts the route in SKILL.md + SCAFFOLD.md contract terms
+- [ ] Test: live — run `scaffold` on a throwaway sample project and assert the generated runner executes green and re-running doesn't clobber
+- [ ] Update `forge-flow/README.md` + top-level README to document the route
+- [ ] Commit & push
+
+**Done when:** `forge-flow scaffold` on a runnable project with no spine produces a
+working, idempotent bring-up + tiered test-runner (verified by running them);
+re-running it does not clobber; a non-runnable project is refused with a clear
+message; `tests/test_content.sh` passes.
+
+### M30: DESIGN suggests `scaffold` when the spine is missing (opt-out)
+
+**Why:** DESIGN should steer toward the spine during from-scratch or foundational
+setup — but as a pointer to the route, not by injecting scaffolding into the plan
+(that would be a prep milestone and would derail small requests).
+
+**Approach:** Broaden DESIGN.md Discovery source #6 to "Reproducibility & test
+inventory": detect one-command bring-up, replicable runner, and live/e2e tier
+presence. In Phase 3, for runnable apps at **Medium+ scale or when the plan
+establishes/extends foundations**, if the spine is missing, emit a one-line
+pointer: *"no one-command bring-up / replicable runner detected → consider
+`forge-flow scaffold` before executing."* Opt-out: a single explicit "no" drops
+it, recorded under Out of scope. Never auto-runs scaffold; never adds a
+scaffolding milestone; small tweaks and non-runnable projects stay silent.
+
+**Tasks:**
+- [ ] Broaden DESIGN.md Discovery source #6 to detect bring-up + runner + live tier
+- [ ] Add the one-line `scaffold` pointer to Phase 3, scale-gated (Medium+/foundational) and runnable-apps-only
+- [ ] Specify opt-out + record-as-out-of-scope; never auto-run, never a scaffolding milestone
+- [ ] Test: content — assert the detection terms + the gated scaffold pointer exist in DESIGN.md
+- [ ] Update docs if needed
+- [ ] Commit & push
+
+**Done when:** a Medium+ plan for a runnable project with no spine shows the
+one-line scaffold pointer; a small tweak and a non-runnable project do not; an
+explicit "no" is honored and noted out-of-scope.
+
+### M31: EXECUTOR reproducibility guardrails — no manual steps + first-class live tier
+
+**Why:** The executor must not bring the stack up by hand or apply ad-hoc setup;
+it should drive and extend the scaffolded scripts so the next run reproduces the
+state (global "no manual, always replicable" rule). And live tests must be a
+first-class tier with prod isolation, not a "note for manual run" fallback.
+
+**Approach:** Two edits to EXECUTOR-CORE.md. (1) Implementation standards + Verify
+"Done when": prefer the scaffolded bring-up to start the stack; encode any
+setup/env change idempotently in the bring-up or test script (or run
+`forge-flow scaffold` to extend it), never a manual step; if a needed script is
+absent, create/extend it (or register a ponytail/debt). (2) Test policy: rewrite
+the live paragraph — live tier = real, non-prod calls verifying true use cases
+end-to-end, with the isolation conventions distilled from the repos (test
+creds/sandbox, separate keys / `.env.test` / dedicated test resources,
+skip-with-reason when absent or placeholder, never prod). Unit-always stays; live
+is additive.
+
+**Tasks:**
+- [ ] Add no-manual / encode-in-scripts rule to EXECUTOR-CORE.md implementation standards
+- [ ] Tie Verify "Done when" to the scripted bring-up when the app must run
+- [ ] Rewrite the live-test paragraph in Test policy: first-class live tier + prod-isolation conventions
+- [ ] Test: content — assert both the no-manual rule and the live-tier/isolation language exist
+- [ ] Update docs if needed
+- [ ] Commit & push
+
+**Done when:** a milestone needing the app running uses the scaffolded bring-up;
+any environment change lands in a script, not a manual step; Test policy documents
+the live tier and its prod-isolation rules; `tests/test_content.sh` passes.
+
+### M32: DESIGN adds a live/e2e test task for real external dependencies
+
+**Why:** A plan that only ever asks for unit tests cannot prove the feature works
+against the real world. When a milestone integrates a real external dependency,
+the plan should require a live test on the real use case — with non-prod
+credentials — using the scaffolded live tier.
+
+**Approach:** In DESIGN.md milestone test-task guidance, add: when a milestone
+touches a real external dependency (third-party API, DB, queue, external service),
+emit a `Test: live — <real use case, non-prod credentials>` task alongside unit
+coverage, using the scaffolded live tier. Defer to project convention — if the
+repo deliberately mocks everything and has no live tier, do not force one (point
+to `scaffold` instead). Gated (pure-logic milestones stay unit-only); opt-out.
+
+**Tasks:**
+- [ ] Add the external-dependency → live-test rule to DESIGN.md, using the scaffolded live tier
+- [ ] State the gate + defer-to-convention (no forcing on deliberate mock-only repos) + opt-out
+- [ ] Test: content — assert the live-test rule exists in DESIGN.md
+- [ ] Update docs if needed
+- [ ] Commit & push
+
+**Done when:** a milestone integrating an external API gets both a unit task and a
+`Test: live — …` task referencing non-prod credentials; a deliberate mock-only
+repo is not forced; pure-logic milestones stay unit-only.
+
+---
+
+## Follow-up — Executor bookkeeping discipline (2026-06-24)
+
+The 2026-06-24 review found M21–M28 were implemented and committed but their
+devplan task checkboxes and milestone headings were never marked done — the plan
+misrepresented its own state. EXECUTOR-CORE.md already *instructs* "Update the
+devplan", but nothing *verifies* the bookkeeping landed before the commit, so a
+batch run skipped it silently. The skill that exists to track work failed to
+track its own. This milestone turns marking-done into a verified completion gate.
+
+Execution order: **M33 first** (so the hardened discipline is in place), then the
+v0.5 milestones M29 → M30 → M31 → M32.
+
+### M33: Make "mark the milestone done" a verified, committed gate
+
+**Why:** The executor's "Update the devplan" step is advisory — it tells the run
+to tick the boxes but never checks that it happened, and the devplan file isn't
+guaranteed to be in the milestone commit. Result: work ships green while the plan
+still shows `- [ ]`, so the plan can no longer be trusted to report what's done —
+exactly the drift seen in M21–M28. Bookkeeping that depends on memory gets skipped
+under batch execution; it must be enforced like the test and Done-when gates.
+
+**Approach:** Edit `forge-flow/EXECUTOR-CORE.md` (TDD/IDD inherit it). (1) In
+"Update the devplan", make the marking verifiable: after editing, re-read the
+milestone block and confirm every task is `[x]` and the heading carries the done
+marker — no `[ ]` may remain for the milestone being closed. (2) In "Commit &
+push", require the devplan file itself among the staged paths for the milestone
+commit (the checkbox update ships with the work, never in a later catch-up
+commit). (3) Add a Common-rules ❌: never commit a milestone whose devplan tasks
+and heading aren't marked done. (4) In "Completion", add a final sweep: scan the
+devplan for any milestone closed during this run still showing `[ ]` or an
+unmarked heading, and fix before the recap. Add a `tests/test_content.sh`
+assertion that EXECUTOR-CORE.md carries the verify-bookkeeping-before-commit
+contract so it can't silently regress.
+
+**Tasks:**
+- [ ] EXECUTOR-CORE.md "Update the devplan": add the re-read / verify-no-`[ ]` step
+- [ ] EXECUTOR-CORE.md "Commit & push": require the devplan among staged paths
+- [ ] EXECUTOR-CORE.md Common rules: add the ❌ never-commit-unmarked rule
+- [ ] EXECUTOR-CORE.md Completion: add the end-of-run unmarked-milestone sweep
+- [ ] Extend `tests/test_content.sh` to assert the bookkeeping-gate contract
+- [ ] Run all shell test suites
+- [ ] Commit & push
+
+**Done when:** EXECUTOR-CORE.md makes marking a milestone done a verified step
+whose result must be in the milestone commit, the completion recap sweeps for any
+milestone left with `[ ]`, and `tests/test_content.sh` asserts the contract.
