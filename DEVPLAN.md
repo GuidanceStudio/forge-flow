@@ -1472,3 +1472,51 @@ SCAFFOLD.md edits to green). Phase 2.4 now seeds a TODO-marked smoke test per ti
 so tiers are immediately runnable; Phase 2.1 adds the thin-dispatcher → logic-
 script wiring rule (the exact two improvisations the smoke test had to make).
 Suite green (content + 24/24 install).
+
+---
+
+## Follow-up — Documentation alignment (2026-06-24)
+
+### M37: Align documentation surfaces to the real skill (name + scaffold route) ✅
+
+**Why:** A doc-correctness check found the "machine" surfaces lag the prose
+READMEs. `agents/openai.yaml` still advertises the pre-rename skill
+(`display_name: "Devplan"`, invocation `$devplan`) and omits the `scaffold`
+route — it points at a command that no longer exists. `SKILL.md`'s frontmatter
+`description` (the string that drives skill discovery/invocation) still says
+"Three modes" and never mentions `scaffold`, so the v0.5 route is invisible where
+it matters most. `forge-flow/README.md` carries the old skill name in its title
+and two references, inconsistent with the root README. A minor: the root layout
+tree comment names only the installer suite though `tests/` now also holds the
+content-contract suite. (Uses of "devplan" meaning the *plan file* are correct and
+stay.)
+
+**Approach:** Update the four surfaces and guard them. `agents/openai.yaml`:
+`Devplan`→`forge-flow`, `$devplan`→`$forge-flow`, add `scaffold` to the
+short_description/prompt. `SKILL.md` frontmatter `description`: add the `scaffold`
+route concisely (it was trimmed for tokens in M27 — keep it tight).
+`forge-flow/README.md`: rename the three skill-name `devplan` references to
+`forge-flow`. Root `README.md`: broaden the `tests/` tree comment to both suites.
+Add `tests/test_content.sh` guards: openai.yaml uses `forge-flow` (not `$devplan`/
+`Devplan`) and mentions `scaffold`; the SKILL frontmatter mentions `scaffold`; the
+payload README is no longer titled `devplan`.
+
+**Tasks:**
+- [x] `agents/openai.yaml`: rename to forge-flow + add the scaffold route
+- [x] `SKILL.md` frontmatter `description`: add the scaffold route, concisely
+- [x] `forge-flow/README.md`: skill-name `devplan` → `forge-flow` (3 spots; leave plan-file senses)
+- [x] Root `README.md`: `tests/` tree comment names both suites
+- [x] `tests/test_content.sh`: guards for openai.yaml naming + scaffold, SKILL frontmatter scaffold, payload README title
+- [x] Run all shell test suites
+- [x] Commit & push
+
+**Done when:** openai.yaml and the SKILL frontmatter name the skill `forge-flow`
+and advertise the `scaffold` route, the payload README no longer uses the old
+skill name, the layout comment reflects both suites, and `tests/test_content.sh`
+guards all of it; suite green.
+
+**Notes:** Executed in TDD mode (guards red-first — "openai.yaml missing: forge-flow"
+— then the four surface edits to green). `grep` confirms no residual `$devplan` /
+`Devplan` / old payload-README title remain. Plan-file senses of "devplan" left
+intact. Suite green (content + 24/24 install); re-installed to ~/.claude with no
+drift.

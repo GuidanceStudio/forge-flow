@@ -1,6 +1,6 @@
 ---
 name: forge-flow
-description: Design a Markdown dev plan or execute it milestone by milestone with full autonomy. Three modes: `design` (plan), `TDD` (test-first, default), `IDD` (exploratory). Closed loop: plan → test → implement → simplify → verify → commit → push. Use when planning work or executing a devplan end-to-end.
+description: Design a Markdown dev plan or execute it milestone by milestone with full autonomy. Three modes — `design` (plan), `TDD` (test-first, default), `IDD` (exploratory) — plus a `scaffold` route that mounts a project's operational spine (one-command bring-up + tiered test runner). Closed loop: plan → test → implement → simplify → verify → commit → push. Use when planning work, executing a devplan end-to-end, or scaffolding a runnable project.
 ---
 
 # Forge-flow — Router
