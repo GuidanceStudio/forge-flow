@@ -1361,3 +1361,40 @@ EXECUTOR-CORE.md (verify-step in "Update the devplan", devplan-in-commit rule in
 "Commit & push", ❌ in Common rules, sweep in Completion) and the green suite
 (content + 24/24 install). This commit is itself the first to ship under the new
 gate — the devplan bookkeeping is staged with the milestone.
+
+---
+
+## Follow-up — Test specificity (2026-06-24)
+
+### M34: Anchor content assertions to milestone-unique phrases ✅
+
+**Why:** Some content-contract assertions check a generic token that now appears
+in more than one milestone — e.g. `"opt-out"` occurs twice in DESIGN.md (M30 and
+M32). A regression in one milestone's clause is masked by the other milestone's
+identical token, so the guard stays green while the behavior is gone. Found in the
+2026-06-24 self-review: a weak guard is worse than none because it reads as
+coverage. `tests/test_content.sh` should fail when *that* milestone's content is
+removed, not merely when the word disappears everywhere.
+
+**Approach:** For each milestone whose key assertion is a shared/generic token,
+add a milestone-unique anchor — a distinctive sentence fragment only that
+milestone contains — to `tests/test_content.sh`. Keep the existing broad checks
+(they still guard against total deletion); the anchors are additive. Spot-check
+the red path: removing the milestone's clause must make its anchor fail.
+
+**Tasks:**
+- [x] Add an M30-unique anchor (scaffold-pointer opt-out clause "drops it, recorded under") to `tests/test_content.sh`
+- [x] Add an M32-unique anchor (live-test-task opt-out clause "drops the live task") to `tests/test_content.sh`
+- [x] Red-path spot check: deleting each clause makes only its own anchor fail
+- [x] Run all shell test suites
+- [x] Commit & push
+
+**Done when:** M30 and M32 each have a content assertion no other milestone's text
+can satisfy, the red path is spot-checked, and the suite is green.
+
+**Notes:** Executed in TDD-ish mode (the change *is* test code). Replaced the two
+generic `"opt-out"` checks — which the other milestone's identical token could
+satisfy — with milestone-unique opt-out clauses: M30 → "drops it, recorded under",
+M32 → "drops the live task". Red path verified: deleting M30's clause fails only
+the M30 anchor, deleting M32's fails only the M32 anchor (DESIGN.md restored from
+git after each). Suite green (content + 24/24 install).

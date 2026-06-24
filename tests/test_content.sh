@@ -221,7 +221,8 @@ contains "$DESIGN" "live/e2e tier"
 contains "$DESIGN" "Reproducibility spine pointer"
 contains "$DESIGN" "consider forge-flow scaffold before executing"
 contains "$DESIGN" "never add a scaffolding milestone"
-contains "$DESIGN" "opt-out"
+# M30-unique opt-out clause (M32 says "drops the live task" instead)
+contains "$DESIGN" "drops it, recorded under"
 contains "$DESIGN" "runnable apps"
 
 # ---- M31: executor reproducibility guardrails ----
@@ -243,7 +244,8 @@ contains "$DESIGN" "Test: live"
 contains "$DESIGN" "non-prod credentials"
 contains "$DESIGN" "scaffolded live tier"
 contains "$DESIGN" "deliberately mocks everything"
-contains "$DESIGN" "opt-out"
+# M32-unique opt-out clause (M30 says "drops it, recorded under" instead)
+contains "$DESIGN" "drops the live task"
 
 # ---- M33: bookkeeping verification gate ----
 # Marking a milestone done is a verified, committed gate, not advisory.
