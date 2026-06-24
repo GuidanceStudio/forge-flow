@@ -6,6 +6,8 @@ DESIGN="$REPO_ROOT/forge-flow/DESIGN.md"
 TDD="$REPO_ROOT/forge-flow/TDD.md"
 IDD="$REPO_ROOT/forge-flow/IDD.md"
 EXECUTOR_CORE="$REPO_ROOT/forge-flow/EXECUTOR-CORE.md"
+SCAFFOLD="$REPO_ROOT/forge-flow/SCAFFOLD.md"
+SKILL="$REPO_ROOT/forge-flow/SKILL.md"
 ROOT_README="$REPO_ROOT/README.md"
 SKILL_README="$REPO_ROOT/forge-flow/README.md"
 WORKFLOW="$REPO_ROOT/.github/workflows/tests.yml"
@@ -182,6 +184,35 @@ contains "$EXECUTOR_CORE" "debt registered"
 
 contains_flat "$ROOT_README" "design → implement → simplify"
 contains_flat "$SKILL_README" "design → implement → simplify"
+
+# ---- M29: scaffold route ----
+test -f "$SCAFFOLD" || fail "SCAFFOLD.md not found"
+# Router knows the scaffold route
+contains "$SKILL" "scaffold"
+contains "$SKILL" "SCAFFOLD.md"
+# Generation contract: one-command bring-up + tiered runner
+contains "$SCAFFOLD" "one-command bring-up"
+contains "$SCAFFOLD" "readiness-poll"
+contains "$SCAFFOLD" "run_tests.sh"
+contains "$SCAFFOLD" ".env.example"
+for tier in unit integration live; do
+    contains "$SCAFFOLD" "$tier"
+done
+contains "$SCAFFOLD" "skip-with-reason"
+contains "$SCAFFOLD" "exit code"
+# Idempotent generation, never clobber
+contains "$SCAFFOLD" "idempotent"
+contains "$SCAFFOLD" "never clobber"
+# Prod-isolation skeleton
+contains "$SCAFFOLD" ".env.test"
+# Runnable-app guard
+contains "$SCAFFOLD" "runnable"
+contains "$SCAFFOLD" "refuse"
+# Explicit TODO markers for project-specific bits
+contains "$SCAFFOLD" "TODO"
+# Documented in both READMEs
+contains "$ROOT_README" "scaffold"
+contains "$SKILL_README" "scaffold"
 
 # ---- M33: bookkeeping verification gate ----
 # Marking a milestone done is a verified, committed gate, not advisory.

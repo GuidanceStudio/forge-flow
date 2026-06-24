@@ -1145,7 +1145,7 @@ setup and a first-class live tier.
 
 Recommended order: M29 → M30 → M31 → M32.
 
-### M29: Add the `scaffold` route — mount the operational spine
+### M29: Add the `scaffold` route — mount the operational spine ✅
 
 **Why:** Every project needs the same spine (one-command bring-up, tiered test
 runner, live tests with non-prod creds), but forge-flow can't mount it — the user
@@ -1170,18 +1170,33 @@ runnable apps/services — refuses on a pure library/skill/static project with a
 clear message.
 
 **Tasks:**
-- [ ] Add `scaffold` token dispatch to SKILL.md router
-- [ ] Write `forge-flow/SCAFFOLD.md`: stack + idiom detection, idempotent generation, standard scope, explicit TODO markers, runnable-app guard
-- [ ] Encode the sibling-repo conventions (readiness-poll, skip-with-reason, exit codes, prod isolation) as the generation contract
-- [ ] Test: content — `tests/test_content.sh` asserts the route in SKILL.md + SCAFFOLD.md contract terms
-- [ ] Test: live — run `scaffold` on a throwaway sample project and assert the generated runner executes green and re-running doesn't clobber
-- [ ] Update `forge-flow/README.md` + top-level README to document the route
-- [ ] Commit & push
+- [x] Add `scaffold` token dispatch to SKILL.md router
+- [x] Write `forge-flow/SCAFFOLD.md`: stack + idiom detection, idempotent generation, standard scope, explicit TODO markers, runnable-app guard
+- [x] Encode the sibling-repo conventions (readiness-poll, skip-with-reason, exit codes, prod isolation) as the generation contract
+- [x] Test: content — `tests/test_content.sh` asserts the route in SKILL.md + SCAFFOLD.md contract terms
+- [x] Test: live — run `scaffold` on a throwaway sample project and assert the generated runner executes green and re-running doesn't clobber
+- [x] Update `forge-flow/README.md` + top-level README to document the route
+- [x] Commit & push
 
 **Done when:** `forge-flow scaffold` on a runnable project with no spine produces a
 working, idempotent bring-up + tiered test-runner (verified by running them);
 re-running it does not clobber; a non-runnable project is refused with a clear
 message; `tests/test_content.sh` passes.
+
+**Notes:** Executed in TDD mode. Content contract written red-first (5+ new
+assertions: SCAFFOLD.md presence, router token, bring-up/runner/tier/skip-with-
+reason/exit-code/idempotent/prod-isolation/runnable-guard/TODO terms), then
+SKILL.md + SCAFFOLD.md + both READMEs made them green. **Live test performed**
+(not CI-automated — the playbook is agent-driven): scaffolded a throwaway Python
+service in the scratchpad following SCAFFOLD.md, then ran the generated spine —
+`run_tests.sh all` → unit PASS, integration/live SKIP-with-reason, exit 0;
+`dev.sh` → readiness-poll reached ready, integration PASS against the live
+service, `--down` tore it down; re-running generation was idempotent (identical
+checksums, "exists, skipping"). The live run caught a real defect — `source`-ing
+a `.env` whose placeholders contain `<…>` shell metacharacters fails — so the
+bring-up contract in SCAFFOLD.md now mandates parsing `KEY=VALUE` instead of
+sourcing. Done-when verified end-to-end; full suite green (content + 24/24
+install).
 
 ### M30: DESIGN suggests `scaffold` when the spine is missing (opt-out)
 

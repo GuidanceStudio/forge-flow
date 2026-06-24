@@ -9,13 +9,16 @@ installable into any coding assistant that reads skills.
 
 ## What it does
 
-Three modes (see `SKILL.md` for full details):
+Three modes plus a `scaffold` route (see `SKILL.md` for full details):
 - **`design`** — structured discovery → proposal → approval → write → validate.
   Passes milestones through an essentiality checkpoint.
 - **`TDD` (DEFAULT)** — test-first per milestone: requirement → red tests →
   green implementation → simplify → commit & push.
 - **`IDD`** — implement-first: code → tests → simplify → commit. For
   exploratory milestones.
+- **`scaffold`** — mount the operational spine (one-command bring-up + tiered
+  `run_tests.sh` with unit/integration/live tiers) outside the milestone loop.
+  Generates idempotently, never clobbers, and refuses non-runnable projects.
 
 Execution modes run autonomously milestone by milestone, committing and
 pushing after each, stopping only on real blockers.
@@ -31,10 +34,11 @@ file; Git with a remote for push.
 
 ## Skill files
 
-- `SKILL.md` — entry point and router (design / TDD / IDD)
+- `SKILL.md` — entry point and router (design / TDD / IDD / scaffold)
 - `DESIGN.md` — planning playbook (discovery, proposal, writing, validation)
 - `TDD.md` — Test Driven Development execution playbook (default)
 - `IDD.md` — Implementation Driven Development execution playbook
+- `SCAFFOLD.md` — operational-spine generation playbook (bring-up + tiered runner)
 - `EXECUTOR-CORE.md` — shared behavior for execution modes (operating mode,
   preflight, simplify ladder, ponytail, debt registration, test policy, etc.)
 - `agents/openai.yaml` — optional Codex interface metadata (ignored by
@@ -60,6 +64,7 @@ Invoke however your assistant invokes skills, then pick a mode:
 /forge-flow IDD                     # execute IDD (exploratory)
 /forge-flow TDD devplan/v0.9.md     # TDD on a specific devplan file
 /forge-flow devplan/v0.9.md         # path alone defaults to TDD
+/forge-flow scaffold                # mount the operational spine (runnable apps)
 ```
 
 - **TDD** for clear, testable requirements (bug fixes, features, refactors).
