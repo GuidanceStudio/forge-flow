@@ -3,8 +3,9 @@
 Unified skill for coding agents that handles the full forge-flow
 lifecycle: planning (`design`) and execution (`TDD` / `IDD`).
 
-One skill, three modes (see `forge-flow/SKILL.md` for full details):
+One skill, three modes plus a `scaffold` route (see `forge-flow/SKILL.md` for full details):
 - **`design`** — plan milestones; **`TDD`** (default) — test-first; **`IDD`** — implement-first for exploration.
+- **`scaffold`** — mount the operational spine (one-command bring-up + tiered `run_tests.sh` with a live tier) outside the milestone loop. Runnable apps only.
 
 Across modes: **design → implement → simplify** — design removes
 speculative work before it becomes a milestone; execution applies the
@@ -40,7 +41,7 @@ Invoke however your assistant invokes skills, then pick a mode:
 
 | Assistant | Invocation |
 |---|---|
-| Claude Code / Codex / opencode | `/forge-flow design`, `/forge-flow TDD`, `/forge-flow IDD`, or `/forge-flow` |
+| Claude Code / Codex / opencode | `/forge-flow design`, `/forge-flow TDD`, `/forge-flow IDD`, `/forge-flow scaffold`, or `/forge-flow` |
 | Gemini CLI | `/forge-flow` (installed as a TOML command) |
 | Cursor / Windsurf / Copilot / Aider | reference forge-flow from `AGENTS.md`, then ask |
 
@@ -126,10 +127,12 @@ forge-flow/
 ├── DEVPLAN.md         ← this project's own dev plan
 ├── tests/             ← installer test suite (bash tests/test_install.sh)
 └── forge-flow/           ← the flat, assistant-neutral skill payload
-    ├── SKILL.md       ← router (design / TDD / IDD)
+    ├── SKILL.md       ← router (design / TDD / IDD / scaffold)
     ├── DESIGN.md      ← planning playbook
     ├── TDD.md         ← test-first execution playbook
     ├── IDD.md         ← implementation-first execution playbook
+    ├── EXECUTOR-CORE.md ← shared execution behavior (TDD/IDD)
+    ├── SCAFFOLD.md    ← operational-spine generation playbook
     ├── README.md      ← skill payload docs
     └── agents/openai.yaml  ← optional Codex metadata
 ```

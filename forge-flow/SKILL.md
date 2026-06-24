@@ -5,11 +5,12 @@ description: Design a Markdown dev plan or execute it milestone by milestone wit
 
 # Forge-flow — Router
 
-This skill has three modes:
+This skill has three execution modes plus a `scaffold` route:
 
 - **`design`** — create or update a dev plan. Proposes in chat, writes only after approval.
 - **`TDD` (RECOMMENDED DEFAULT)** — test-first: write tests, run red, implement green, simplify, commit.
 - **`IDD`** — implement-first for exploratory work: code then tests, simplify, commit.
+- **`scaffold`** — mount the operational spine (one-command bring-up + tiered test runner) outside the milestone loop. Runnable apps only.
 
 ## Scope
 
@@ -22,6 +23,7 @@ Parse the first token of the args:
 - `design` or `design <description>` → design mode
 - `TDD <devplan-path>` → TDD mode
 - `IDD <devplan-path>` → IDD mode
+- `scaffold` → scaffold route (mount the operational spine; runnable apps only)
 - `<devplan-path>` (path alone, no mode token) → TDD (default)
 - no args → ask the user, in their language, whether they want
   `design` (create/update the plan) or execution — `TDD` (recommended)
@@ -41,11 +43,12 @@ case match it.
 ## Routing
 
 1. Announce the mode at the very start: `Mode: design`, `Mode: TDD`,
-   or `Mode: IDD`.
+   `Mode: IDD`, or `Mode: scaffold`.
 2. Read the corresponding playbook file (in this skill directory):
    - design → `DESIGN.md`
    - TDD → `TDD.md`
    - IDD → `IDD.md`
+   - scaffold → `SCAFFOLD.md`
 3. Follow that playbook end-to-end. Do not load any other playbook
    unless the chosen playbook explicitly instructs a per-milestone
    fallback.
