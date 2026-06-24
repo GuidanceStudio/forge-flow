@@ -150,8 +150,9 @@ same location+title pair already exists (idempotent).
 
 ### Update the devplan
 
-- Mark the milestone as done:
-  `- [x] Milestone X: Name ✅`
+- Mark the milestone as done — tick every task and append the done
+  marker to the milestone heading, matching the heading level the devplan
+  uses: `## MNN: <title> ✅`.
 - **Verify the bookkeeping landed.** Re-read the milestone block and
   confirm every task is checked (`- [x]`) and the heading carries its
   done marker. The rule:
@@ -178,6 +179,11 @@ same location+title pair already exists (idempotent).
   commit. The work and the record that it is done ship together.
 - Commit following the repo's convention detected in preflight
   (default `MNN: <title>`).
+- **Verify the devplan shipped in the commit.** After committing, run
+  `git show --stat HEAD` and confirm the active devplan file is listed.
+  If it is missing, `git commit --amend` to add it before pushing — the
+  bookkeeping must travel in the milestone commit, never in a later
+  catch-up. (Staging is asserted above; this is the check that proves it.)
 - Push to the active branch when network/auth/repo policy allows it.
 - If push or commit requires escalation, authentication, or network
   access not currently available, record the exact blocker in the
