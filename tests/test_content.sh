@@ -183,4 +183,12 @@ contains "$EXECUTOR_CORE" "debt registered"
 contains_flat "$ROOT_README" "design → implement → simplify"
 contains_flat "$SKILL_README" "design → implement → simplify"
 
+# ---- M33: bookkeeping verification gate ----
+# Marking a milestone done is a verified, committed gate, not advisory.
+contains "$EXECUTOR_CORE" "Verify the bookkeeping landed"
+contains "$EXECUTOR_CORE" "no unchecked task may remain for the milestone being closed"
+contains "$EXECUTOR_CORE" "Stage the devplan with the milestone"
+contains "$EXECUTOR_CORE" "Never commit a milestone whose devplan tasks and heading aren't"
+contains "$EXECUTOR_CORE" "Sweep the devplan for unfinished bookkeeping"
+
 echo "content contract passed"

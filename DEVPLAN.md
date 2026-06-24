@@ -1279,7 +1279,7 @@ track its own. This milestone turns marking-done into a verified completion gate
 Execution order: **M33 first** (so the hardened discipline is in place), then the
 v0.5 milestones M29 → M30 → M31 → M32.
 
-### M33: Make "mark the milestone done" a verified, committed gate
+### M33: Make "mark the milestone done" a verified, committed gate ✅
 
 **Why:** The executor's "Update the devplan" step is advisory — it tells the run
 to tick the boxes but never checks that it happened, and the devplan file isn't
@@ -1302,14 +1302,22 @@ assertion that EXECUTOR-CORE.md carries the verify-bookkeeping-before-commit
 contract so it can't silently regress.
 
 **Tasks:**
-- [ ] EXECUTOR-CORE.md "Update the devplan": add the re-read / verify-no-`[ ]` step
-- [ ] EXECUTOR-CORE.md "Commit & push": require the devplan among staged paths
-- [ ] EXECUTOR-CORE.md Common rules: add the ❌ never-commit-unmarked rule
-- [ ] EXECUTOR-CORE.md Completion: add the end-of-run unmarked-milestone sweep
-- [ ] Extend `tests/test_content.sh` to assert the bookkeeping-gate contract
-- [ ] Run all shell test suites
-- [ ] Commit & push
+- [x] EXECUTOR-CORE.md "Update the devplan": add the re-read / verify-no-`[ ]` step
+- [x] EXECUTOR-CORE.md "Commit & push": require the devplan among staged paths
+- [x] EXECUTOR-CORE.md Common rules: add the ❌ never-commit-unmarked rule
+- [x] EXECUTOR-CORE.md Completion: add the end-of-run unmarked-milestone sweep
+- [x] Extend `tests/test_content.sh` to assert the bookkeeping-gate contract
+- [x] Run all shell test suites
+- [x] Commit & push
 
 **Done when:** EXECUTOR-CORE.md makes marking a milestone done a verified step
 whose result must be in the milestone commit, the completion recap sweeps for any
 milestone left with `[ ]`, and `tests/test_content.sh` asserts the contract.
+
+**Notes:** Executed in TDD mode — the five `test_content.sh` assertions were
+written first and confirmed red ("missing: Verify the bookkeeping landed"), then
+the four EXECUTOR-CORE.md edits made them green. Done-when verified by re-reading
+EXECUTOR-CORE.md (verify-step in "Update the devplan", devplan-in-commit rule in
+"Commit & push", ❌ in Common rules, sweep in Completion) and the green suite
+(content + 24/24 install). This commit is itself the first to ship under the new
+gate — the devplan bookkeeping is staged with the milestone.
