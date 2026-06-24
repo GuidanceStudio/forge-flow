@@ -1198,7 +1198,7 @@ bring-up contract in SCAFFOLD.md now mandates parsing `KEY=VALUE` instead of
 sourcing. Done-when verified end-to-end; full suite green (content + 24/24
 install).
 
-### M30: DESIGN suggests `scaffold` when the spine is missing (opt-out)
+### M30: DESIGN suggests `scaffold` when the spine is missing (opt-out) ✅
 
 **Why:** DESIGN should steer toward the spine during from-scratch or foundational
 setup — but as a pointer to the route, not by injecting scaffolding into the plan
@@ -1214,16 +1214,24 @@ it, recorded under Out of scope. Never auto-runs scaffold; never adds a
 scaffolding milestone; small tweaks and non-runnable projects stay silent.
 
 **Tasks:**
-- [ ] Broaden DESIGN.md Discovery source #6 to detect bring-up + runner + live tier
-- [ ] Add the one-line `scaffold` pointer to Phase 3, scale-gated (Medium+/foundational) and runnable-apps-only
-- [ ] Specify opt-out + record-as-out-of-scope; never auto-run, never a scaffolding milestone
-- [ ] Test: content — assert the detection terms + the gated scaffold pointer exist in DESIGN.md
-- [ ] Update docs if needed
-- [ ] Commit & push
+- [x] Broaden DESIGN.md Discovery source #6 to detect bring-up + runner + live tier
+- [x] Add the one-line `scaffold` pointer to Phase 3, scale-gated (Medium+/foundational) and runnable-apps-only
+- [x] Specify opt-out + record-as-out-of-scope; never auto-run, never a scaffolding milestone
+- [x] Test: content — assert the detection terms + the gated scaffold pointer exist in DESIGN.md
+- [x] Update docs if needed (none — pointer lives in DESIGN.md; READMEs already cover the route via M29)
+- [x] Commit & push
 
 **Done when:** a Medium+ plan for a runnable project with no spine shows the
 one-line scaffold pointer; a small tweak and a non-runnable project do not; an
 explicit "no" is honored and noted out-of-scope.
+
+**Notes:** Executed in TDD mode. Eight content assertions written red-first
+(failed on "Reproducibility spine pointer"), then DESIGN.md source 6 broadened to
+"Reproducibility & test inventory" (bring-up + runner + live/e2e detection) and a
+"Reproducibility spine pointer" subsection added to Phase 3 — scale-gated
+(Medium+/foundational), runnable-apps-only, opt-out → Out of scope, never
+auto-run, never a scaffolding milestone. Done-when verified against the playbook
+text; suite green (content + 24/24 install).
 
 ### M31: EXECUTOR reproducibility guardrails — no manual steps + first-class live tier
 
