@@ -143,23 +143,35 @@ or error handling that prevents data-loss. It also never removes a
 verified project convention. If the smaller option conflicts with one
 of these constraints, the constraint wins.
 
-#### Reproducibility spine pointer
+#### Operational spine — propose explicitly
 
 For **runnable apps/services** at **Medium+ scale, or when the plan
 establishes or extends foundations**, check the spine inventory from
-discovery (source 6). If a one-command bring-up, a replicable test
-runner, or a live/e2e tier is **missing**, emit a single line in the
-proposal:
+discovery (source 6): a one-command bring-up, a replicable test runner, a
+live/e2e tier. When any piece is **missing**, do not bury it in a passive
+line — make an **explicit, default-include proposal** the user must accept
+or actively opt out of, and **record the decision in the devplan** (a
+prerequisite line in the plan header when included, **Out of scope** when
+declined). Default is **include**; only an explicit "no"
+drops it, recorded under **Out of scope**.
 
-> No one-command bring-up / replicable runner / live/e2e tier detected —
-> consider forge-flow scaffold before executing.
+Branch on project state:
 
-This is a pointer, not a milestone. **Never auto-run scaffold**, and
-never add a scaffolding milestone to the plan (that would be a
-preparation milestone, which this skill forbids). It is **opt-out** — a single
-explicit "no" drops it, recorded under **Out of scope**. Stay silent for
-small tweaks and for non-runnable projects (libraries, skills, static
-sites).
+- **Greenfield** (building the app from scratch): scaffold cannot run before
+  the app exists, so attach the spine to the **first runnable milestone** —
+  folded into it, or a `forge-flow scaffold` pass right after. Propose: *"This
+  plan stands up a runnable app from scratch; I'll mount the operational spine
+  (one-command bring-up + tiered test runner + e2e smoke) on the first runnable
+  milestone. Reply 'no spine' to opt out."*
+- **Brownfield** (app already runs, spine missing): the app exists, so propose
+  running `forge-flow scaffold` **before executing** — *"No one-command bring-up
+  / replicable runner / live/e2e tier detected; I'll run forge-flow scaffold
+  first. Reply 'no spine' to opt out."*
+
+**Never auto-run scaffold**, and never add a scaffolding milestone to the plan
+(a preparation milestone this skill forbids) — the spine rides inside the first
+runnable milestone or a scaffold pass, never its own `MNN`. Stay silent for
+small tweaks and for non-runnable projects (libraries, skills, static sites).
 
 Choose the template based on how many milestones the plan needs.
 

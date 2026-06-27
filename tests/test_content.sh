@@ -219,8 +219,8 @@ contains "$SKILL_README" "scaffold"
 contains "$DESIGN" "Reproducibility & test inventory"
 contains "$DESIGN" "one-command bring-up"
 contains "$DESIGN" "live/e2e tier"
-contains "$DESIGN" "Reproducibility spine pointer"
-contains "$DESIGN" "consider forge-flow scaffold before executing"
+contains "$DESIGN" "Operational spine"
+contains "$DESIGN" "default-include proposal"
 contains "$DESIGN" "never add a scaffolding milestone"
 # M30-unique opt-out clause (M32 says "drops the live task" instead)
 contains "$DESIGN" "drops it, recorded under"
@@ -277,5 +277,17 @@ contains "$EXECUTOR_CORE" "no unchecked task may remain for the milestone being 
 contains "$EXECUTOR_CORE" "Stage the devplan with the milestone"
 contains "$EXECUTOR_CORE" "Never commit a milestone whose devplan tasks and heading aren't"
 contains "$EXECUTOR_CORE" "Sweep the devplan for unfinished bookkeeping"
+
+# ---- M38: explicit, default-include operational-spine proposal ----
+# DESIGN proposes the spine explicitly, default-include, decision recorded in the devplan.
+contains "$DESIGN" "propose explicitly"
+contains "$DESIGN" "default-include proposal"
+contains "$DESIGN" "record the decision in the devplan"
+contains "$DESIGN" "no spine"
+contains "$DESIGN" "Greenfield"
+contains "$DESIGN" "Brownfield"
+contains "$DESIGN" "first runnable milestone"
+# Executor handles the greenfield day-zero case (no app to wrap yet).
+contains "$EXECUTOR_CORE" "first runnable milestone of a greenfield project"
 
 echo "content contract passed"
