@@ -138,7 +138,11 @@ same location+title pair already exists (idempotent).
   running: start the stack with the one-command bring-up, never a manual
   sequence, and verify behavior against the running service. If no
   bring-up exists, run `forge-flow scaffold` to create it (or extend it)
-  rather than starting things by hand.
+  rather than starting things by hand. **Exception — greenfield day zero:**
+  on the first runnable milestone of a greenfield project the app does not
+  exist yet, so mount the spine **as part of that milestone** (per the spine
+  decision recorded in DESIGN); scaffold has nothing to wrap before the app
+  exists.
 - If the condition cannot be verified locally (needs credentials,
   external services), record precisely what remains to be verified
   manually.

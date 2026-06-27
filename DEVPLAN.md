@@ -1520,3 +1520,41 @@ guards all of it; suite green.
 `Devplan` / old payload-README title remain. Plan-file senses of "devplan" left
 intact. Suite green (content + 24/24 install); re-installed to ~/.claude with no
 drift.
+
+## Follow-up — Greenfield spine proposal (2026-06-27)
+
+### M38: DESIGN proposes the operational spine explicitly (default-include, greenfield-aware) ✅
+
+**Why:** The v0.5 spine pointer (M30) is a passive one-liner, easy to miss — and it
+was missed on a real greenfield run, leaving a runnable app with no tiered test
+runner or e2e tier. Make the spine an **explicit, default-include proposal** the
+user must accept or actively opt out of, recorded in the devplan, and fix the
+greenfield day-zero ordering.
+
+**Approach:** In `DESIGN.md`, replace the "Reproducibility spine pointer" subsection
+with "Operational spine — propose explicitly": default-include, explicit opt-out
+("no spine"), decision recorded in the devplan; branch **greenfield** (scaffold
+cannot precede the app → attach the spine to the first runnable milestone, never a
+prep milestone) vs **brownfield** (app exists → scaffold before executing). In
+`EXECUTOR-CORE.md`, add the greenfield day-zero exception to "Use the scaffolded
+bring-up". Update the M30 content anchors and add M38 guards in
+`tests/test_content.sh`.
+
+**Tasks:**
+- [x] DESIGN.md: replace spine pointer with the explicit default-include "Operational spine" proposal (greenfield/brownfield branches, decision recorded in the devplan)
+- [x] EXECUTOR-CORE.md: greenfield day-zero exception in "Verify Done when"
+- [x] tests/test_content.sh: update M30 anchors; add M38 guards (red → green)
+- [x] Run test_content.sh + test_install.sh (green)
+- [x] Commit & push
+- [x] Deploy: `./install.sh --target claude --force`
+
+**Done when:** DESIGN proposes the spine explicitly (default-include, opt-out "no
+spine", decision recorded in the devplan) with greenfield/brownfield branches;
+EXECUTOR-CORE has the greenfield first-milestone exception; `test_content.sh` and
+`test_install.sh` green; deployed to `~/.claude`.
+
+**Notes:** Content-contract TDD — added M38 guards (red), then edited DESIGN/EXECUTOR
+to green; updated the M30 anchors (heading renamed to "Operational spine — propose
+explicitly", "consider scaffold" line replaced with "default-include proposal").
+Suites green (content + 24/24 install). Supersedes the M30 passive pointer; triggered
+by a real greenfield run (football-reborn editor) where the spine was skipped.
