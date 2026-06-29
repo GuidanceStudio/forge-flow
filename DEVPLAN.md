@@ -1558,3 +1558,38 @@ to green; updated the M30 anchors (heading renamed to "Operational spine — pro
 explicitly", "consider scaffold" line replaced with "default-include proposal").
 Suites green (content + 24/24 install). Supersedes the M30 passive pointer; triggered
 by a real greenfield run (football-reborn editor) where the spine was skipped.
+
+## Follow-up — YAML-safe skill metadata (2026-06-29)
+
+### M39: Make SKILL frontmatter YAML-safe ✅
+
+**Why:** Codex skipped `forge-flow` because `SKILL.md` frontmatter has an
+unquoted `description` containing `Closed loop:`, which is invalid YAML. The
+installed copy must load cleanly so the skill is discoverable again.
+
+**Approach:** Change `forge-flow/SKILL.md` frontmatter `description` to a
+YAML-safe folded scalar while preserving the same discovery text. Add a
+content-contract test that parses the `SKILL.md` frontmatter as YAML so future
+descriptions with `: ` fail in CI before install. Run the content and installer
+suites, then deploy through the installer to the Codex skill directory.
+
+**Tasks:**
+- [x] Make `forge-flow/SKILL.md` frontmatter parse as YAML
+- [x] Add a `tests/test_content.sh` guard for valid `SKILL.md` frontmatter YAML
+- [x] Run `bash tests/test_content.sh`
+- [x] Run `bash tests/test_install.sh`
+- [x] Deploy with `./install.sh --target codex --force`
+- [x] Verify the installed Codex `SKILL.md` parses as YAML
+- [x] Commit & push
+
+**Done when:** Source and installed Codex `forge-flow/SKILL.md` both parse as
+YAML, both shell suites pass, and Codex no longer skips the skill for invalid
+metadata.
+
+**Notes:** TDD content-contract fix. Added a `tests/test_content.sh` guard that
+parses `SKILL.md` frontmatter with PyYAML when available and a conservative
+stdlib fallback otherwise; it failed red on the existing `Closed loop:` scalar.
+Changed the source `description` to a folded scalar, then `test_content.sh` and
+`test_install.sh` passed. Deployed to `~/.codex/skills/forge-flow`; source and
+installed Codex `SKILL.md` both parse as YAML, and `install.sh --target codex
+--check` reports no drift.
