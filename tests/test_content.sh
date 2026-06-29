@@ -54,6 +54,81 @@ done
 contains "$ROOT_README" "bash tests/test_content.sh"
 contains "$WORKFLOW" "bash tests/test_content.sh"
 
+python3 - "$SKILL" <<'PY'
+from pathlib import Path
+import re
+import sys
+
+
+def fail(message):
+    raise SystemExit(f"FAIL: {message}")
+
+
+path = Path(sys.argv[1])
+text = path.read_text()
+if not text.startswith("---\n"):
+    fail(f"{path} missing opening frontmatter marker")
+
+parts = text.split("---\n", 2)
+if len(parts) < 3:
+    fail(f"{path} missing closing frontmatter marker")
+
+frontmatter = parts[1]
+
+try:
+    import yaml
+except ModuleNotFoundError:
+    def parse_minimal_frontmatter(block):
+        data = {}
+        lines = block.splitlines()
+        i = 0
+        while i < len(lines):
+            line = lines[i]
+            if not line.strip():
+                i += 1
+                continue
+            if line[:1].isspace():
+                fail(f"{path} has unexpected indented frontmatter line: {line!r}")
+            if ": " in line:
+                key, value = line.split(": ", 1)
+            elif line.endswith(":"):
+                key, value = line[:-1], ""
+            else:
+                fail(f"{path} has unparseable frontmatter line: {line!r}")
+            if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_-]*", key):
+                fail(f"{path} has invalid frontmatter key: {key!r}")
+            if value in {">", ">-", "|", "|-"}:
+                i += 1
+                chunks = []
+                while i < len(lines) and (not lines[i].strip() or lines[i].startswith("  ")):
+                    chunks.append(lines[i][2:] if lines[i].startswith("  ") else "")
+                    i += 1
+                if value.startswith(">"):
+                    data[key] = " ".join(chunk.strip() for chunk in chunks if chunk.strip())
+                else:
+                    data[key] = "\n".join(chunks)
+                continue
+            if value and value[:1] not in {"'", '"'} and ": " in value:
+                fail(f"{path} has an unquoted scalar containing ': ': {key}")
+            data[key] = value.strip("\"'")
+            i += 1
+        return data
+
+    meta = parse_minimal_frontmatter(frontmatter)
+else:
+    meta = yaml.safe_load(frontmatter)
+
+if not isinstance(meta, dict):
+    fail(f"{path} frontmatter did not parse to a mapping")
+for key in ("name", "description"):
+    if key not in meta:
+        fail(f"{path} frontmatter missing {key}")
+if meta["name"] != "forge-flow":
+    fail(f"{path} frontmatter name is not forge-flow")
+if not isinstance(meta["description"], str) or "scaffold" not in meta["description"]:
+    fail(f"{path} frontmatter description missing scaffold")
+PY
+
 python3 - "$EXECUTOR_CORE" <<'PY'
 from pathlib import Path
 import sys
