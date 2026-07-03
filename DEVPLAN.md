@@ -1634,7 +1634,7 @@ explicit justification in the devplan notes. Reference the protocol from
 - [ ] Test: behavioral — fresh-context pressure run: a scenario with three failed fix attempts must stop and reassess the design, not patch a fourth time; record the outcome in Notes
 - [ ] Run test_content.sh + test_install.sh (green)
 - [ ] Commit & push
-- [ ] Deploy: `./install.sh --force`
+- [ ] Deploy: `./install.sh --target all --force`
 
 **Done when:** EXECUTOR-CORE carries the Stuck protocol and the ❌ rule, both
 mode files reference it, both suites green, deployed; the pressure run shows
@@ -1670,7 +1670,7 @@ Content anchors in `tests/test_content.sh`.
 - [ ] tests/test_content.sh: M41 anchors (red → green)
 - [ ] Run test_content.sh + test_install.sh (green)
 - [ ] Commit & push
-- [ ] Deploy: `./install.sh --force`
+- [ ] Deploy: `./install.sh --target all --force`
 
 **Done when:** Both sections carry the new gates and the ❌ rule exists; both
 suites green; deployed.
@@ -1704,7 +1704,7 @@ detail in batches. Content anchors in `tests/test_content.sh`.
 - [ ] Test: behavioral — validating a sample plan seeded with a "handle errors" task flags it
 - [ ] Run test_content.sh + test_install.sh (green)
 - [ ] Commit & push
-- [ ] Deploy: `./install.sh --force`
+- [ ] Deploy: `./install.sh --target all --force`
 
 **Done when:** Phase 5 lists the three checks, Phase 3 carries the staged
 proposal rule, the seeded placeholder is flagged, both suites green, deployed.
