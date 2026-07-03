@@ -254,7 +254,7 @@ contains "$EXECUTOR_CORE" "measurable threshold"
 
 # Debt registration step present — canonical in EXECUTOR-CORE.md
 contains "$EXECUTOR_CORE" "Register intentional debt"
-contains "$EXECUTOR_CORE" ".code-audit/debt.tsv"
+contains "$EXECUTOR_CORE" ".tech-audit/debt.tsv"
 
 # Debt count in completion recaps — canonical in EXECUTOR-CORE.md
 contains "$EXECUTOR_CORE" "debt registered"

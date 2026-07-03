@@ -109,7 +109,7 @@ intentional trade-offs only.
 ## Register intentional debt
 
 When the simplify pass produced a ponytail: comment, append a row to
-`.code-audit/debt.tsv` in the project root. Schema:
+`.tech-audit/debt.tsv` in the project root. Schema:
 `dim⇥location⇥title⇥ceiling⇥revisit_by`.
 
 - `dim`: D01 (essentiality), D10 (performance), or D14 (correctness).
@@ -326,7 +326,7 @@ Documentation: updated ✅
 [list of milestones with one-line summary each]
 [tests written but not run locally, and why]
 [any intentional TODOs, tech debt, or residual risks left behind]
-[debt registered: N items → .code-audit/debt.tsv]
+[debt registered: N items → .tech-audit/debt.tsv]
 [follow-up work already added back into the devplan]
 ```
 
