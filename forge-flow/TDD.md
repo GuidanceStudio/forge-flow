@@ -3,8 +3,8 @@
 > **Read `EXECUTOR-CORE.md`** for all shared behavior: operating mode,
 > preflight, simplify ladder, ponytail convention, debt registration,
 > shared execution-loop steps (documentation, Done-when verification,
-> devplan update, commit & push), test policy, implementation standards,
-> completion recap template, and common rules.
+> devplan update, commit & push), stuck protocol, test policy,
+> implementation standards, completion recap template, and common rules.
 
 ---
 
@@ -47,6 +47,7 @@ Tests that cannot be run locally are exempt from the red check.
 - Implement the minimum code needed to make the failing tests pass.
 - Run the relevant tests after each meaningful change.
 - Iterate until ALL runnable tests are green.
+- If green won't come, follow the Stuck protocol in EXECUTOR-CORE.md.
 - Don't over-engineer — simplification comes next.
 
 ### 5. ✨ Simplify

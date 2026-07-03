@@ -23,9 +23,10 @@ contains() {
     grep -qF "$text" "$file" || fail "$file missing: $text"
 }
 
+# Whitespace-normalized match: use for phrases that may wrap across lines.
 contains_flat() {
     local file="$1" text="$2"
-    tr '\n' ' ' < "$file" | grep -qF "$text" || fail "$file missing: $text"
+    tr -s '[:space:]' ' ' < "$file" | grep -qF "$text" || fail "$file missing: $text"
 }
 
 contains "$DESIGN" "#### Essentiality checkpoint"
@@ -364,5 +365,22 @@ contains "$DESIGN" "Brownfield"
 contains "$DESIGN" "first runnable milestone"
 # Executor handles the greenfield day-zero case (no app to wrap yet).
 contains "$EXECUTOR_CORE" "first runnable milestone of a greenfield project"
+
+# ---- M40: stuck protocol — root cause before fixes, three-strikes to design review ----
+contains "$EXECUTOR_CORE" "## Stuck protocol"
+contains "$EXECUTOR_CORE" "root-cause hypothesis grounded in observed evidence"
+contains "$EXECUTOR_CORE" "one variable per attempt"
+contains "$EXECUTOR_CORE" "re-run the test unchanged once"
+contains "$EXECUTOR_CORE" "After three failed attempts on the same failure, stop patching"
+contains "$EXECUTOR_CORE" "attempts collectively prove"
+contains "$EXECUTOR_CORE" "never a fourth attempt of the same shape"
+contains "$EXECUTOR_CORE" "Banned moves"
+contains "$EXECUTOR_CORE" "widening an assertion"
+contains_flat "$EXECUTOR_CORE" "swallowing the exception"
+# Matching ❌ Common rule
+contains "$EXECUTOR_CORE" "Never make a fourth same-shape fix attempt"
+# Both mode playbooks reference the protocol
+contains "$TDD" "Stuck protocol"
+contains "$IDD" "Stuck protocol"
 
 echo "content contract passed"
