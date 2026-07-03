@@ -1750,7 +1750,7 @@ Defects found by the cross-skill review of 2026-07-03 (forge-flow,
 tech-audit, uxui-audit). M12–M15 heading markers were reconciled the same
 day (work verifiably shipped in `0975c5f`, `4bf6cb1`, `4f9d33d`, `875f26b`).
 
-### M43: Align debt registry to `.tech-audit/` — restore the ponytail→audit bridge
+### M43: Align debt registry to `.tech-audit/` — restore the ponytail→audit bridge ✅
 
 **Why:** tech-audit renamed its per-project dir to `.tech-audit/`
 (commit `3563276` in its repo): its D01 now reads `.tech-audit/debt.tsv`
@@ -1766,15 +1766,24 @@ in `tests/test_content.sh` (red → green). DEVPLAN history mentioning
 `.code-audit` stays untouched (it is history).
 
 **Tasks:**
-- [ ] EXECUTOR-CORE.md: `.code-audit/debt.tsv` → `.tech-audit/debt.tsv` (debt-registration section + completion recap)
-- [ ] tests/test_content.sh: update the `.code-audit` anchor (red → green)
-- [ ] Run test_content.sh + test_install.sh (green)
-- [ ] Commit & push
-- [ ] Deploy: `./install.sh --target all --force`
+- [x] EXECUTOR-CORE.md: `.code-audit/debt.tsv` → `.tech-audit/debt.tsv` (debt-registration section + completion recap)
+- [x] tests/test_content.sh: update the `.code-audit` anchor (red → green)
+- [x] Run test_content.sh + test_install.sh (green)
+- [x] Commit & push
+- [x] Deploy: `./install.sh --target all --force`
 
 **Done when:** `grep -r ".code-audit" forge-flow/ tests/` returns nothing;
 both suites green; deployed; tech-audit M21 can close by verifying D01
 reads what this skill writes.
+
+**Notes:** Content-contract TDD — flipped the pinned anchor to
+`.tech-audit/debt.tsv` first (red), then renamed the two payload sites
+(debt-registration section + completion-recap line) to green. No negative
+guard for the old literal: the Done-when grep must return nothing across
+`tests/` too, so the test itself cannot carry the string. Done-when verified:
+`grep -r ".code-audit" forge-flow/ tests/` exits 1 (no matches); suites green
+(content + 24/24 install); deployed to all three targets, `--check` OK.
+DEVPLAN history mentions of `.code-audit` left untouched (history).
 
 ### M44: One ladder, one name — fix DESIGN's stale rung list and unify naming
 
