@@ -393,4 +393,17 @@ contains "$EXECUTOR_CORE" "Two-verdict self-check"
 contains_flat "$EXECUTOR_CORE" "nothing implemented beyond the contract"
 contains_flat "$EXECUTOR_CORE" "Never claim completion on stale or unread output"
 
+# ---- M42: DESIGN validation — placeholder scan, coverage, interfaces ----
+contains "$DESIGN" "Placeholder scan"
+contains_flat "$DESIGN" "defer a decision the plan should make"
+contains_flat "$DESIGN" "without naming which errors"
+contains "$DESIGN" "Requirement coverage"
+contains_flat "$DESIGN" "map each requirement"
+contains_flat "$DESIGN" "add a milestone or record it under Out of scope"
+contains "$DESIGN" "Interface consistency"
+contains_flat "$DESIGN" "the producing milestone's Approach names it"
+# Phase 3: staged proposal for large plans
+contains_flat "$DESIGN" "present the skeleton first"
+contains_flat "$DESIGN" "milestone detail in batches"
+
 echo "content contract passed"
