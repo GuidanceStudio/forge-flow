@@ -24,7 +24,7 @@ Execution modes run autonomously milestone by milestone, committing and
 pushing after each, stopping only on real blockers.
 
 Across modes: **design → implement → simplify** — design removes
-speculative work; execution applies the essentiality ladder and re-runs
+speculative work; execution applies the simplify ladder and re-runs
 all applicable tests.
 
 ## Requirements
@@ -50,7 +50,7 @@ follows a single self-contained set of instructions per run.
 ## Ponytail integration
 
 [`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail) is
-Conceptual prior art for the essentiality ladder (MIT). Runtime dependency:
+conceptual prior art for the simplify ladder (MIT). Runtime dependency:
 none. forge-flow imports concepts, not code; its scope, safety, test, and
 completion rules remain authoritative.
 

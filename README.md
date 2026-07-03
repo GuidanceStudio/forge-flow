@@ -9,7 +9,7 @@ One skill, three modes plus a `scaffold` route (see `forge-flow/SKILL.md` for fu
 
 Across modes: **design → implement → simplify** — design removes
 speculative work before it becomes a milestone; execution applies the
-essentiality ladder after behavior is working, then re-runs every test.
+simplify ladder after behavior is working, then re-runs every test.
 
 ## Install
 
@@ -49,8 +49,8 @@ Invoke however your assistant invokes skills, then pick a mode:
 execute it. You can pass a forge-flow file path directly:
 
 ```
-/forge-flow TDD forge-flow/v0.3.md     # TDD on a specific file
-/forge-flow forge-flow/v0.3.md         # path alone defaults to TDD
+/forge-flow TDD devplan/v0.3.md     # TDD on a specific file
+/forge-flow devplan/v0.3.md         # path alone defaults to TDD
 ```
 
 ## Devplan format
@@ -88,7 +88,7 @@ unambiguous, but they are not the preferred format for reliable TDD/IDD runs.
 - **[Kent Beck](https://en.wikipedia.org/wiki/Kent_Beck)** — TDD (red-green-refactor
   cycle, tests first, business requirement articulation), YAGNI principle.
 - **[DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)**
-  (MIT) — Conceptual prior art for the essentiality ladder (`delete:` /
+  (MIT) — Conceptual prior art for the simplify ladder (`delete:` /
   `stdlib:` / `native:` / `yagni:` / `shrink:`), `ponytail:` structured
   comments for intentional shortcuts, debt register, simplification step
   order, comment-weight scan.

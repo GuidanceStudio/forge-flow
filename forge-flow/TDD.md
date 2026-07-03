@@ -52,7 +52,7 @@ Tests that cannot be run locally are exempt from the red check.
 
 ### 5. ✨ Simplify
 
-Run the simplify step from EXECUTOR-CORE.md: apply the 7-rung ladder
+Run the simplify step from EXECUTOR-CORE.md: apply the 7-rung simplify ladder
 (delete → stdlib → native → existing-dep → inline → reduce →
 compress-comments), register ponytail: debt, re-run tests — they must
 stay green. Never simplify away trust-boundary validation, error handling

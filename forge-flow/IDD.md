@@ -39,7 +39,7 @@ the Stuck protocol in EXECUTOR-CORE.md.
 
 ### 4. ✨ Simplify
 
-Run the simplify step from EXECUTOR-CORE.md: apply the 7-rung ladder
+Run the simplify step from EXECUTOR-CORE.md: apply the 7-rung simplify ladder
 (delete → stdlib → native → existing-dep → inline → reduce →
 compress-comments), register ponytail: debt, re-run tests — they must
 stay green. Never simplify away trust-boundary validation, error handling
