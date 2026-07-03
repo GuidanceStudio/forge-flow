@@ -1785,7 +1785,7 @@ guard for the old literal: the Done-when grep must return nothing across
 (content + 24/24 install); deployed to all three targets, `--check` OK.
 DEVPLAN history mentions of `.code-audit` left untouched (history).
 
-### M44: One ladder, one name — fix DESIGN's stale rung list and unify naming
+### M44: One ladder, one name — fix DESIGN's stale rung list and unify naming ✅
 
 **Why:** DESIGN.md's essentiality checkpoint lists five rungs ending in
 "smaller-custom" — a rung that doesn't exist in the canonical 7-rung ladder
@@ -1807,14 +1807,28 @@ capitalization. Update the pinned test anchors in the same pass
 (red → green).
 
 **Tasks:**
-- [ ] DESIGN.md: essentiality-checkpoint parenthetical → the real 7-rung simplify ladder
-- [ ] Unify ladder naming across DESIGN.md, TDD.md, IDD.md, READMEs ("simplify ladder" / "Simplify step")
-- [ ] Root README: `devplan/v0.3.md` example; payload README: fix "Conceptual prior art" capitalization
-- [ ] tests/test_content.sh: update pinned anchors — `smaller-custom`, prior-art phrase (red → green)
-- [ ] Run test_content.sh + test_install.sh (green)
-- [ ] Commit & push
-- [ ] Deploy: `./install.sh --target all --force`
+- [x] DESIGN.md: essentiality-checkpoint parenthetical → the real 7-rung simplify ladder
+- [x] Unify ladder naming across DESIGN.md, TDD.md, IDD.md, READMEs ("simplify ladder" / "Simplify step")
+- [x] Root README: `devplan/v0.3.md` example; payload README: fix "Conceptual prior art" capitalization
+- [x] tests/test_content.sh: update pinned anchors — `smaller-custom`, prior-art phrase (red → green)
+- [x] Run test_content.sh + test_install.sh (green)
+- [x] Commit & push
+- [x] Deploy: `./install.sh --target all --force`
 
 **Done when:** DESIGN's rung list matches EXECUTOR-CORE's ladder 1:1; one
 canonical ladder name resolves from every reference; both README nits
 fixed; both suites green; deployed.
+
+**Notes:** Content-contract TDD — pinned anchors updated first (red on
+"DESIGN.md missing: simplify ladder"): dropped `smaller-custom`, replaced with
+the full 7-rung sequence anchor, split the prior-art loop (root keeps
+"Conceptual" as an em-dash fragment; payload's mid-sentence use is now
+lowercase, the flagged nit), added a stale-name negative guard ("essentiality
+ladder" / "simplification ladder" banned from payload + root README) and a
+`forge-flow/v0.3.md` collision guard. Then nine edits to green: DESIGN Phase 3
+parenthetical → delete → stdlib → native → existing-dep → inline → reduce →
+compress-comments, DESIGN Phase 5 + both READMEs cite "simplify ladder",
+TDD/IDD say "7-rung simplify ladder", root README path example →
+`devplan/v0.3.md`. Done-when verified by grep (stale-name grep exits 1; rung
+shorthand identical to TDD/IDD's citation of the EXECUTOR-CORE ladder); suites
+green (content + 24/24 install); deployed to all three targets, `--check` OK.

@@ -39,18 +39,19 @@ contains "$DESIGN" "project convention"
 # Essentiality checkpoint references EXECUTOR-CORE.md
 contains "$DESIGN" "Essentiality checkpoint"
 contains "$DESIGN" "EXECUTOR-CORE.md"
-contains "$DESIGN" "simplification ladder"
+contains_flat "$DESIGN" "simplify ladder"
 contains "$DESIGN" "delete"
 contains "$DESIGN" "stdlib"
 contains "$DESIGN" "native"
 contains "$DESIGN" "existing-dep"
-contains "$DESIGN" "smaller-custom"
 
 for readme in "$ROOT_README" "$SKILL_README"; do
     contains "$readme" "DietrichGebert/ponytail"
-    contains_flat "$readme" "Conceptual prior art"
     contains_flat "$readme" "Runtime dependency: none"
 done
+contains_flat "$ROOT_README" "Conceptual prior art"
+# Payload README uses the phrase mid-sentence — lowercase (M44 nit)
+contains_flat "$SKILL_README" "is conceptual prior art"
 
 contains "$ROOT_README" "bash tests/test_content.sh"
 contains "$WORKFLOW" "bash tests/test_content.sh"
@@ -405,5 +406,24 @@ contains_flat "$DESIGN" "the producing milestone's Approach names it"
 # Phase 3: staged proposal for large plans
 contains_flat "$DESIGN" "present the skeleton first"
 contains_flat "$DESIGN" "milestone detail in batches"
+
+# ---- M44: one ladder, one name ----
+# DESIGN's checkpoint lists the real 7-rung sequence (no phantom smaller-custom rung)
+contains_flat "$DESIGN" "delete → stdlib → native → existing-dep → inline → reduce → compress-comments"
+# Canonical name — "simplify ladder" — resolves from every reference
+contains_flat "$TDD" "7-rung simplify ladder"
+contains_flat "$IDD" "7-rung simplify ladder"
+contains_flat "$ROOT_README" "simplify ladder"
+contains_flat "$SKILL_README" "simplify ladder"
+for stale in "essentiality ladder" "simplification ladder"; do
+    if grep -rqF "$stale" "$REPO_ROOT/forge-flow" "$ROOT_README"; then
+        fail "stale ladder name still present: $stale"
+    fi
+done
+# README nits: neutral devplan-path example, no payload-dir collision
+contains "$ROOT_README" "devplan/v0.3.md"
+if grep -qF "forge-flow/v0.3.md" "$ROOT_README"; then
+    fail "root README devplan-path example collides with the payload dir"
+fi
 
 echo "content contract passed"

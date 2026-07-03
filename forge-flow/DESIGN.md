@@ -131,9 +131,10 @@ Skip if clear.
 
 #### Essentiality checkpoint
 
-Run the simplification ladder from EXECUTOR-CORE.md against each
-candidate milestone (delete → stdlib → native → existing-dep →
-smaller-custom). Delete or merge milestones that fail the checkpoint.
+Run the simplify ladder (EXECUTOR-CORE.md "Simplify step") against each
+candidate milestone (delete → stdlib → native → existing-dep → inline →
+reduce → compress-comments). Delete or merge milestones that fail the
+checkpoint.
 Record the chosen lower-complexity strategy in the proposal rationale or
 **Approach**.
 
@@ -341,7 +342,7 @@ After writing, re-read the devplan file and run a self-check.
 **Form checks:** every milestone has Why/Approach/Tasks/Done-when; Tasks
 include a test task (`Test: <level> — <what>`); UI milestones have a UX
 field; no forward deps; numbering continuous; no prep-only milestones;
-every milestone passed the EXECUTOR-CORE.md essentiality ladder.
+every milestone passed the EXECUTOR-CORE.md simplify ladder.
 
 **Structure and coherence:** files cited in Approach/Tasks exist or are
 created by a prior milestone; module ordering makes sense (no overwrite
