@@ -212,6 +212,11 @@ Concise list of what can go wrong and how we mitigate it
 What this plan explicitly does NOT do (to prevent scope creep).
 ```
 
+For large plans (6+ milestones), don't land one monolithic blob:
+present the skeleton first (Objective, Approach, Risks, phase list with
+milestone titles), get a nod, then the milestone detail in batches
+(one phase at a time).
+
 Present the proposal in the user's language (per the Language rule in
 `SKILL.md`); the structure above is what matters, not the literal
 section titles.
@@ -342,6 +347,20 @@ every milestone passed the EXECUTOR-CORE.md essentiality ladder.
 created by a prior milestone; module ordering makes sense (no overwrite
 contradictions); project conventions respected; every load-bearing
 assumption was confirmed in the code, not guessed.
+
+**Placeholder scan:** no task may defer a decision the plan should make
+— "handle errors" without naming which errors, "improve X" without the
+observable outcome. Rewrite the task with the concrete decision (or
+take the open question back to Clarification).
+
+**Requirement coverage:** map each requirement from the request and the
+Objective to the milestone implementing it. Uncovered → add a milestone
+or record it under Out of scope.
+
+**Interface consistency:** when a later milestone consumes something an
+earlier one produces (module, endpoint, schema, CLI), the producing
+milestone's Approach names it, and names/contracts match across
+milestones.
 
 **State coverage:** for UI plans, verify empty/error/loading states are
 covered or explicitly deferred.

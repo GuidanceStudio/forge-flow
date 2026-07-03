@@ -1698,7 +1698,7 @@ quality) opening "Update the devplan" ahead of the bookkeeping gate, and the
 three land in the intended sections) + green suites (content + 24/24 install);
 deployed to all three targets, `--check` OK.
 
-### M42: DESIGN validation — placeholder scan, requirement coverage, interface consistency
+### M42: DESIGN validation — placeholder scan, requirement coverage, interface consistency ✅
 
 **Why:** Phase 5 checks form and coherence but misses planning's classic
 failure modes: vague tasks ("handle errors") that defer decisions to
@@ -1721,16 +1721,28 @@ first (Objective, Approach, Risks, phase list), get a nod, then milestone
 detail in batches. Content anchors in `tests/test_content.sh`.
 
 **Tasks:**
-- [ ] DESIGN.md Phase 5: placeholder scan, requirement-coverage map, interface-consistency check
-- [ ] DESIGN.md Phase 3: staged proposal for 6+ milestone plans
-- [ ] tests/test_content.sh: M42 anchors (red → green)
-- [ ] Test: behavioral — validating a sample plan seeded with a "handle errors" task flags it
-- [ ] Run test_content.sh + test_install.sh (green)
-- [ ] Commit & push
-- [ ] Deploy: `./install.sh --target all --force`
+- [x] DESIGN.md Phase 5: placeholder scan, requirement-coverage map, interface-consistency check
+- [x] DESIGN.md Phase 3: staged proposal for 6+ milestone plans
+- [x] tests/test_content.sh: M42 anchors (red → green)
+- [x] Test: behavioral — validating a sample plan seeded with a "handle errors" task flags it
+- [x] Run test_content.sh + test_install.sh (green)
+- [x] Commit & push
+- [x] Deploy: `./install.sh --target all --force`
 
 **Done when:** Phase 5 lists the three checks, Phase 3 carries the staged
 proposal rule, the seeded placeholder is flagged, both suites green, deployed.
+
+**Notes:** Content-contract TDD — 10 anchors red-first ("missing: Placeholder
+scan"), then two DESIGN.md edits to green: Phase 5 gained the three named
+checks (between Structure-and-coherence and State coverage), Phase 3 the
+skeleton-first / batched-detail rule for 6+ milestone plans. Behavioral test
+run against a scratch 2-milestone sample plan (scratchpad, not committed)
+seeded with a bare "Handle errors" task: the Placeholder scan flagged it
+(defers which-errors + observable outcome; rewrite prescribed), Requirement
+coverage showed the Objective's "validated" requirement mapped only to that
+vague task, and Interface consistency caught M2 consuming unnamed "parser
+output" where M1 produces `ContactRow`. Suites green (content + 24/24
+install); deployed to all three targets, `--check` OK.
 
 ## Follow-up — Review findings (2026-07-03)
 
