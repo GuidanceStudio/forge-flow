@@ -383,4 +383,14 @@ contains "$EXECUTOR_CORE" "Never make a fourth same-shape fix attempt"
 contains "$TDD" "Stuck protocol"
 contains "$IDD" "Stuck protocol"
 
+# ---- M41: completion gates — evidence before claims, spec fidelity ----
+contains "$EXECUTOR_CORE" "Evidence before claims"
+contains_flat "$EXECUTOR_CORE" "output and exit code actually read"
+contains_flat "$EXECUTOR_CORE" "Cached, remembered, or partial output does not count"
+contains_flat "$EXECUTOR_CORE" "not verified — run the command instead"
+contains_flat "$EXECUTOR_CORE" "only when it carries the command and its output"
+contains "$EXECUTOR_CORE" "Two-verdict self-check"
+contains_flat "$EXECUTOR_CORE" "nothing implemented beyond the contract"
+contains_flat "$EXECUTOR_CORE" "Never claim completion on stale or unread output"
+
 echo "content contract passed"

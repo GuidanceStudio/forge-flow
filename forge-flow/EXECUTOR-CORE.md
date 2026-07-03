@@ -135,6 +135,13 @@ same location+title pair already exists (idempotent).
 - Verify the milestone's **Done when** condition explicitly — run the
   command, hit the endpoint, observe the behavior it describes. Green
   tests alone do not count unless the condition says exactly that.
+- **Evidence before claims.** A completion claim (tests green, Done-when
+  met) requires a command run in this session with its output and exit
+  code actually read. Cached, remembered, or partial output does not
+  count. Hedged phrasing in a would-be claim ("should", "probably",
+  "seems to") means it is not verified — run the command instead. A
+  subagent's success report counts only when it carries the command and
+  its output.
 - **Use the scaffolded bring-up** when the milestone needs the app
   running: start the stack with the one-command bring-up, never a manual
   sequence, and verify behavior against the running service. If no
@@ -155,6 +162,12 @@ same location+title pair already exists (idempotent).
 
 ### Update the devplan
 
+- **Two-verdict self-check** before marking done:
+  - **Spec:** re-read the milestone's Tasks and Done-when — everything
+    implemented, and nothing implemented beyond the contract.
+    Unrequested extras: delete them via ladder rung 1, or record them
+    in the devplan when genuinely needed.
+  - **Quality:** the simplify pass ran; all applicable tests are green.
 - Mark the milestone as done — tick every task and append the done
   marker to the milestone heading, matching the heading level the devplan
   uses: `## MNN: <title> ✅`.
@@ -335,6 +348,8 @@ Documentation: updated ✅
   marked done — the bookkeeping ships in the milestone commit
 - ❌ Never make a fourth same-shape fix attempt — after three failures
   on the same failure, revisit the design (see Stuck protocol)
+- ❌ Never claim completion on stale or unread output — evidence is a
+  command run in this session whose output you actually read
 - ✅ Encode the business requirement in tests, not the implementation
 - ✅ Ambiguity → choose and proceed
 - ✅ Milestone too large → decompose internally without flagging it

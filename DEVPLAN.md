@@ -1655,7 +1655,7 @@ class and fixed `contains_flat` to whitespace-squeezing instead of a third
 spot-patch. Suites green (content + 24/24 install); deployed to all three
 targets, `--check` OK.
 
-### M41: Completion gates — evidence before claims, spec fidelity before commit
+### M41: Completion gates — evidence before claims, spec fidelity before commit ✅
 
 **Why:** "Verify Done when" says *what* to verify but not what counts as
 verification: a stale test run, a subagent's bare "done", or "should work now"
@@ -1679,16 +1679,24 @@ applicable tests green. (3) One ❌ Common rule against unverified claims.
 Content anchors in `tests/test_content.sh`.
 
 **Tasks:**
-- [ ] EXECUTOR-CORE.md: evidence rules in "Verify Done when" (fresh command, output read, hedge-wording = not verified, subagent reports need command+output)
-- [ ] EXECUTOR-CORE.md: two-verdict self-check (spec fidelity + quality) in "Update the devplan"
-- [ ] EXECUTOR-CORE.md: ❌ Common rule (never claim completion on stale or unread output)
-- [ ] tests/test_content.sh: M41 anchors (red → green)
-- [ ] Run test_content.sh + test_install.sh (green)
-- [ ] Commit & push
-- [ ] Deploy: `./install.sh --target all --force`
+- [x] EXECUTOR-CORE.md: evidence rules in "Verify Done when" (fresh command, output read, hedge-wording = not verified, subagent reports need command+output)
+- [x] EXECUTOR-CORE.md: two-verdict self-check (spec fidelity + quality) in "Update the devplan"
+- [x] EXECUTOR-CORE.md: ❌ Common rule (never claim completion on stale or unread output)
+- [x] tests/test_content.sh: M41 anchors (red → green)
+- [x] Run test_content.sh + test_install.sh (green)
+- [x] Commit & push
+- [x] Deploy: `./install.sh --target all --force`
 
 **Done when:** Both sections carry the new gates and the ❌ rule exists; both
 suites green; deployed.
+
+**Notes:** Content-contract TDD — 8 anchors red-first ("missing: Evidence
+before claims"), then three EXECUTOR-CORE edits to green: "Evidence before
+claims" bullet in Verify "Done when", "Two-verdict self-check" (spec +
+quality) opening "Update the devplan" ahead of the bookkeeping gate, and the
+❌ stale/unread-output rule in Common rules. Done-when verified by grep (all
+three land in the intended sections) + green suites (content + 24/24 install);
+deployed to all three targets, `--check` OK.
 
 ### M42: DESIGN validation — placeholder scan, requirement coverage, interface consistency
 
