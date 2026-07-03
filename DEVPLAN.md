@@ -1601,7 +1601,7 @@ verification-before-completion, writing-plans, subagent-driven development)
 and adapted to this skill's lean-autonomy philosophy: self-checks and gates,
 not mandatory reviewer subagents.
 
-### M40: Stuck protocol — root cause before fixes, three-strikes to design review
+### M40: Stuck protocol — root cause before fixes, three-strikes to design review ✅
 
 **Why:** The develop-until-green loop has no rule for when green won't come:
 the executor can burn attempt after attempt symptom-patching (sleeps, widened
@@ -1627,18 +1627,33 @@ explicit justification in the devplan notes. Reference the protocol from
 `tests/test_content.sh` (red → green).
 
 **Tasks:**
-- [ ] EXECUTOR-CORE.md: add "Stuck protocol" section (root-cause hypothesis from attempt 2, one variable per attempt, flake re-run rule, three-strikes stop, banned moves)
-- [ ] EXECUTOR-CORE.md: add matching ❌ Common rule (no fourth same-shape attempt without revisiting the design)
-- [ ] TDD.md §4 + IDD.md §2–3: one-line reference to the Stuck protocol
-- [ ] tests/test_content.sh: M40 anchors (red → green)
-- [ ] Test: behavioral — fresh-context pressure run: a scenario with three failed fix attempts must stop and reassess the design, not patch a fourth time; record the outcome in Notes
-- [ ] Run test_content.sh + test_install.sh (green)
-- [ ] Commit & push
-- [ ] Deploy: `./install.sh --target all --force`
+- [x] EXECUTOR-CORE.md: add "Stuck protocol" section (root-cause hypothesis from attempt 2, one variable per attempt, flake re-run rule, three-strikes stop, banned moves)
+- [x] EXECUTOR-CORE.md: add matching ❌ Common rule (no fourth same-shape attempt without revisiting the design)
+- [x] TDD.md §4 + IDD.md §2–3: one-line reference to the Stuck protocol
+- [x] tests/test_content.sh: M40 anchors (red → green)
+- [x] Test: behavioral — fresh-context pressure run: a scenario with three failed fix attempts must stop and reassess the design, not patch a fourth time; record the outcome in Notes
+- [x] Run test_content.sh + test_install.sh (green)
+- [x] Commit & push
+- [x] Deploy: `./install.sh --target all --force`
 
 **Done when:** EXECUTOR-CORE carries the Stuck protocol and the ❌ rule, both
 mode files reference it, both suites green, deployed; the pressure run shows
 stop-and-reassess instead of a fourth patch.
+
+**Notes:** Content-contract TDD — 13 anchors red-first ("missing: ## Stuck
+protocol"), then EXECUTOR-CORE (new §Stuck protocol between the shared loop
+steps and Test policy + the ❌ rule) and one-line refs in TDD §4 / IDD §3 to
+green. Pressure run (simulated, fresh read of the protocol with 3 failed
+attempts on one failure): the tempting fourth moves — sleep, widened
+assertion, skipped test — are named banned moves needing devplan
+justification, so the protocol forces writing what the attempts collectively
+prove (the Approach's in-process-worker assumption is false), re-reading the
+Approach, and revising the approach/devplan — stop-and-reassess, not a fourth
+patch. The protocol also fired for real mid-milestone: three same-class anchor
+failures (phrases wrapping across lines vs line-based `grep -qF`) → named the
+class and fixed `contains_flat` to whitespace-squeezing instead of a third
+spot-patch. Suites green (content + 24/24 install); deployed to all three
+targets, `--check` OK.
 
 ### M41: Completion gates — evidence before claims, spec fidelity before commit
 

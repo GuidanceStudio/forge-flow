@@ -3,8 +3,8 @@
 > **Read `EXECUTOR-CORE.md`** for all shared behavior: operating mode,
 > preflight, simplify ladder, ponytail convention, debt registration,
 > shared execution-loop steps (documentation, Done-when verification,
-> devplan update, commit & push), test policy, implementation standards,
-> completion recap template, and common rules.
+> devplan update, commit & push), stuck protocol, test policy,
+> implementation standards, completion recap template, and common rules.
 
 ---
 
@@ -34,6 +34,8 @@
 Write tests at all applicable levels (see Test policy in EXECUTOR-CORE.md)
 covering the finished code. Tests are written AFTER the implementation
 and must PASS immediately. Unit tests must be green before proceeding.
+If the implementation from step 2 or its tests won't go green, follow
+the Stuck protocol in EXECUTOR-CORE.md.
 
 ### 4. ✨ Simplify
 

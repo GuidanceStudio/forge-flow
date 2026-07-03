@@ -2,8 +2,9 @@
 
 Loaded by both TDD and IDD execution modes. Contains all shared
 sections: operating mode, preflight, simplify ladder, ponytail
-convention, debt registration, shared execution-loop steps, test
-policy, implementation standards, completion recap, and common rules.
+convention, debt registration, shared execution-loop steps, stuck
+protocol, test policy, implementation standards, completion recap,
+and common rules.
 
 ---
 
@@ -203,6 +204,28 @@ same location+title pair already exists (idempotent).
 
 ---
 
+## Stuck protocol
+
+When green won't come, find the cause — don't patch the symptom.
+
+- **From the second fix attempt on the same failure:** state a one-line
+  root-cause hypothesis grounded in observed evidence (error text, stack
+  trace, diff) BEFORE touching code. Change one variable per attempt —
+  no shotgun fixes.
+- **Suspected flake:** re-run the test unchanged once to confirm the
+  failure is deterministic before it counts as an attempt.
+- **After three failed attempts on the same failure, stop patching.**
+  The problem is architectural, not tactical. Write down what the
+  attempts collectively prove, re-read the milestone's Approach and the
+  assumptions behind it, then either take a structurally different
+  approach or update the devplan (revise the milestone, add the missing
+  work) — never a fourth attempt of the same shape.
+- **Banned moves:** widening an assertion, adding a sleep, swallowing
+  the exception, skipping the test. Each is legal only with an explicit
+  justification recorded in the devplan notes.
+
+---
+
 ## Test policy
 
 **First run (once per devplan execution):** discover the project's real
@@ -310,6 +333,8 @@ Documentation: updated ✅
 - ❌ Never stage with `git add -A` / `git add .` — explicit paths only
 - ❌ Never commit a milestone whose devplan tasks and heading aren't
   marked done — the bookkeeping ships in the milestone commit
+- ❌ Never make a fourth same-shape fix attempt — after three failures
+  on the same failure, revisit the design (see Stuck protocol)
 - ✅ Encode the business requirement in tests, not the implementation
 - ✅ Ambiguity → choose and proceed
 - ✅ Milestone too large → decompose internally without flagging it
