@@ -495,7 +495,7 @@ file — accepted, it's cheaper than a build step.
 
 ### Phase G — Convergence
 
-#### M12: Reconcile variant drift — variant-neutral canonical playbooks
+#### M12: Reconcile variant drift — variant-neutral canonical playbooks ✅
 
 **Why:** The Codex variant evolved past the Claude one (the one
 actually used daily); the improvements are objectively better and the
@@ -534,7 +534,7 @@ user changes" (M14 adds the preflight).
 
 **Done when:** `diff claude/forge-flow/{SKILL,DESIGN,TDD,IDD}.md codex/forge-flow/` is empty and each merged file contains the named improvements from both lineages.
 
-#### M13: Lockstep guard — identity test + install drift check
+#### M13: Lockstep guard — identity test + install drift check ✅
 
 **Why:** M12 restores parity; without a mechanical guard it re-breaks
 on the next edit, exactly like it did in v0.1.
@@ -563,7 +563,7 @@ one variant file and watching the test fail.
 
 ### Phase H — Hardening
 
-#### M14: Executor hardening — preflight, selective staging, Done-when, conventions, resume
+#### M14: Executor hardening — preflight, selective staging, Done-when, conventions, resume ✅
 
 **Why:** The executors run fully autonomous with commit+push authority;
 today they can swallow unrelated user work (`git add -A` legacy —
@@ -607,7 +607,7 @@ DESIGN accepts non-MNN schemes.
 **Done when:** both executors document all five behaviors, DESIGN.md
 accepts non-MNN schemes, lockstep test green.
 
-#### M15: Router/design polish — adaptive language, workspace awareness, handoff
+#### M15: Router/design polish — adaptive language, workspace awareness, handoff ✅
 
 **Why:** Italian is hardcoded in a published skill (router question,
 approval words, proposal template) while the milestone format is
@@ -1708,3 +1708,69 @@ detail in batches. Content anchors in `tests/test_content.sh`.
 
 **Done when:** Phase 5 lists the three checks, Phase 3 carries the staged
 proposal rule, the seeded placeholder is flagged, both suites green, deployed.
+
+## Follow-up — Review findings (2026-07-03)
+
+Defects found by the cross-skill review of 2026-07-03 (forge-flow,
+tech-audit, uxui-audit). M12–M15 heading markers were reconciled the same
+day (work verifiably shipped in `0975c5f`, `4bf6cb1`, `4f9d33d`, `875f26b`).
+
+### M43: Align debt registry to `.tech-audit/` — restore the ponytail→audit bridge
+
+**Why:** tech-audit renamed its per-project dir to `.tech-audit/`
+(commit `3563276` in its repo): its D01 now reads `.tech-audit/debt.tsv`
+and its pytest pins that path. This skill still writes
+`.code-audit/debt.tsv`, so debt registered by the simplify pass is
+invisible to the audit's D01 suppression — the cross-skill bridge is
+silently dead. Closes the seam tracked as tech-audit M21.
+
+**Approach:** Rename the two payload sites — EXECUTOR-CORE.md "Register
+intentional debt" and the completion-recap debt line — from
+`.code-audit/debt.tsv` to `.tech-audit/debt.tsv`; update the pinned anchor
+in `tests/test_content.sh` (red → green). DEVPLAN history mentioning
+`.code-audit` stays untouched (it is history).
+
+**Tasks:**
+- [ ] EXECUTOR-CORE.md: `.code-audit/debt.tsv` → `.tech-audit/debt.tsv` (debt-registration section + completion recap)
+- [ ] tests/test_content.sh: update the `.code-audit` anchor (red → green)
+- [ ] Run test_content.sh + test_install.sh (green)
+- [ ] Commit & push
+- [ ] Deploy: `./install.sh --target all --force`
+
+**Done when:** `grep -r ".code-audit" forge-flow/ tests/` returns nothing;
+both suites green; deployed; tech-audit M21 can close by verifying D01
+reads what this skill writes.
+
+### M44: One ladder, one name — fix DESIGN's stale rung list and unify naming
+
+**Why:** DESIGN.md's essentiality checkpoint lists five rungs ending in
+"smaller-custom" — a rung that doesn't exist in the canonical 7-rung ladder
+in EXECUTOR-CORE.md — and `tests/test_content.sh:46` pins the stale
+wording, so the contradiction is test-protected. The ladder also goes by
+four names across the payload ("Simplify step", "simplification ladder",
+"essentiality ladder", "7-rung ladder"): resolvable today (only one ladder
+exists) but fragile. Two README nits from the same review ride along.
+
+**Approach:** In DESIGN.md Phase 3, replace the parenthetical with the real
+sequence (delete → stdlib → native → existing-dep → inline → reduce →
+compress-comments). Canonical name: **simplify ladder** (of the
+EXECUTOR-CORE "Simplify step" section); align DESIGN.md Phase 5 and both
+READMEs' "essentiality ladder" wording to cite it so every reference
+resolves verbatim. Root README: neutral devplan-path example
+(`devplan/v0.3.md`, not `forge-flow/v0.3.md` which collides with the
+payload dir). Payload README: fix the mid-sentence "Conceptual prior art"
+capitalization. Update the pinned test anchors in the same pass
+(red → green).
+
+**Tasks:**
+- [ ] DESIGN.md: essentiality-checkpoint parenthetical → the real 7-rung simplify ladder
+- [ ] Unify ladder naming across DESIGN.md, TDD.md, IDD.md, READMEs ("simplify ladder" / "Simplify step")
+- [ ] Root README: `devplan/v0.3.md` example; payload README: fix "Conceptual prior art" capitalization
+- [ ] tests/test_content.sh: update pinned anchors — `smaller-custom`, prior-art phrase (red → green)
+- [ ] Run test_content.sh + test_install.sh (green)
+- [ ] Commit & push
+- [ ] Deploy: `./install.sh --target all --force`
+
+**Done when:** DESIGN's rung list matches EXECUTOR-CORE's ladder 1:1; one
+canonical ladder name resolves from every reference; both README nits
+fixed; both suites green; deployed.
