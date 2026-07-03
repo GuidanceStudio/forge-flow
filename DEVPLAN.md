@@ -1593,3 +1593,118 @@ Changed the source `description` to a folded scalar, then `test_content.sh` and
 `test_install.sh` passed. Deployed to `~/.codex/skills/forge-flow`; source and
 installed Codex `SKILL.md` both parse as YAML, and `install.sh --target codex
 --check` reports no drift.
+
+## Follow-up — Superpowers-derived hardening (2026-07-03)
+
+Mechanisms distilled from the `obra/superpowers` plugin (systematic-debugging,
+verification-before-completion, writing-plans, subagent-driven development)
+and adapted to this skill's lean-autonomy philosophy: self-checks and gates,
+not mandatory reviewer subagents.
+
+### M40: Stuck protocol — root cause before fixes, three-strikes to design review
+
+**Why:** The develop-until-green loop has no rule for when green won't come:
+the executor can burn attempt after attempt symptom-patching (sleeps, widened
+assertions, swallowed exceptions) and still land a fragile green. Superpowers'
+systematic-debugging encodes the two missing rules: no fix without a root-cause
+hypothesis, and after three failed attempts the problem is architectural, not
+tactical.
+
+**Approach:** Add a "Stuck protocol" section to `EXECUTOR-CORE.md` (between
+the shared execution-loop steps and Test policy): (1) from the second fix
+attempt on the same failure, state a one-line root-cause hypothesis grounded
+in observed evidence (error text, trace, diff) before touching code — one
+variable per attempt, no shotgun fixes; a test suspected flaky is re-run
+unchanged once to confirm determinism before it counts as an attempt;
+(2) after three failed attempts on the same failure, stop patching: write down
+what the attempts collectively prove, re-read the milestone's Approach and its
+assumptions, then either take a structurally different approach or update the
+devplan (revise the milestone, add the missing work) — never a fourth attempt
+of the same shape; (3) name the banned moves — widening an assertion, adding a
+sleep, swallowing the exception, skipping the test — each legal only with an
+explicit justification in the devplan notes. Reference the protocol from
+`TDD.md` §4 (Develop until green) and `IDD.md` §2–3. Content anchors in
+`tests/test_content.sh` (red → green).
+
+**Tasks:**
+- [ ] EXECUTOR-CORE.md: add "Stuck protocol" section (root-cause hypothesis from attempt 2, one variable per attempt, flake re-run rule, three-strikes stop, banned moves)
+- [ ] EXECUTOR-CORE.md: add matching ❌ Common rule (no fourth same-shape attempt without revisiting the design)
+- [ ] TDD.md §4 + IDD.md §2–3: one-line reference to the Stuck protocol
+- [ ] tests/test_content.sh: M40 anchors (red → green)
+- [ ] Test: behavioral — fresh-context pressure run: a scenario with three failed fix attempts must stop and reassess the design, not patch a fourth time; record the outcome in Notes
+- [ ] Run test_content.sh + test_install.sh (green)
+- [ ] Commit & push
+- [ ] Deploy: `./install.sh --force`
+
+**Done when:** EXECUTOR-CORE carries the Stuck protocol and the ❌ rule, both
+mode files reference it, both suites green, deployed; the pressure run shows
+stop-and-reassess instead of a fourth patch.
+
+### M41: Completion gates — evidence before claims, spec fidelity before commit
+
+**Why:** "Verify Done when" says *what* to verify but not what counts as
+verification: a stale test run, a subagent's bare "done", or "should work now"
+can close a milestone today. And no step checks that the implementation didn't
+drift beyond the milestone contract — unrequested extras ship silently.
+Superpowers' verification-before-completion ("evidence before claims") and the
+spec-compliance verdict of its subagent-driven development close both holes.
+
+**Approach:** In `EXECUTOR-CORE.md`: (1) extend "Verify Done when" with
+evidence rules — a completion claim (tests green, Done-when met) requires a
+command run in this session with its output and exit code actually read;
+cached, remembered, or partial output doesn't count; hedged phrasing
+("should", "probably", "seems to") in a would-be claim means it is not
+verified — run the command instead; a subagent's success report counts only
+when it carries the command and output. (2) Extend "Update the devplan"
+(before the bookkeeping gate) with a two-verdict self-check: **spec** —
+re-read the milestone's Tasks and Done-when: everything implemented, nothing
+implemented beyond the contract (extras: delete via ladder rung 1, or record
+in the devplan when genuinely needed); **quality** — simplify pass ran, all
+applicable tests green. (3) One ❌ Common rule against unverified claims.
+Content anchors in `tests/test_content.sh`.
+
+**Tasks:**
+- [ ] EXECUTOR-CORE.md: evidence rules in "Verify Done when" (fresh command, output read, hedge-wording = not verified, subagent reports need command+output)
+- [ ] EXECUTOR-CORE.md: two-verdict self-check (spec fidelity + quality) in "Update the devplan"
+- [ ] EXECUTOR-CORE.md: ❌ Common rule (never claim completion on stale or unread output)
+- [ ] tests/test_content.sh: M41 anchors (red → green)
+- [ ] Run test_content.sh + test_install.sh (green)
+- [ ] Commit & push
+- [ ] Deploy: `./install.sh --force`
+
+**Done when:** Both sections carry the new gates and the ❌ rule exists; both
+suites green; deployed.
+
+### M42: DESIGN validation — placeholder scan, requirement coverage, interface consistency
+
+**Why:** Phase 5 checks form and coherence but misses planning's classic
+failure modes: vague tasks ("handle errors") that defer decisions to
+execution, requirements silently covered by no milestone, and later milestones
+consuming interfaces no earlier milestone produces. Large-plan proposals also
+land as one monolithic blob that is hard to review. Superpowers' writing-plans
+self-review (spec coverage, placeholder scan, signature consistency) and its
+chunked design presentation fill these gaps.
+
+**Approach:** In `DESIGN.md` Phase 5 add three validation checks:
+**placeholder scan** — no task may defer a decision the plan should make
+("handle errors" without which errors, "improve X" without the observable
+outcome); **requirement coverage** — map each requirement from the request and
+Objective to the milestone implementing it; uncovered → add a milestone or
+record under Out of scope; **interface consistency** — when a later milestone
+consumes something an earlier one produces (module, endpoint, schema, CLI),
+the producing milestone's Approach names it, and names/contracts match across
+milestones. In Phase 3, for large plans (6+ milestones): present the skeleton
+first (Objective, Approach, Risks, phase list), get a nod, then milestone
+detail in batches. Content anchors in `tests/test_content.sh`.
+
+**Tasks:**
+- [ ] DESIGN.md Phase 5: placeholder scan, requirement-coverage map, interface-consistency check
+- [ ] DESIGN.md Phase 3: staged proposal for 6+ milestone plans
+- [ ] tests/test_content.sh: M42 anchors (red → green)
+- [ ] Test: behavioral — validating a sample plan seeded with a "handle errors" task flags it
+- [ ] Run test_content.sh + test_install.sh (green)
+- [ ] Commit & push
+- [ ] Deploy: `./install.sh --force`
+
+**Done when:** Phase 5 lists the three checks, Phase 3 carries the staged
+proposal rule, the seeded placeholder is flagged, both suites green, deployed.
