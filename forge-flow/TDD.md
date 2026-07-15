@@ -25,6 +25,9 @@
 - Identify prerequisites from previous milestones and the current code
   state.
 - Announce: *"▶ Milestone X: [name] (TDD)"*
+- Mark the milestone in progress in the devplan (`🔄` on the heading) per
+  EXECUTOR-CORE's state markers — before writing any test or code, so an
+  interrupted run is unambiguously resumable.
 
 ### 2. 🧪 Write tests FIRST
 
