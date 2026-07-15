@@ -22,6 +22,9 @@
 - Identify prerequisites from previous milestones and the current code
   state.
 - Announce: *"▶ Milestone X: [name] (IDD)"*
+- Mark the milestone in progress in the devplan (`🔄` on the heading) per
+  EXECUTOR-CORE's state markers — before writing the code, so an interrupted
+  run is unambiguously resumable.
 
 ### 2. 🛠️ Develop
 

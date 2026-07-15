@@ -29,6 +29,26 @@ and common rules.
 
 ---
 
+## Milestone state markers
+
+A milestone (and its tasks) moves through three states in the devplan — the
+marker IS the record of where the work stands:
+
+- **Not started:** heading `## MNN: <title>` (bare), tasks `- [ ]`.
+- **In progress:** heading `## MNN: <title> 🔄`, and the task under active
+  work `- [~]`. Flip to this the moment you begin the milestone (at the
+  step-1 announce), BEFORE writing tests or code.
+- **Done:** heading `## MNN: <title> ✅`, every task `- [x]`.
+
+The in-progress `🔄` is a **working-tree signal, not a separate commit**: it
+lives only between start and the done step, where it becomes `✅` and ships
+inside the milestone commit. Its whole job is resumability — a run that dies
+mid-milestone leaves an uncommitted `🔄` (or a `- [~]` task) that
+unambiguously marks where to pick up. A `🔄` still showing when no work is
+active is a dangling marker: either resume it or close it — never leave it.
+
+---
+
 ## Preflight (once, before the first milestone)
 
 - **Clean-worktree check.** Run `git status`. If the worktree contains
@@ -36,11 +56,13 @@ and common rules.
   the user how to proceed (stash, commit, or include) — this falls
   under the "conflict with unknown user work" blocker. Unrelated work
   must never end up inside a milestone commit.
-- **Resume detection.** If a pending milestone already has `[x]` tasks,
-  or leftover changes match its scope, a previous run stopped midway.
-  Reconcile against the actual code state (verify which tasks are
-  truly done), note the resume in the devplan, and continue from the
-  real state instead of redoing or skipping work.
+- **Resume detection.** A milestone heading marked `🔄` — or any `- [~]`
+  or `[x]` task under a pending milestone, or leftover changes matching its
+  scope — means a previous run stopped midway. The `🔄`/`- [~]` markers are
+  the unambiguous signal; the rest are inferred. Reconcile against the actual
+  code state (verify which tasks are truly done), note the resume in the
+  devplan, and continue from the real state instead of redoing or skipping
+  work.
 - **Commit convention.** Read the repo's commit-message convention from
   recent history (`git log --oneline -20`): milestone-ID prefix style
   (e.g. `M12: title`, `D5-4: title`) and any trailers used
@@ -168,16 +190,17 @@ same location+title pair already exists (idempotent).
     Unrequested extras: delete them via ladder rung 1, or record them
     in the devplan when genuinely needed.
   - **Quality:** the simplify pass ran; all applicable tests are green.
-- Mark the milestone as done — tick every task and append the done
-  marker to the milestone heading, matching the heading level the devplan
-  uses: `## MNN: <title> ✅`.
+- Mark the milestone as done — tick every task (`- [~]` → `- [x]`) and
+  swap the in-progress `🔄` for the done marker on the milestone heading,
+  matching the heading level the devplan uses: `## MNN: <title> ✅`.
 - **Verify the bookkeeping landed.** Re-read the milestone block and
   confirm every task is checked (`- [x]`) and the heading carries its
-  done marker. The rule:
-  no unchecked task may remain for the milestone being closed.
-  If a box is still unchecked, fix it now — the plan must report what is
-  actually done. This is a gate, not advice: a green milestone with
-  `- [ ]` tasks is an incomplete milestone.
+  ✅ done marker — no `- [~]` task and no `🔄` heading left behind. The rule:
+  no unchecked task may remain for the milestone being closed, and no
+  in-progress `- [~]` task either.
+  If a box is still `- [ ]` or `- [~]`, fix it now — the plan must report what
+  is actually done. This is a gate, not advice: a green milestone with
+  `- [ ]` or `- [~]` tasks is an incomplete milestone.
 - Note important deviations, decisions made, and how "Done when" was
   verified.
 - Keep the devplan accurate enough that another agent could resume

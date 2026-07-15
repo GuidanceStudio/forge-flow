@@ -1835,6 +1835,64 @@ green (content + 24/24 install); deployed to all three targets, `--check` OK.
 
 ---
 
+## Follow-up — Lifecycle state marker (2026-07-15)
+
+### M45: In-progress milestone marker — a third devplan state ✅
+
+**Why:** The executor blinds the *done* side (M33/M35: verified, committed
+gate) but nothing marks the *start*. A finished task with an unticked box is
+invisible — it looks identical to a not-yet-started one — so a missed
+close-out drifts silently, and resume detection has to *infer* mid-flight
+state from partial `[x]` boxes and stray diffs. A third state fixes both: it
+moves the mandatory devplan touch to the highest-adherence moment (the step-1
+announce, when the agent is already reading the plan), turns "done" into a
+cheap `🔄`→`✅` flip, and — crucially — converts silent drift into a *visible*
+one, since a dangling `🔄` next to finished code is an anomaly any later
+glance catches.
+
+**Approach:** Add a `## Milestone state markers` section to the shared
+`EXECUTOR-CORE.md` defining three states — not-started (`- [ ]`), in-progress
+(`🔄` heading / `- [~]` task), done (`✅` / `- [x]`) — and stating that `🔄`
+is a working-tree signal that becomes `✅` inside the milestone commit (not a
+separate commit), so an interrupted run is unambiguously resumable. Wire it
+into the two touchpoints already in the loop: Preflight resume-detection keys
+off `🔄`/`- [~]` as the unambiguous signal; the "Update the devplan" done-step
+flips `🔄`→`✅` and `- [~]`→`- [x]` and forbids either surviving on a closed
+milestone; the verify-bookkeeping gate extends to in-progress tasks without
+disturbing M33's pinned phrase. Add a one-line "mark in-progress" bullet to
+`TDD.md` and `IDD.md` step 1 (shared behavior, referenced from the mode
+files). Content-contract anchors in `tests/test_content.sh`; deploy to all
+targets. TDD: anchors red first, then content green.
+
+**Tasks:**
+- [x] `tests/test_content.sh`: add M45 anchors (section, `🔄`/`- [~]`, resume signal, done-flip, both mode step-1) — red first
+- [x] `EXECUTOR-CORE.md`: new `## Milestone state markers` section (three states + working-tree/resume note)
+- [x] `EXECUTOR-CORE.md`: Preflight resume-detection keys off `🔄`/`- [~]`
+- [x] `EXECUTOR-CORE.md`: done-step flips `🔄`→`✅` / `- [~]`→`- [x]`; verify-bookkeeping extended (M33 phrase preserved)
+- [x] `TDD.md` + `IDD.md` step 1: "mark the milestone in progress" bullet
+- [x] Run `tests/test_content.sh` + `tests/test_install.sh` — green
+- [x] Deploy `./install.sh --target all --force`; `--check` clean
+- [x] Global `~/.claude/CLAUDE.md`: symmetric lifecycle gate (out-of-repo, tracked here for the record)
+
+**Done when:** EXECUTOR-CORE documents the three-state marker with `🔄`/`- [~]`,
+the done-step swaps `🔄`→`✅`, preflight resumes off `🔄`, both mode step-1s
+mark in-progress, both suites green, deployed; and the global CLAUDE.md carries
+the symmetric gate.
+
+**Notes:** Executed TDD by hand this session (not via the executor). Content
+anchors added to `tests/test_content.sh` and confirmed red ("EXECUTOR-CORE.md
+missing: ## Milestone state markers") before the content landed; one anchor
+started with `-` and tripped grep's option parser — fixed by wrapping it in
+backticks (`` `- [~]` ``), matching how the marker appears in prose. M33's
+pinned phrase ("no unchecked task may remain for the milestone being closed")
+kept verbatim as a contiguous substring so its test still passes. Done-when
+verified: `tests/test_content.sh` green ("content contract passed") and
+`tests/test_install.sh` green (24/24). This milestone dogfooded the new marker —
+it carried `🔄` while in flight. The global `~/.claude/CLAUDE.md` gate is
+out-of-repo (not in this commit); tracked here for the record.
+
+---
+
 ## Proposed — pending discussion (2026-07-04)
 
 Items below are **not milestones**: no M-number, no Tasks to execute, not

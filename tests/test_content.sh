@@ -426,4 +426,21 @@ if grep -qF "forge-flow/v0.3.md" "$ROOT_README"; then
     fail "root README devplan-path example collides with the payload dir"
 fi
 
+# ---- M45: in-progress milestone state marker ----
+# Three-state marker convention documented in the shared core
+contains "$EXECUTOR_CORE" "## Milestone state markers"
+contains "$EXECUTOR_CORE" "\`- [~]\`"
+contains "$EXECUTOR_CORE" "🔄"
+contains_flat "$EXECUTOR_CORE" "working-tree signal, not a separate commit"
+# Done-step swaps the in-progress marker for the done marker
+contains_flat "$EXECUTOR_CORE" "swap the in-progress \`🔄\` for the done marker"
+# Preflight resume-detection keys off the in-progress marker
+contains_flat "$EXECUTOR_CORE" "A milestone heading marked \`🔄\`"
+# Verify-bookkeeping gate extended to in-progress tasks (M33 phrase preserved)
+contains "$EXECUTOR_CORE" "no unchecked task may remain for the milestone being closed"
+contains_flat "$EXECUTOR_CORE" "no in-progress \`- [~]\` task either"
+# Both mode playbooks mark in-progress at step 1
+contains "$TDD" "Mark the milestone in progress in the devplan"
+contains "$IDD" "Mark the milestone in progress in the devplan"
+
 echo "content contract passed"
