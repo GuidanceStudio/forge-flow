@@ -443,4 +443,19 @@ contains_flat "$EXECUTOR_CORE" "no in-progress \`- [~]\` task either"
 contains "$TDD" "Mark the milestone in progress in the devplan"
 contains "$IDD" "Mark the milestone in progress in the devplan"
 
+# ---- M46: a milestone has a size, and Phase 5 measures it ----
+# Written budget in the milestone format
+contains "$DESIGN" "#### Milestone budget"
+contains_flat "$DESIGN" "A milestone is **≤200 words** when written"
+contains_flat "$DESIGN" "Tasks are one line each"
+# Anti-restatement: the three pairs that consume the budget first
+contains_flat "$DESIGN" "The Why does not repeat the title"
+contains_flat "$DESIGN" "the Approach does not repeat the Why"
+contains_flat "$DESIGN" "the Done-when does not re-list the tasks"
+# Overflow is routed, not compressed
+contains_flat "$DESIGN" "What does not fit is not compressed prose"
+# Phase 5 measures it
+contains "$DESIGN" "**Length check:**"
+contains_flat "$DESIGN" "Over budget → split the milestone or route the overflow"
+
 echo "content contract passed"

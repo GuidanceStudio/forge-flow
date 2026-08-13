@@ -293,6 +293,27 @@ endpoint responds, UI shows X).
 Optional fifth section — **Notes:** — only when something doesn't fit
 elsewhere (gotchas, external links, decisions to revisit later).
 
+#### Milestone budget
+
+A milestone is **≤200 words** when written. Within it:
+
+- **Why** 1-2 sentences · **Approach** 2-4 sentences · **Done when** one
+  sentence.
+- **Tasks are one line each**, ≤20 words, with no sub-paragraph underneath. A
+  task needing a paragraph to be understood is under-specified (name the
+  concrete thing) or is two tasks.
+- **Never restate.** The Why does not repeat the title, the Approach does not
+  repeat the Why, the Done-when does not re-list the tasks. Restatement is
+  where the budget goes first, and it adds no information.
+
+What does not fit is not compressed prose — it is content in the wrong place.
+Route it: a **second milestone** (the plan was carrying two), the **code or its
+comments** (design rationale belongs next to what it explains), or **`docs/`**
+(a contract readers outside this plan need). A devplan carries what the
+executor needs to do the work and what a later planner needs to keep planning;
+the executor adds at most a bounded Deviations block on top (EXECUTOR-CORE.md
+"Update the devplan").
+
 #### Live test task for external dependencies
 
 When a milestone integrates a real external dependency
@@ -348,6 +369,10 @@ every milestone passed the EXECUTOR-CORE.md simplify ladder.
 created by a prior milestone; module ordering makes sense (no overwrite
 contradictions); project conventions respected; every load-bearing
 assumption was confirmed in the code, not guessed.
+
+**Length check:** every milestone is within its 200-word budget, tasks are one
+line each, and no section restates another. Over budget → split the milestone or
+route the overflow to code, comments, or `docs/`; never ship it as denser prose.
 
 **Placeholder scan:** no task may defer a decision the plan should make
 — "handle errors" without naming which errors, "improve X" without the
