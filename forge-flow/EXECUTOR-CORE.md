@@ -211,6 +211,11 @@ same location+title pair already exists (idempotent).
   discovered while executing becomes a new task or a Deviations line, never a
   paragraph beneath a tick — measured at 35% of the words in one production
   devplan, and unreadable to anyone scanning the plan for state.
+  One thing this does not reach, because it is not a milestone's task list: an
+  **acceptance gate**, where each box is a check somebody ran and the prose under
+  it is the evidence that it passed — a received header, an alert that fired, a
+  DNS query answered. Keep that. It is the same case as an archived milestone
+  with no commit: nothing else records it.
 - Keep the devplan accurate enough that another agent could resume from it.
   That is a test of **state** — which milestone, which task, what is left — not
   of narrative completeness.
@@ -230,6 +235,7 @@ Execution produces more knowledge than the plan should carry. Route it:
 | A contract readers outside the plan need | `docs/` |
 | Residual or newly discovered work | a new milestone, never inside a closed one |
 | A measured ceiling accepted on purpose | `ponytail:` + `.tech-audit/debt.tsv` |
+| A measurement motivating work not yet started | the milestone's own Why/Approach — **nothing else holds it yet** |
 
 The commit body says what this change did; the devplan says what is done and
 what is left. Writing the account in both places doubles the words and leaves
