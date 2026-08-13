@@ -1893,6 +1893,91 @@ out-of-repo (not in this commit); tracked here for the record.
 
 ---
 
+## Follow-up — Devplan essentiality (2026-08-13)
+
+Measured across the user's own devplans: `cerase-core/poc.md` averages 382 words
+per milestone, `skills/lca/DEVPLAN.md` 567, `kiso-run/core/v0.12.md` 506. Closed
+milestones weigh 2.4–4.3× their still-pending neighbours (`lca-tool` 932 vs 386,
+`skills/lca` 650 vs 152), and 35% of `poc.md`'s words sit inside already-ticked
+task boxes. That write-back duplicates the commit it shipped beside —
+`lca-tool`'s last 40 commit bodies average ~275 words telling the same story.
+Three causes, one milestone each: no measured budget at design time (M46), an
+unbounded write-back at execution time (M47), closed history kept at full weight
+forever (M48).
+
+### M46: A milestone has a size, and Phase 5 measures it ✅
+
+**Why:** `DESIGN.md` already says "Why: 1-2 sentences" and "Approach: 2-4
+sentences", but Phase 5 validates form, coherence, placeholders and coverage —
+never length. A rule no step measures does not hold, and the plans show it.
+
+**Approach:** Add a written budget to the milestone format (≤200 words total,
+one-line tasks of ≤20 words with no sub-paragraphs, one-sentence Done-when) plus
+an anti-restatement rule: Why ≠ title, Approach ≠ Why, Done-when ≠ task list.
+Add a **Length check** to Phase 5 that splits or cuts an over-budget milestone,
+and name where the overflow goes — a second milestone, or the code. Anchors in
+`tests/test_content.sh`, red first.
+
+**Tasks:**
+- [x] `tests/test_content.sh`: M46 anchors — red first
+- [x] `DESIGN.md`: budget + anti-restatement rules in the milestone format
+- [x] `DESIGN.md`: Phase 5 length check with the overflow routing
+- [x] Run both suites; deploy `./install.sh --target all --force`
+
+**Done when:** `DESIGN.md` states a per-milestone word budget, Phase 5 checks it,
+both suites green, deployed.
+
+**Deviations:** budget stated as "≤200 words **when written**", so the executor's
+Deviations block (M47) sits on top rather than inside it.
+
+### M47: Bound what execution writes back, and name where the rest goes
+
+**Why:** `EXECUTOR-CORE.md`'s update step asks for deviations, decisions and
+verification notes with no limit and no destination, so the executor retells the
+milestone inside the plan — 35% of `cerase-core/poc.md` — while the commit body
+beside it already carries the same account.
+
+**Approach:** Replace the open-ended note with a bounded `**Deviations:**` block:
+≤5 lines, written only when execution diverged from the plan, since a run that
+followed it has the ticks as its record. Forbid prose under a ticked task — a box
+is one line, and a discovered fact becomes a new task or a Deviations line. Add a
+routing table: design rationale → code comment or docs, what-happened → commit
+body, residual work → new milestone, measured ceiling → `ponytail:` +
+`.tech-audit/debt.tsv`. M33's pinned bookkeeping phrases stay verbatim.
+
+**Tasks:**
+- [ ] `tests/test_content.sh`: M47 anchors — red first
+- [ ] `EXECUTOR-CORE.md`: bounded Deviations block replaces the open-ended note
+- [ ] `EXECUTOR-CORE.md`: one-line task rule + routing table
+- [ ] Run both suites; deploy
+
+**Done when:** the update-devplan step caps the write-back at a 5-line Deviations
+block, forbids prose in ticked boxes, routes the rest, and both suites are green.
+
+### M48: Closed milestones compress on archive
+
+**Why:** completed milestones are immutable and stay at full weight forever;
+`cerase-core/devplan/poc-completed.md` is 1.3 MB across 15,710 lines that nothing
+reads, duplicating the commits that already carry it.
+
+**Approach:** Add an **Archive** rule to `DESIGN.md`'s version management — when
+milestones move to a completed file, each compresses to one line
+(`MNN | title | date | sha`), the sha being the pointer to the detail git already
+holds. Archiving stays the user's explicit decision, matching the existing rule
+on closing versions, and the executor never archives mid-run.
+
+**Tasks:**
+- [ ] `tests/test_content.sh`: M48 anchors — red first
+- [ ] `DESIGN.md`: archive-compression rule under Version management
+- [ ] `EXECUTOR-CORE.md`: the executor never archives (one line)
+- [ ] Run both suites; deploy
+
+**Done when:** `DESIGN.md` documents one-line archive compression with the sha as
+the pointer to detail, the executor is barred from archiving, both suites green,
+deployed.
+
+---
+
 ## Proposed — pending discussion (2026-07-04)
 
 Items below are **not milestones**: no M-number, no Tasks to execute, not
