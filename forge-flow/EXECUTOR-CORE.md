@@ -201,14 +201,39 @@ same location+title pair already exists (idempotent).
   If a box is still `- [ ]` or `- [~]`, fix it now — the plan must report what
   is actually done. This is a gate, not advice: a green milestone with
   `- [ ]` or `- [~]` tasks is an incomplete milestone.
-- Note important deviations, decisions made, and how "Done when" was
-  verified.
-- Keep the devplan accurate enough that another agent could resume
-  from it.
+- **The write-back is bounded.** Append a `**Deviations:**` block of **at most
+  5 lines**, and write it **only when execution diverged from the plan** — after
+  a run that followed the plan, the ticks are the record and no prose is owed.
+  It carries: a decision taken differently, a constraint discovered, work found
+  to be missing. It does not carry a retelling of what was built, nor how
+  "Done when" was verified when it was verified as written.
+- **Never write prose under a task box.** A `- [x]` is one line. A fact
+  discovered while executing becomes a new task or a Deviations line, never a
+  paragraph beneath a tick — measured at 35% of the words in one production
+  devplan, and unreadable to anyone scanning the plan for state.
+- Keep the devplan accurate enough that another agent could resume from it.
+  That is a test of **state** — which milestone, which task, what is left — not
+  of narrative completeness.
 - If you discover the milestone is incomplete or the proposed fix is
   insufficient, update the devplan with the missing work instead of
   silently drifting. Never rewrite completed (`- [x]`) milestones —
-  plan corrections land in the pending ones or in a note.
+  plan corrections land in the pending ones or in a Deviations line.
+
+#### Where the rest goes
+
+Execution produces more knowledge than the plan should carry. Route it:
+
+| What | Where |
+|---|---|
+| Design rationale, trade-off, gotcha about the code | a comment where that code lives |
+| What happened, in what order, and why | the commit body |
+| A contract readers outside the plan need | `docs/` |
+| Residual or newly discovered work | a new milestone, never inside a closed one |
+| A measured ceiling accepted on purpose | `ponytail:` + `.tech-audit/debt.tsv` |
+
+The commit body says what this change did; the devplan says what is done and
+what is left. Writing the account in both places doubles the words and leaves
+two versions to keep true.
 
 ### Commit & push
 
