@@ -482,4 +482,14 @@ for stale in "note deviations and decisions"; do
     fi
 done
 
+# ---- M48: closed milestones compress on archive ----
+contains "$DESIGN" "#### Archive"
+contains_flat "$DESIGN" "compresses to one line"
+contains_flat "$DESIGN" "MNN | title | date | sha"
+contains_flat "$DESIGN" "the sha is the pointer to the detail"
+# Archiving is the user's call, like closing a version
+contains_flat "$DESIGN" "Never archive on your own initiative"
+# The executor never archives
+contains_flat "$EXECUTOR_CORE" "Never archive a milestone"
+
 echo "content contract passed"
