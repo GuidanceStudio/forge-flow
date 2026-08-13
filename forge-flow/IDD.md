@@ -63,8 +63,9 @@ has a `UX:` field.
 
 ### 7. ✅ Update the devplan
 
-Per EXECUTOR-CORE.md: mark the milestone done, note deviations and
-decisions, keep it accurate for resumption.
+Per EXECUTOR-CORE.md: mark the milestone done; add a `**Deviations:**` block of
+≤5 lines only if execution diverged from the plan. Keep it accurate for
+resumption, not narrated.
 
 ### 8. 📦 Commit & push
 

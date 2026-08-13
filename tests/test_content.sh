@@ -458,4 +458,28 @@ contains_flat "$DESIGN" "What does not fit is not compressed prose"
 contains "$DESIGN" "**Length check:**"
 contains_flat "$DESIGN" "Over budget → split the milestone or route the overflow"
 
+# ---- M47: bounded write-back, and where the rest goes ----
+# The write-back is capped and conditional
+contains_flat "$EXECUTOR_CORE" "at most 5 lines"
+contains_flat "$EXECUTOR_CORE" "only when execution diverged from the plan"
+contains_flat "$EXECUTOR_CORE" "the ticks are the record"
+# A ticked box is one line — no prose underneath
+contains_flat "$EXECUTOR_CORE" "Never write prose under a task box"
+contains_flat "$EXECUTOR_CORE" "a new task or a Deviations line"
+# Routing table: the four destinations that are not the devplan
+contains "$EXECUTOR_CORE" "#### Where the rest goes"
+contains_flat "$EXECUTOR_CORE" "Design rationale"
+contains_flat "$EXECUTOR_CORE" "the commit body"
+contains_flat "$EXECUTOR_CORE" "\`.tech-audit/debt.tsv\`"
+# M33's pinned bookkeeping phrase survives the rewrite
+contains "$EXECUTOR_CORE" "no unchecked task may remain for the milestone being closed"
+# Both mode playbooks point at the bounded block, not an open-ended note
+contains_flat "$TDD" "\`**Deviations:**\` block of ≤5 lines"
+contains_flat "$IDD" "\`**Deviations:**\` block of ≤5 lines"
+for stale in "note deviations and decisions"; do
+    if grep -rqF "$stale" "$REPO_ROOT/forge-flow"; then
+        fail "open-ended write-back phrasing still present: $stale"
+    fi
+done
+
 echo "content contract passed"

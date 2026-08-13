@@ -1930,7 +1930,7 @@ both suites green, deployed.
 **Deviations:** budget stated as "≤200 words **when written**", so the executor's
 Deviations block (M47) sits on top rather than inside it.
 
-### M47: Bound what execution writes back, and name where the rest goes
+### M47: Bound what execution writes back, and name where the rest goes ✅
 
 **Why:** `EXECUTOR-CORE.md`'s update step asks for deviations, decisions and
 verification notes with no limit and no destination, so the executor retells the
@@ -1946,13 +1946,17 @@ body, residual work → new milestone, measured ceiling → `ponytail:` +
 `.tech-audit/debt.tsv`. M33's pinned bookkeeping phrases stay verbatim.
 
 **Tasks:**
-- [ ] `tests/test_content.sh`: M47 anchors — red first
-- [ ] `EXECUTOR-CORE.md`: bounded Deviations block replaces the open-ended note
-- [ ] `EXECUTOR-CORE.md`: one-line task rule + routing table
-- [ ] Run both suites; deploy
+- [x] `tests/test_content.sh`: M47 anchors — red first
+- [x] `EXECUTOR-CORE.md`: bounded Deviations block replaces the open-ended note
+- [x] `EXECUTOR-CORE.md`: one-line task rule + routing table
+- [x] Run both suites; deploy
 
 **Done when:** the update-devplan step caps the write-back at a 5-line Deviations
 block, forbids prose in ticked boxes, routes the rest, and both suites are green.
+
+**Deviations:** `TDD.md`/`IDD.md` step-8 carried the same open-ended phrasing
+("note deviations and decisions") and were aligned too; a stale-phrase guard
+pins it.
 
 ### M48: Closed milestones compress on archive
 
