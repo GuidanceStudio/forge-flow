@@ -1985,6 +1985,41 @@ otherwise nothing records what it delivered.
 
 ---
 
+## Follow-up — First application to a production plan (2026-08-13)
+
+### M49: Four gaps the first real application of M45-M48 found ✅
+
+**Why:** M45-M48 were applied to `cerase-core`'s two open devplans — 44,715 words
+to 28,100, 62 ticked boxes collapsed, and 22 milestones no guard could see
+promoted out of `###`. Four rules did not survive contact: a measurement
+motivating unstarted work has no destination in either routing list; one `sha`
+cannot address a milestone that closed across three repos; Phase 5's length check
+drops the "when written" qualification M46 states, so it reds on a milestone that
+is legitimately mostly shipped; and "never prose under a task box" reads as
+covering an acceptance gate, where the prose under a tick is the evidence the
+check passed and half of them have no commit.
+
+**Approach:** Each lands as a paragraph where the rule already lives — the routing
+list in DESIGN's budget, the Archive format, the Phase 5 length check, and
+EXECUTOR-CORE's write-back bullet plus one routing-table row. No new sections: a
+fifth place to look is what M44 was about.
+
+**Tasks:**
+- [x] `tests/test_content.sh`: M49 anchors — red first
+- [x] `DESIGN.md`: the pre-work measurement's destination, in the budget's routing list
+- [x] `DESIGN.md`: one sha per repo in Archive, and "as written" on the Phase 5 length check
+- [x] `EXECUTOR-CORE.md`: the acceptance-gate exception and the routing-table row
+- [x] Run both suites; deploy with `./install.sh --force`
+
+**Done when:** all four are pinned by content anchors, both suites green, deployed.
+
+**Deviations:** a fifth change was proposed and rejected on inspection — an
+exemption from the budget for a milestone whose product IS a decision. The
+existing routing already covers it (`docs/`), so the budget paragraph gained a
+warning against the exemption instead of the exemption.
+
+---
+
 ## Proposed — pending discussion (2026-07-04)
 
 Items below are **not milestones**: no M-number, no Tasks to execute, not

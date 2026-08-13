@@ -492,4 +492,15 @@ contains_flat "$DESIGN" "Never archive on your own initiative"
 # The executor never archives
 contains_flat "$EXECUTOR_CORE" "Never archive a milestone"
 
+# ---- M49: four gaps the first production application found ----
+# A measurement that motivates unstarted work has a destination, and it is here
+contains_flat "$DESIGN" "the measurement that justifies work nobody has started"
+contains_flat "$EXECUTOR_CORE" "nothing else holds it yet"
+# One sha does not address a milestone that closed across several repos
+contains_flat "$DESIGN" "In a multi-repo workspace one sha does not resolve"
+# The length check measures the milestone as written, not its ticked record
+contains_flat "$DESIGN" "ticked task lines are the record of work already done"
+# An acceptance gate keeps the evidence under its ticks
+contains_flat "$EXECUTOR_CORE" "an **acceptance gate**"
+
 echo "content contract passed"

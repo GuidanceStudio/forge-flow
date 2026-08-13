@@ -314,6 +314,20 @@ executor needs to do the work and what a later planner needs to keep planning;
 the executor adds at most a bounded Deviations block on top (EXECUTOR-CORE.md
 "Update the devplan").
 
+One thing has no destination in that list and needs naming, because it is most
+of what a defect milestone is made of: **the measurement that justifies work
+nobody has started.** There is no code yet to carry a comment, it is not a
+contract for `docs/`, and it is not a Deviation because nothing has executed —
+so it stays in the plan. The number goes in the **Why** or the **Approach**, and
+only what the executor cannot act without goes in **`Notes:`**. *"27 call sites,
+2 of them guarded"* is the Approach; how they were counted is not.
+
+⚠️ **This is not a licence for a milestone whose product IS a decision** — a
+policy, a chosen provider, a table of verdicts. That is *"a contract readers
+outside this plan need"*, and it goes to `docs/` with the plan carrying the
+pointer. The test: once the work is done, will anything outside this file hold
+the decision? If the answer is no, the routing was skipped, not exhausted.
+
 #### Live test task for external dependencies
 
 When a milestone integrates a real external dependency
@@ -369,6 +383,11 @@ the sha is the pointer to the detail and git already stores it in full. A
 milestone with no commit keeps its Done-when line as well, since nothing else
 records what it delivered.
 
+**In a multi-repo workspace one sha does not resolve**: name one per repo
+(`core a1b2c3d · ops 4e5f6a7 · dash 89bcdef`). A milestone routinely closes
+across several — measured on one that landed in three — and a bare sha sends the
+reader to a history that does not contain it.
+
 Never archive on your own initiative. Like closing a version, it is the user's
 decision; suggest it when a completed section outgrows the pending work, and
 wait.
@@ -392,6 +411,9 @@ assumption was confirmed in the code, not guessed.
 **Length check:** every milestone is within its 200-word budget, tasks are one
 line each, and no section restates another. Over budget → split the milestone or
 route the overflow to code, comments, or `docs/`; never ship it as denser prose.
+Measure it **as written**: its **ticked task lines are the record of work already
+done** and do not count against the budget, so a milestone that is mostly shipped
+legitimately runs long while a mostly-pending one does not.
 
 **Placeholder scan:** no task may defer a decision the plan should make
 — "handle errors" without naming which errors, "improve X" without the
