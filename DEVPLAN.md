@@ -1958,7 +1958,7 @@ block, forbids prose in ticked boxes, routes the rest, and both suites are green
 ("note deviations and decisions") and were aligned too; a stale-phrase guard
 pins it.
 
-### M48: Closed milestones compress on archive
+### M48: Closed milestones compress on archive ✅
 
 **Why:** completed milestones are immutable and stay at full weight forever;
 `cerase-core/devplan/poc-completed.md` is 1.3 MB across 15,710 lines that nothing
@@ -1971,14 +1971,17 @@ holds. Archiving stays the user's explicit decision, matching the existing rule
 on closing versions, and the executor never archives mid-run.
 
 **Tasks:**
-- [ ] `tests/test_content.sh`: M48 anchors — red first
-- [ ] `DESIGN.md`: archive-compression rule under Version management
-- [ ] `EXECUTOR-CORE.md`: the executor never archives (one line)
-- [ ] Run both suites; deploy
+- [x] `tests/test_content.sh`: M48 anchors — red first
+- [x] `DESIGN.md`: archive-compression rule under Version management
+- [x] `EXECUTOR-CORE.md`: the executor never archives (one line)
+- [x] Run both suites; deploy
 
 **Done when:** `DESIGN.md` documents one-line archive compression with the sha as
 the pointer to detail, the executor is barred from archiving, both suites green,
 deployed.
+
+**Deviations:** a milestone with no commit keeps its Done-when line too —
+otherwise nothing records what it delivered.
 
 ---
 

@@ -394,6 +394,8 @@ Documentation: updated ✅
 - ❌ Never stage with `git add -A` / `git add .` — explicit paths only
 - ❌ Never commit a milestone whose devplan tasks and heading aren't
   marked done — the bookkeeping ships in the milestone commit
+- ❌ Never archive a milestone or compress closed ones mid-run —
+  archiving is the user's call in design mode (DESIGN.md "Archive")
 - ❌ Never make a fourth same-shape fix attempt — after three failures
   on the same failure, revisit the design (see Stuck protocol)
 - ❌ Never claim completion on stale or unread output — evidence is a

@@ -354,6 +354,25 @@ point to forge-flow scaffold instead. It is **opt-out** — an explicit
   one (e.g. v0.4.md), or keep going here?"*. The user decides.
 - Never close a version or create a new version file on your own.
 
+#### Archive
+
+Completed milestones are immutable, so a devplan only grows: a production file
+measured 1.3 MB across 15,710 lines of closed work that nothing reads. When the
+user moves closed milestones to a completed file, **each compresses to one line**:
+
+```
+MNN | title | date | sha
+```
+
+Everything else — Why, Approach, ticked tasks, Deviations — is dropped, because
+the sha is the pointer to the detail and git already stores it in full. A
+milestone with no commit keeps its Done-when line as well, since nothing else
+records what it delivered.
+
+Never archive on your own initiative. Like closing a version, it is the user's
+decision; suggest it when a completed section outgrows the pending work, and
+wait.
+
 ---
 
 ### Phase 5: Validation
