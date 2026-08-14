@@ -177,6 +177,29 @@ remote state:
 # session to the plane that it can never use.
 ```
 
+### Running the check
+
+Three of the bans are greppable, which is what makes them hold past the
+first long session. Run this over the files **this milestone touched** —
+never the whole repo, which reds on every legacy file at once and gets
+switched off the same day:
+
+```bash
+git diff --name-only "$BASE"...HEAD \
+  | grep -E '\.(sh|py|ts|js|php|go|rb|rs|java)$' \
+  | xargs -r grep -HnE '^[[:space:]]*(#|//).*([Mm]easured 20|[Ff]ound 20|[0-9]{4}-[0-9]{2}-[0-9]{2}|[A-Z][A-Z0-9]+-[A-Z0-9-]+-[0-9]+|\*\*|⚠️|✅|❌|🔄)'
+```
+
+**Every hit is a candidate, not a verdict.** The carve-outs above cannot
+be expressed as a pattern, so the check flags them too: a forward deadline
+matches the date branch, a quoted marker matches the emoji branch. Read
+each hit and either rewrite the comment or leave it deliberately. A check
+trusted to decide would have to drop the carve-outs, which would make it
+wrong more often than it is useful.
+
+The emoji branch lists the decorative markers that actually turn up; it is
+not a general non-ASCII test, which would fire on every accented word.
+
 ### Comments in tests
 
 A test's **name** carries its why. When a comment explains what the test

@@ -2090,7 +2090,7 @@ the line below it, and the section names the three cases the pass found.
 
 ---
 
-### M52: A comment check the executor runs, and one scaffold generates
+### M52: A comment check the executor runs, and one scaffold generates ✅
 
 **Why:** M50's three bans are greppable, which is the only reason they are
 enforceable — but nothing runs the grep. Left to reading, the rule holds until
@@ -2103,17 +2103,23 @@ automate. `scaffold` generates the CI-side equivalent scoped to the merge-base
 diff, in the tier idiom the runner already uses (skip-with-reason, exit code).
 
 **Tasks:**
-- [ ] `EXECUTOR-CORE.md` rung 7: the grep over the milestone's touched files,
+- [x] `EXECUTOR-CORE.md` rung 7: the grep over the milestone's touched files,
       and the rule that hits are candidates a human judgement clears
-- [ ] `SCAFFOLD.md` Phase 2: a `comments` check in the generated runner, scoped
+- [x] `SCAFFOLD.md` Phase 2: a `comments` check in the generated runner, scoped
       to the merge-base diff, skipping with reason outside a git repo or with no
       changed files
-- [ ] `SCAFFOLD.md` Done when: the check is part of the generated spine
-- [ ] `tests/test_content.sh`: M52 anchors
-- [ ] Run both suites; deploy with `./install.sh --force`; commit & push
+- [x] `SCAFFOLD.md` Done when: the check is part of the generated spine
+- [x] `tests/test_content.sh`: M52 anchors
+- [x] Run both suites; deploy with `./install.sh --force`; commit & push
 
 **Done when:** both suites green, the grep is runnable as written, and scaffold's
 contract names the diff-scoped check.
+
+**Deviations:** the grep lives in a `### Running the check` subsection of
+`## Comments` rather than inside ladder rung 7, which already points at that
+section — a code block does not fit a one-line rung. Run verbatim against this
+milestone's own files it returned one hit, the quoted-literal carve-out, which
+is the evidence for "candidate, not verdict".
 
 ---
 

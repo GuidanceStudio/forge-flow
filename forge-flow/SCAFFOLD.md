@@ -99,6 +99,21 @@ Standard scope:
    dedicated **non-prod** resources: separate keys, sandbox endpoints, a
    throwaway test database. The live tier must never touch prod.
 
+6. **A `comments` check in the runner**, running the pattern from
+   `EXECUTOR-CORE.md`'s "Comments" section over the merge-base diff:
+   `git diff --name-only "$(git merge-base HEAD origin/<default-branch>)"...HEAD`,
+   filtered to source extensions. **The diff scope is what makes it usable** —
+   a repo-wide version reds on every legacy file the day it lands and is
+   disabled within the week. Skip-with-reason outside a git repo, with no
+   merge-base, or when no source file changed. Print each hit as `file:line`
+   and exit non-zero.
+   Because two of the section's carve-outs are not expressible as a pattern
+   (a forward deadline, a quoted marker), the check honours a per-line
+   escape: a comment carrying `comment-check: ok` is excluded. That is the
+   difference between this and the executor's own run of the same pattern —
+   CI needs a deterministic verdict, so it gets an explicit way to record a
+   cleared hit; the executor reads the hits and judges them directly.
+
 Leave project-specific decisions the playbook cannot safely infer as explicit
 `TODO:` markers in the generated files (e.g. `# TODO: add the readiness check
 for <service>`), so a human or a later run completes them deliberately.
@@ -119,6 +134,7 @@ Reuse `EXECUTOR-CORE.md` verify/commit discipline:
 
 The project has a one-command bring-up and a tiered `run_tests.sh` that runs
 green (or skips with reason), `.env.example` documents the test credentials,
-a prod-isolation skeleton exists when external services are present, re-running
-scaffold does not clobber, and a non-runnable project is refused with a clear
-message.
+a prod-isolation skeleton exists when external services are present, the
+`comments` check runs over the merge-base diff (or skips with reason),
+re-running scaffold does not clobber, and a non-runnable project is refused
+with a clear message.
