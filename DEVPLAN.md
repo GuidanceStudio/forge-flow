@@ -452,7 +452,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/OWNER/forge-flow/main/instal
 
 **Notes:** Executed in TDD mode. `DEVPLAN_REPO_URL` env var added for
 testability — tests point it at the local repo to avoid network dependency.
-`kiso-run/forge-flow` is the target repo URL — update if the GitHub home changes.
+`DEVPLAN_REPO_URL` defaults to this repo's own GitHub home — update if it moves.
 Test suite: 21 tests (14 local, 7 remote), all green.
 
 ---
@@ -1132,7 +1132,7 @@ standard info. Target ~20% reduction.
 
 ## v0.5 — Reproducibility doctrine
 
-Sibling repos (cerase, lca-tool, social-scraper, md2) converge on the same
+Sibling repos in the same workspace converge on the same
 operational spine: one command brings the whole stack up (`dev.sh`), one command
 runs tiered tests (`run_tests.sh`), live/e2e tests exercise real use cases with
 real but non-prod credentials, and setup is never manual — it's codified in the
@@ -1895,12 +1895,12 @@ out-of-repo (not in this commit); tracked here for the record.
 
 ## Follow-up — Devplan essentiality (2026-08-13)
 
-Measured across the user's own devplans: `cerase-core/poc.md` averages 382 words
-per milestone, `skills/lca/DEVPLAN.md` 567, `kiso-run/core/v0.12.md` 506. Closed
-milestones weigh 2.4–4.3× their still-pending neighbours (`lca-tool` 932 vs 386,
-`skills/lca` 650 vs 152), and 35% of `poc.md`'s words sit inside already-ticked
-task boxes. That write-back duplicates the commit it shipped beside —
-`lca-tool`'s last 40 commit bodies average ~275 words telling the same story.
+Measured across four production devplans in one workspace: they average 382,
+567, 506 and 470 words per milestone. Closed milestones weigh 2.4–4.3× their
+still-pending neighbours (932 vs 386 in one plan, 650 vs 152 in another), and
+35% of the largest plan's words sit inside already-ticked task boxes. That
+write-back duplicates the commit it shipped beside — one repo's last 40 commit
+bodies average ~275 words telling the same story.
 Three causes, one milestone each: no measured budget at design time (M46), an
 unbounded write-back at execution time (M47), closed history kept at full weight
 forever (M48).
@@ -1934,7 +1934,7 @@ Deviations block (M47) sits on top rather than inside it.
 
 **Why:** `EXECUTOR-CORE.md`'s update step asks for deviations, decisions and
 verification notes with no limit and no destination, so the executor retells the
-milestone inside the plan — 35% of `cerase-core/poc.md` — while the commit body
+milestone inside the plan — 35% of one production devplan — while the commit body
 beside it already carries the same account.
 
 **Approach:** Replace the open-ended note with a bounded `**Deviations:**` block:
@@ -1961,7 +1961,7 @@ pins it.
 ### M48: Closed milestones compress on archive ✅
 
 **Why:** completed milestones are immutable and stay at full weight forever;
-`cerase-core/devplan/poc-completed.md` is 1.3 MB across 15,710 lines that nothing
+one archived devplan reached 1.3 MB across 15,710 lines that nothing
 reads, duplicating the commits that already carry it.
 
 **Approach:** Add an **Archive** rule to `DESIGN.md`'s version management — when
@@ -1989,7 +1989,7 @@ otherwise nothing records what it delivered.
 
 ### M49: Four gaps the first real application of M45-M48 found ✅
 
-**Why:** M45-M48 were applied to `cerase-core`'s two open devplans — 44,715 words
+**Why:** M45-M48 were applied to two open production devplans — 44,715 words
 to 28,100, 62 ticked boxes collapsed, and 22 milestones no guard could see
 promoted out of `###`. Four rules did not survive contact: a measurement
 motivating unstarted work has no destination in either routing list; one `sha`
@@ -2023,10 +2023,10 @@ warning against the exemption instead of the exemption.
 ### M50: What a comment carries, in code and in tests ✅
 
 **Why:** Rung 7 filters comments by "keeps the why", and the narrative of an
-incident passes that filter — it is literally a why. Measured on `cerase`:
-`cerase-ops/cerase-tenant.sh` is 40% comment lines (1233 of 3048), with one
+incident passes that filter — it is literally a why. Measured on a production
+ops repo: one 3048-line shell tool is 40% comment lines (1233 of them), with a
 block of 65 consecutive comment lines above a single line of code, written by
-four milestones each appending its own episode below the last. Across the
+four milestones each appending its own episode below the last. Across that
 workspace, 41 comments carry a past date or milestone ID that `git blame`
 already answers, and 659 carry markdown or emoji. The skill also says nothing
 about comments in tests, where the rule differs: the test name carries the why,
@@ -2055,8 +2055,8 @@ new file: a seventh place to look is what M44 was about.
 - [x] Commit & push
 
 **Done when:** `bash tests/test_content.sh` and `bash tests/test_install.sh` are
-green with the M50 anchors, and applying the section's own rules by hand to
-`cerase-ops/cerase-tenant.sh:1268-1279` yields the 3-line form the section shows.
+green with the M50 anchors, and applying the section's own rules by hand to the
+measured 12-line block yields the 3-line form the section shows.
 
 ---
 
