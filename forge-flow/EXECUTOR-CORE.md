@@ -1,10 +1,10 @@
 # Devplan Executor — Shared Core Behavior
 
 Loaded by both TDD and IDD execution modes. Contains all shared
-sections: operating mode, preflight, simplify ladder, ponytail
-convention, debt registration, shared execution-loop steps, stuck
-protocol, test policy, implementation standards, completion recap,
-and common rules.
+sections: operating mode, preflight, simplify ladder, comment rules,
+ponytail convention, debt registration, shared execution-loop steps,
+stuck protocol, test policy, implementation standards, completion
+recap, and common rules.
 
 ---
 
@@ -89,12 +89,11 @@ Apply this ladder in order:
    implementation or caller exists.
 6. **Reduce files and branches** when the same behavior remains clear.
 7. **Compress or delete comments that don't carry their weight.**
-   Delete comments that restate the code (the code is the "what").
-   Compress verbose docstrings that paraphrase the function
-   signature. Keep only: why (intent, trade-off, context the code
-   can't express), gotchas (non-obvious behavior), and public-API
-   contracts. Never remove ponytail: comments — those are
-   intentional debt, not dead weight.
+   Apply the rules in "Comments" below: delete what restates the code
+   (the code is the "what"), compress a docstring that paraphrases the
+   signature, route out what git already holds, and keep the invariant.
+   Never remove ponytail: comments — those are intentional debt, not
+   dead weight.
 
 Structure only; no behavior changes. Devplan's existing test policy
 wins: keep all applicable tests and established test levels rather
@@ -106,6 +105,91 @@ requirements, project conventions, or the milestone's **Done when**
 contract.
 
 Re-run all applicable tests: they must stay green.
+
+---
+
+## Comments
+
+A comment carries what the code cannot state itself: the invariant it must
+hold, the constraint that forced this shape, the reason the obvious
+alternative is wrong. Write it in the present tense, about the code as it
+is now.
+
+**Three kinds of content belong in git, not in the comment.** Each is
+greppable, so a project can enforce them:
+
+- **A past date or an incident** — `Measured 2026-08-14`, `Found on the
+  first run after the credentials were restored` — goes in the commit
+  body. `git blame` answers "when did this line appear, and why" without
+  a second copy that rots when the code moves. A *forward* deadline is
+  different and stays: `the v1 API sunsets 2027-01-01` is a fact about
+  the future the reader has to act on.
+- **A milestone or ticket ID** — `M-OPS-CI-RED-1`, `PROJ-412` — goes in
+  the commit body. The ID names a unit of work; the reader of this line
+  needs the rule that work produced, and has no way to resolve the ID.
+- **Markdown or emoji in an inline comment** — `**bold**`, `⚠️`, a
+  headline above the text — gets deleted. An inline comment is read as
+  plain text in an editor, so the markup is noise. Doc comments that a
+  generator renders (docstrings, JSDoc, `///`) are the exception: there
+  the markup is the format.
+
+**Revise the comment, never append to it.** A milestone that changes
+commented code rewrites that comment to state the current invariant; it
+does not add its own episode below the previous one. Appending is how a
+comment block grows once per run until it is a changelog the repository
+already keeps — measured at 65 consecutive comment lines above a single
+line of code, written by four milestones in sequence.
+
+**No slogans**, the same rule the project's other prose follows. A comment
+that opens on a headline — `The HOST decides, not the port` — asserts a
+contrast where it owes the reader a rule.
+
+**Length is a routing signal.** A comment block longer than the code it
+introduces usually means most of it belongs elsewhere; send the overflow
+through "Where the rest goes". It is not a limit: a genuinely subtle
+three-line algorithm can earn six lines of why.
+
+A worked example, from a shell tool that opens an SSH tunnel to reach
+remote state:
+
+```bash
+# BEFORE — 12 lines, one of them about the code
+# ⚠️ **The HOST decides, not the port.** A tunnel forwards LOOPBACK, so it
+# can only serve a connection aimed at loopback — the assumption the block
+# above states outright and this function never checked. Deciding on the
+# port alone meant a connection string naming any other host still opened
+# an SSH session to the plane: useless for that connection, and a run
+# reaching production without being asked to.
+#
+# Measured 2026-08-14, `M-OPS-CI-RED-UNPUBLISHED-1`: four tests supply a
+# deliberately fake `tfstate.test:5432`, 5432 is not open on a CI runner,
+# and the suite died trying to SSH to `marketplace.cerase.ai`. On a
+# developer machine the same path succeeds silently, which is worse than
+# the red.
+
+# AFTER — the invariant, minus everything git already holds
+# A tunnel forwards loopback only, so route on the target host and not the
+# port: a connection naming any other host would otherwise open an SSH
+# session to the plane that it can never use.
+```
+
+### Comments in tests
+
+A test's **name** carries its why. When a comment explains what the test
+verifies, that sentence is the name in the wrong place — rename the test
+and delete the comment. `no tunnel opened when the state host is not
+loopback` needs nothing above it.
+
+Comment only what a name cannot hold:
+
+- why a fixture value is what it is — `tfstate.test` is unresolvable on
+  purpose, `0.1` is below the configured threshold
+- why a test is skipped, xfail, or order-dependent
+- what an opaque constant, magic byte, or captured payload means
+
+Never in a test: `# Arrange` / `# Act` / `# Assert` labels, a restatement
+of the assertion on the next line, or the story of the bug that motivated
+the test. The test is that record — it fails if the bug comes back.
 
 ---
 
@@ -327,6 +411,9 @@ Then apply this rule:
 
 Avoid overfitting tests to a single prompt or log line. Test the
 behavioral class instead.
+
+A test's name is where its intent belongs; comment only what the name
+cannot hold (see "Comments in tests").
 
 **Mode-specific timing:** In TDD mode, write all applicable test levels BEFORE implementation (red first). In IDD mode, write tests AFTER implementation (green immediately).
 

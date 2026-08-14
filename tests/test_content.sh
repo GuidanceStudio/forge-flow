@@ -503,4 +503,34 @@ contains_flat "$DESIGN" "ticked task lines are the record of work already done"
 # An acceptance gate keeps the evidence under its ticks
 contains_flat "$EXECUTOR_CORE" "an **acceptance gate**"
 
+# ---- M50: what a comment carries, in code and in tests ----
+contains_flat "$EXECUTOR_CORE" "## Comments A comment carries what the code cannot state itself"
+contains_flat "$EXECUTOR_CORE" "the invariant it must hold"
+# The three kinds of content git already holds
+contains_flat "$EXECUTOR_CORE" "A past date or an incident"
+contains_flat "$EXECUTOR_CORE" "A milestone or ticket ID"
+contains_flat "$EXECUTOR_CORE" "Markdown or emoji"
+# Both carve-outs: a forward deadline stays, rendered doc comments keep markup
+contains_flat "$EXECUTOR_CORE" "sunsets 2027-01-01"
+contains_flat "$EXECUTOR_CORE" "there the markup is the format"
+# The mechanism that grows a comment block once per run
+contains_flat "$EXECUTOR_CORE" "Revise the comment, never append to it"
+contains_flat "$EXECUTOR_CORE" "65 consecutive comment lines"
+# The no-slogans rule reaches code comments
+contains_flat "$EXECUTOR_CORE" "No slogans"
+# Length routes the overflow, it does not cap the comment
+contains_flat "$EXECUTOR_CORE" "Length is a routing signal"
+contains_flat "$EXECUTOR_CORE" "It is not a limit"
+# Comments in tests: the name carries the why
+contains "$EXECUTOR_CORE" "### Comments in tests"
+contains_flat "$EXECUTOR_CORE" "A test's **name** carries its why"
+contains_flat "$EXECUTOR_CORE" "rename the test and delete the comment"
+contains_flat "$EXECUTOR_CORE" "\`# Arrange\` / \`# Act\` / \`# Assert\`"
+# Rung 7 defers to the section instead of restating its criteria
+contains_flat "$EXECUTOR_CORE" "Apply the rules in \"Comments\""
+# Test policy points at the test-specific subsection
+contains_flat "$EXECUTOR_CORE" "see \"Comments in tests\""
+# The payload README names the new section in EXECUTOR-CORE's contents
+contains "$SKILL_README" "comment rules"
+
 echo "content contract passed"

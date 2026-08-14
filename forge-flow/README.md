@@ -40,7 +40,8 @@ file; Git with a remote for push.
 - `IDD.md` — Implementation Driven Development execution playbook
 - `SCAFFOLD.md` — operational-spine generation playbook (bring-up + tiered runner)
 - `EXECUTOR-CORE.md` — shared behavior for execution modes (operating mode,
-  preflight, simplify ladder, ponytail, debt registration, test policy, etc.)
+  preflight, simplify ladder, comment rules, ponytail, debt registration,
+  test policy, etc.)
 - `agents/openai.yaml` — optional Codex interface metadata (ignored by
   other assistants)
 
