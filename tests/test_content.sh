@@ -559,4 +559,14 @@ contains_flat "$SCAFFOLD" "The diff scope is what makes it usable"
 contains_flat "$SCAFFOLD" "comment-check: ok"
 contains_flat "$SCAFFOLD" "the \`comments\` check runs over the merge-base diff"
 
+# ---- M53: explicit paths do not bound a commit — the index does ----
+contains_flat "$EXECUTOR_CORE" "A bare \`git commit\` commits the whole index"
+contains_flat "$EXECUTOR_CORE" "git commit <paths>"
+# The recovery, and the constraint that it only works before a push
+contains_flat "$EXECUTOR_CORE" "git reset --soft HEAD~1"
+contains_flat "$EXECUTOR_CORE" "restores the index exactly"
+# Preflight records what it found, so the close-out has a baseline
+contains_flat "$EXECUTOR_CORE" "Record the dirty set"
+contains_flat "$EXECUTOR_CORE" "staged/unstaged split"
+
 echo "content contract passed"
