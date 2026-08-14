@@ -544,4 +544,19 @@ do
     fi
 done
 
+# ---- M52: a comment check the executor runs, and one scaffold generates ----
+contains "$EXECUTOR_CORE" "### Running the check"
+contains_flat "$EXECUTOR_CORE" "Every hit is a candidate, not a verdict"
+# Scoped to the milestone's files, never the whole repo
+contains_flat "$EXECUTOR_CORE" "git diff --name-only \"\$BASE\"...HEAD"
+contains_flat "$EXECUTOR_CORE" "never the whole repo"
+# The emoji branch is a named set, not a non-ASCII test
+contains_flat "$EXECUTOR_CORE" "not a general non-ASCII test"
+# scaffold generates the CI-side equivalent, diff-scoped with an escape hatch
+contains "$SCAFFOLD" "comments\` check in the runner"
+contains_flat "$SCAFFOLD" "git merge-base HEAD origin/"
+contains_flat "$SCAFFOLD" "The diff scope is what makes it usable"
+contains_flat "$SCAFFOLD" "comment-check: ok"
+contains_flat "$SCAFFOLD" "the \`comments\` check runs over the merge-base diff"
+
 echo "content contract passed"
