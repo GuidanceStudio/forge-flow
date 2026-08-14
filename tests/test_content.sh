@@ -548,7 +548,7 @@ done
 contains "$EXECUTOR_CORE" "### Running the check"
 contains_flat "$EXECUTOR_CORE" "Every hit is a candidate, not a verdict"
 # Scoped to the milestone's files, never the whole repo
-contains_flat "$EXECUTOR_CORE" "git diff --name-only \"\$BASE\"...HEAD"
+contains_flat "$EXECUTOR_CORE" "git diff --name-only --diff-filter=d \"\$BASE\"...HEAD"
 contains_flat "$EXECUTOR_CORE" "never the whole repo"
 # The emoji branch is a named set, not a non-ASCII test
 contains_flat "$EXECUTOR_CORE" "not a general non-ASCII test"
@@ -568,5 +568,23 @@ contains_flat "$EXECUTOR_CORE" "restores the index exactly"
 # Preflight records what it found, so the close-out has a baseline
 contains_flat "$EXECUTOR_CORE" "Record the dirty set"
 contains_flat "$EXECUTOR_CORE" "staged/unstaged split"
+
+# ---- M54: three of the four places a comment lives were invisible ----
+contains_flat "$EXECUTOR_CORE" "A comment lives in four places"
+# The ID branch takes one leading character and needs a second alphabetic run,
+# which is what tells a ticket from somebody else's numbering
+contains_flat "$EXECUTOR_CORE" "requires two alphabetic segments"
+contains_flat "$EXECUTOR_CORE" "somebody else's numbering"
+# Doc comments: markup stays, dates and IDs do not
+contains_flat "$EXECUTOR_CORE" "keeps its markup"
+contains_flat "$EXECUTOR_CORE" "a block opened and closed on one line"
+# Python docstrings have no prefix, so the check parses instead of grepping
+contains_flat "$EXECUTOR_CORE" "carries no line prefix at all and needs a parser"
+contains_flat "$EXECUTOR_CORE" "ast.get_docstring"
+# Vendored code is excluded rather than carved out line by line
+contains_flat "$EXECUTOR_CORE" "excluded, not carved out"
+# scaffold generates all four surfaces, and knows the push-to-default case
+contains_flat "$SCAFFOLD" "All four surfaces, not just the inline one"
+contains_flat "$SCAFFOLD" "pass the push range explicitly"
 
 echo "content contract passed"

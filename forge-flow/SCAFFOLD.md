@@ -99,14 +99,23 @@ Standard scope:
    dedicated **non-prod** resources: separate keys, sandbox endpoints, a
    throwaway test database. The live tier must never touch prod.
 
-6. **A `comments` check in the runner**, running the pattern from
+6. **A `comments` check in the runner**, running the patterns from
    `EXECUTOR-CORE.md`'s "Comments" section over the merge-base diff:
    `git diff --name-only "$(git merge-base HEAD origin/<default-branch>)"...HEAD`,
-   filtered to source extensions. **The diff scope is what makes it usable** —
-   a repo-wide version reds on every legacy file the day it lands and is
-   disabled within the week. Skip-with-reason outside a git repo, with no
-   merge-base, or when no source file changed. Print each hit as `file:line`
-   and exit non-zero.
+   filtered to source extensions and with vendored trees excluded. **The diff
+   scope is what makes it usable** — a repo-wide version reds on every legacy
+   file the day it lands and is disabled within the week. Skip-with-reason
+   outside a git repo, with no merge-base, or when no source file changed.
+   Print each hit as `file:line`, in line order, and exit non-zero.
+   **All four surfaces, not just the inline one**: a line comment takes every
+   ban, a doc comment and a Python docstring take the date and ID bans but keep
+   their markup. Three of the four were missed by the first version of this
+   check, and a project that only greps line comments will report clean while
+   most of its ticket IDs sit in doc blocks.
+   Where the project pushes to its default branch rather than opening pull
+   requests, the merge-base with that branch is `HEAD` and the diff is empty:
+   pass the push range explicitly instead, or the check skips on every run that
+   counts and reports success for having read nothing.
    Because two of the section's carve-outs are not expressible as a pattern
    (a forward deadline, a quoted marker), the check honours a per-line
    escape: a comment carrying `comment-check: ok` is excluded. That is the
