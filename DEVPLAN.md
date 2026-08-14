@@ -2123,6 +2123,35 @@ is the evidence for "candidate, not verdict".
 
 ---
 
+### M53: Explicit paths do not bound a commit — the index does ✅
+
+**Why:** "Stage ONLY the files touched by this milestone (explicit paths — never
+`git add -A`)" is necessary and not sufficient: a bare `git commit -m` after an
+explicit `git add` commits the whole INDEX, so anything the user had staged
+before the run ships too. Measured 2026-08-14 across a 33-repo compliance pass —
+an executing agent followed the staging rule exactly, and its first commit
+carried a file rename the user had staged and not finished.
+
+**Approach:** two additions where the rules already live. `Commit & push` gains
+the pathspec-scoped commit form and the recovery when the check catches a
+foreign file. Preflight gains one line: record the dirty set, so the close-out
+has something to compare against.
+
+**Tasks:**
+- [x] `tests/test_content.sh`: M53 anchors — red first
+- [x] `EXECUTOR-CORE.md` `### Commit & push`: `git commit <paths>` bounds the
+      commit where `git add` does not; the existing `git show --stat HEAD` check
+      is what catches a foreign file; `git reset --soft HEAD~1` restores the
+      index intact when it does and nothing is pushed yet
+- [x] `EXECUTOR-CORE.md` Preflight: record the dirty set including the
+      staged/unstaged split, and verify it unchanged before reporting done
+- [x] Run both suites; deploy with `./install.sh --force`; commit & push
+
+**Done when:** both suites green, and the commit section states the pathspec form
+as the rule rather than the `git add` form alone.
+
+---
+
 ## Proposed — pending discussion (2026-07-04)
 
 Items below are **not milestones**: no M-number, no Tasks to execute, not

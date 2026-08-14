@@ -56,6 +56,11 @@ active is a dangling marker: either resume it or close it — never leave it.
   the user how to proceed (stash, commit, or include) — this falls
   under the "conflict with unknown user work" blocker. Unrelated work
   must never end up inside a milestone commit.
+  **Record the dirty set** you found, including the staged/unstaged
+  split, whenever the user answers "work alongside it". It is the
+  baseline the commit step compares against; without it, foreign work
+  swept into a commit is only visible to someone who already knew what
+  was there.
 - **Resume detection.** A milestone heading marked `🔄` — or any `- [~]`
   or `[x]` task under a pending milestone, or leftover changes matching its
   scope — means a previous run stopped midway. The `🔄`/`- [~]` markers are
@@ -364,6 +369,20 @@ two versions to keep true.
 
 - Stage ONLY the files touched by this milestone (explicit paths —
   never `git add -A` / `git add .`).
+- **Bound the commit, not just the staging.** A bare `git commit` commits
+  the whole index, including anything staged before this run started, so
+  an explicit `git add` does not by itself keep foreign work out of the
+  milestone. Name the paths on the commit as well:
+
+  ```bash
+  git commit <paths> -F -    # or -m; only these paths are committed
+  ```
+
+  When `git show --stat HEAD` below lists a file this milestone did not
+  touch and nothing is pushed yet, `git reset --soft HEAD~1` — it
+  restores the index exactly as it was, the user's staged work included —
+  then commit again with the paths named. After a push, stop and report
+  it rather than rewriting what others may already have.
 - **Stage the devplan with the milestone.** The checkbox and heading
   updates from the previous step are part of this milestone's changes —
   include the devplan file in the same commit, never as a later catch-up
