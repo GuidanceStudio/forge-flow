@@ -161,11 +161,10 @@ remote state:
 # an SSH session to the plane: useless for that connection, and a run
 # reaching production without being asked to.
 #
-# Measured 2026-08-14, `M-OPS-CI-RED-UNPUBLISHED-1`: four tests supply a
-# deliberately fake `tfstate.test:5432`, 5432 is not open on a CI runner,
-# and the suite died trying to SSH to `marketplace.cerase.ai`. On a
-# developer machine the same path succeeds silently, which is worse than
-# the red.
+# Measured 2026-08-14, `M-OPS-CI-RED-1`: four tests supply a deliberately
+# fake `state.example:5432`, 5432 is not open on a CI runner, and the
+# suite died trying to SSH to the production host. On a developer machine
+# the same path succeeds silently, which is worse than the red.
 
 # AFTER — the invariant, minus everything git already holds
 # A tunnel forwards loopback only, so route on the target host and not the
@@ -182,7 +181,7 @@ loopback` needs nothing above it.
 
 Comment only what a name cannot hold:
 
-- why a fixture value is what it is — `tfstate.test` is unresolvable on
+- why a fixture value is what it is — `state.example` is unresolvable on
   purpose, `0.1` is below the configured threshold
 - why a test is skipped, xfail, or order-dependent
 - what an opaque constant, magic byte, or captured payload means
