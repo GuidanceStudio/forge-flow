@@ -127,11 +127,16 @@ greppable, so a project can enforce them:
 - **A milestone or ticket ID** — `M-OPS-CI-RED-1`, `PROJ-412` — goes in
   the commit body. The ID names a unit of work; the reader of this line
   needs the rule that work produced, and has no way to resolve the ID.
+  The exception is an ID that is a **join key to a document in the same
+  repo**: when a test block pins the wording a specific milestone
+  introduced and that plan sits beside it, deleting the ID costs the
+  maintainer the one handle that says which entry to open.
 - **Markdown or emoji in an inline comment** — `**bold**`, `⚠️`, a
   headline above the text — gets deleted. An inline comment is read as
-  plain text in an editor, so the markup is noise. Doc comments that a
-  generator renders (docstrings, JSDoc, `///`) are the exception: there
-  the markup is the format.
+  plain text in an editor, so the markup is noise. Two exceptions: doc
+  comments that a generator renders (docstrings, JSDoc, `///`), where the
+  markup is the format; and a **literal being quoted**, where the marker
+  is the value under test and not decoration.
 
 **Revise the comment, never append to it.** A milestone that changes
 commented code rewrites that comment to state the current invariant; it
@@ -189,6 +194,14 @@ Comment only what a name cannot hold:
 Never in a test: `# Arrange` / `# Act` / `# Assert` labels, a restatement
 of the assertion on the next line, or the story of the bug that motivated
 the test. The test is that record — it fails if the bug comes back.
+
+One shape of restatement is worth naming because it reads as useful:
+**when the assertion's argument is a verbatim quote of the thing under
+test** — a documentation anchor, a golden-file line, an expected error
+string — a comment paraphrasing that quote adds nothing by construction.
+What earns its place beside such an assertion is the rule the quote must
+satisfy, a group label over several of them, or a discriminator
+explaining why two near-identical anchors both exist.
 
 ---
 
