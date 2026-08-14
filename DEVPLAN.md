@@ -2020,6 +2020,46 @@ warning against the exemption instead of the exemption.
 
 ---
 
+### M50: What a comment carries, in code and in tests ✅
+
+**Why:** Rung 7 filters comments by "keeps the why", and the narrative of an
+incident passes that filter — it is literally a why. Measured on `cerase`:
+`cerase-ops/cerase-tenant.sh` is 40% comment lines (1233 of 3048), with one
+block of 65 consecutive comment lines above a single line of code, written by
+four milestones each appending its own episode below the last. Across the
+workspace, 41 comments carry a past date or milestone ID that `git blame`
+already answers, and 659 carry markdown or emoji. The skill also says nothing
+about comments in tests, where the rule differs: the test name carries the why,
+so a comment restating it is the name in the wrong place.
+
+**Approach:** one `## Comments` section in `EXECUTOR-CORE.md`, placed between
+the simplify ladder and the `ponytail:` convention that is its carve-out — both
+execution modes inherit it from the shared core. Rung 7 points at it instead of
+restating its criteria, and Test policy cross-references the test subsection. No
+new file: a seventh place to look is what M44 was about.
+
+**Tasks:**
+- [x] `tests/test_content.sh`: M50 anchors — red first
+- [x] `EXECUTOR-CORE.md`: `## Comments` — what a comment states; the three kinds
+      of content that belong in git (past date/incident, milestone or ticket ID,
+      markdown or emoji in an inline comment) with the two carve-outs (a forward
+      deadline stays, rendered doc comments keep their markup); revise-never-append;
+      no slogans; length as a routing signal; the 12-line → 3-line worked example
+- [x] `EXECUTOR-CORE.md`: `### Comments in tests` — the name carries the why;
+      the three things a name cannot hold; the never-list (AAA labels, restated
+      assertion, the story of the bug)
+- [x] `EXECUTOR-CORE.md`: rung 7 points at the section; Test policy cross-references
+      it; the file-header section list names it
+- [x] `forge-flow/README.md`: the `EXECUTOR-CORE.md` contents line names comment rules
+- [x] Run both suites; deploy with `./install.sh --force`
+- [x] Commit & push
+
+**Done when:** `bash tests/test_content.sh` and `bash tests/test_install.sh` are
+green with the M50 anchors, and applying the section's own rules by hand to
+`cerase-ops/cerase-tenant.sh:1268-1279` yields the 3-line form the section shows.
+
+---
+
 ## Proposed — pending discussion (2026-07-04)
 
 Items below are **not milestones**: no M-number, no Tasks to execute, not
