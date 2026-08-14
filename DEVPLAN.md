@@ -2060,6 +2060,63 @@ measured 12-line block yields the 3-line form the section shows.
 
 ---
 
+### M51: forge-flow's own comments under M50, and the carve-outs the pass found ✅
+
+**Why:** M50 was written from a measurement of someone else's code. Applied to
+this repo it hits three cases it does not cover: a milestone ID that is a join
+key to `DEVPLAN.md` in the same repo (the `# ---- MNN: subject ----` blocks in
+`tests/test_content.sh`), an emoji that is the literal value under test
+(`# Matching ❌ Common rule`), and — the finding worth the pass — a comment
+paraphrasing an assertion whose argument is already a verbatim quote of the
+document under test, which restates by construction. Seven such comments are in
+`test_content.sh` today.
+
+**Approach:** delete the seven, then add the two carve-outs and the doc-anchor
+rule to `## Comments` so the next pass does not re-flag what this one kept.
+
+**Tasks:**
+- [x] `tests/test_content.sh`: delete the seven comments that restate the
+      assertion below them; keep the group labels, the parity notes, and the
+      two discriminators that distinguish near-identical anchors
+- [x] `EXECUTOR-CORE.md` `## Comments`: two carve-outs — an ID that is a join
+      key to a document in the same repo, and a literal being quoted — plus the
+      doc-anchor rule that a comment paraphrasing a quoted assertion is a
+      restatement
+- [x] `tests/test_content.sh`: M51 anchors
+- [x] Run both suites; deploy with `./install.sh --force`; commit & push
+
+**Done when:** both suites green, no comment in this repo's shell code restates
+the line below it, and the section names the three cases the pass found.
+
+---
+
+### M52: A comment check the executor runs, and one scaffold generates
+
+**Why:** M50's three bans are greppable, which is the only reason they are
+enforceable — but nothing runs the grep. Left to reading, the rule holds until
+the first long session. A repo-wide check is unusable (it reds on every legacy
+file the day it lands), so both checks scope to what changed.
+
+**Approach:** the executor's simplify step gains the grep over the files the
+milestone touched, with the carve-outs stated as judgement not exceptions to
+automate. `scaffold` generates the CI-side equivalent scoped to the merge-base
+diff, in the tier idiom the runner already uses (skip-with-reason, exit code).
+
+**Tasks:**
+- [ ] `EXECUTOR-CORE.md` rung 7: the grep over the milestone's touched files,
+      and the rule that hits are candidates a human judgement clears
+- [ ] `SCAFFOLD.md` Phase 2: a `comments` check in the generated runner, scoped
+      to the merge-base diff, skipping with reason outside a git repo or with no
+      changed files
+- [ ] `SCAFFOLD.md` Done when: the check is part of the generated spine
+- [ ] `tests/test_content.sh`: M52 anchors
+- [ ] Run both suites; deploy with `./install.sh --force`; commit & push
+
+**Done when:** both suites green, the grep is runnable as written, and scaffold's
+contract names the diff-scoped check.
+
+---
+
 ## Proposed — pending discussion (2026-07-04)
 
 Items below are **not milestones**: no M-number, no Tasks to execute, not

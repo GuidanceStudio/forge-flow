@@ -177,7 +177,6 @@ done
 
 # ---- M25: EXECUTOR-CORE.md extraction ----
 
-# File exists
 test -f "$EXECUTOR_CORE" || fail "EXECUTOR-CORE.md not found"
 
 # TDD.md and IDD.md both reference it
@@ -288,7 +287,6 @@ contains "$SCAFFOLD" "runnable"
 contains "$SCAFFOLD" "refuse"
 # Explicit TODO markers for project-specific bits
 contains "$SCAFFOLD" "TODO"
-# Documented in both READMEs
 contains "$ROOT_README" "scaffold"
 contains "$SKILL_README" "scaffold"
 
@@ -304,11 +302,9 @@ contains "$DESIGN" "drops it, recorded under"
 contains "$DESIGN" "runnable apps"
 
 # ---- M31: executor reproducibility guardrails ----
-# No manual setup — encode in scripts; drive the scaffolded bring-up.
 contains "$EXECUTOR_CORE" "No manual setup"
 contains "$EXECUTOR_CORE" "never a manual step"
 contains "$EXECUTOR_CORE" "Use the scaffolded bring-up"
-# First-class live tier with prod isolation.
 contains "$EXECUTOR_CORE" "Live tier (first-class, not a fallback)"
 contains "$EXECUTOR_CORE" "real, non-prod calls"
 contains "$EXECUTOR_CORE" "never run the live tier against prod"
@@ -348,7 +344,6 @@ if ! head -6 "$SKILL" | grep -qi 'scaffold'; then fail "SKILL.md frontmatter omi
 if grep -qF '# devplan — skill payload' "$SKILL_README"; then fail "payload README still titled devplan"; fi
 
 # ---- M33: bookkeeping verification gate ----
-# Marking a milestone done is a verified, committed gate, not advisory.
 contains "$EXECUTOR_CORE" "Verify the bookkeeping landed"
 contains "$EXECUTOR_CORE" "no unchecked task may remain for the milestone being closed"
 contains "$EXECUTOR_CORE" "Stage the devplan with the milestone"
@@ -364,7 +359,6 @@ contains "$DESIGN" "no spine"
 contains "$DESIGN" "Greenfield"
 contains "$DESIGN" "Brownfield"
 contains "$DESIGN" "first runnable milestone"
-# Executor handles the greenfield day-zero case (no app to wrap yet).
 contains "$EXECUTOR_CORE" "first runnable milestone of a greenfield project"
 
 # ---- M40: stuck protocol — root cause before fixes, three-strikes to design review ----
@@ -427,7 +421,6 @@ if grep -qF "forge-flow/v0.3.md" "$ROOT_README"; then
 fi
 
 # ---- M45: in-progress milestone state marker ----
-# Three-state marker convention documented in the shared core
 contains "$EXECUTOR_CORE" "## Milestone state markers"
 contains "$EXECUTOR_CORE" "\`- [~]\`"
 contains "$EXECUTOR_CORE" "🔄"
@@ -512,7 +505,7 @@ contains_flat "$EXECUTOR_CORE" "A milestone or ticket ID"
 contains_flat "$EXECUTOR_CORE" "Markdown or emoji"
 # Both carve-outs: a forward deadline stays, rendered doc comments keep markup
 contains_flat "$EXECUTOR_CORE" "sunsets 2027-01-01"
-contains_flat "$EXECUTOR_CORE" "there the markup is the format"
+contains_flat "$EXECUTOR_CORE" "where the markup is the format"
 # The mechanism that grows a comment block once per run
 contains_flat "$EXECUTOR_CORE" "Revise the comment, never append to it"
 contains_flat "$EXECUTOR_CORE" "65 consecutive comment lines"
@@ -532,5 +525,23 @@ contains_flat "$EXECUTOR_CORE" "Apply the rules in \"Comments\""
 contains_flat "$EXECUTOR_CORE" "see \"Comments in tests\""
 # The payload README names the new section in EXECUTOR-CORE's contents
 contains "$SKILL_README" "comment rules"
+
+# ---- M51: the carve-outs applying M50 to this repo found ----
+contains_flat "$EXECUTOR_CORE" "join key to a document in the same"
+contains_flat "$EXECUTOR_CORE" "a **literal being quoted**"
+contains_flat "$EXECUTOR_CORE" "verbatim quote of the thing under test"
+contains_flat "$EXECUTOR_CORE" "a discriminator explaining why two near-identical anchors both exist"
+# The seven restating comments this repo's own pass deleted stay deleted
+for restating in \
+    "# File exists" \
+    "# Documented in both READMEs" \
+    "# First-class live tier with prod isolation." \
+    "# Three-state marker convention documented in the shared core"
+do
+    # -x, so the guard's own list of quoted needles is not a match for itself
+    if grep -qxF "$restating" "$REPO_ROOT/tests/test_content.sh"; then
+        fail "comment restates the assertion below it: $restating"
+    fi
+done
 
 echo "content contract passed"
