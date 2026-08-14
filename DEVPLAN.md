@@ -2152,6 +2152,43 @@ as the rule rather than the `git add` form alone.
 
 ---
 
+### M54: three of the four places a comment lives were invisible to the check ✅
+
+**Why:** M52's pattern reaches inline comments only, and its ID branch requires
+two characters before the first hyphen. Measured 2026-08-14 across a seven-repo
+workspace applying M50 for the first time: **1,389 of 2,387 hits sat where it
+could not look** — doc-comment bodies, whose continuation line starts with an
+asterisk; Python docstrings, which carry no line prefix at all; and framework
+banner blocks drawn with pipes. Separately about 100 distinct IDs of the shape
+`M-PERF-1` never matched, and that was the workspace's commonest milestone
+shape. Three of the four gaps were reported independently by different agents
+running the documented pattern against real code, which is the evidence that
+reading for them does not work.
+
+**Approach:** the convention already says a doc comment keeps its markup. It
+never said the date and ID bans stop there, and they must not: a reader of a
+doc block can resolve a ticket ID no better than anyone else. One pattern per
+surface, with markup banned on the inline surface alone. The ID branch widens
+to one character and instead requires a **second alphabetic segment**, which
+drops external identifiers — a standard number, a CVE — in the same change.
+Vendored trees are excluded outright: an upstream licence banner is not a
+comment this project can revise, and the next build overwrites the edit.
+
+**Tasks:**
+- [x] `tests/test_content.sh`: M54 anchors — red first, proven against the previous revision
+- [x] ID branch: one leading character, a second alphabetic segment required
+- [x] Doc-comment surface — continuation lines, one-line blocks, pipe banners; date and ID only
+- [x] Python docstring surface, read with `ast` because no prefix marks one
+- [x] Vendored and generated trees excluded from both the executor's run and the generated check
+- [x] `SCAFFOLD.md` Phase 2 generates the same four surfaces, and names the push-to-default case where a merge-base diff is empty by construction
+- [x] Run both suites; deploy with `./install.sh --force`; commit & push
+
+**Done when:** both suites green, and the documented block finds a ticket ID
+inside a doc comment and a Python docstring while leaving an accessibility
+standard alone.
+
+---
+
 ## Proposed — pending discussion (2026-07-04)
 
 Items below are **not milestones**: no M-number, no Tasks to execute, not

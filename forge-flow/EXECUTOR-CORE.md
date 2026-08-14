@@ -190,10 +190,48 @@ never the whole repo, which reds on every legacy file at once and gets
 switched off the same day:
 
 ```bash
-git diff --name-only "$BASE"...HEAD \
-  | grep -E '\.(sh|py|ts|js|php|go|rb|rs|java)$' \
-  | xargs -r grep -HnE '^[[:space:]]*(#|//).*([Mm]easured 20|[Ff]ound 20|[0-9]{4}-[0-9]{2}-[0-9]{2}|[A-Z][A-Z0-9]+-[A-Z0-9-]+-[0-9]+|\*\*|⚠️|✅|❌|🔄)'
+DATE='([Mm]easured 20|[Ff]ound 20|[0-9]{4}-[0-9]{2}-[0-9]{2})'
+ID='[A-Z][A-Z0-9]*-[A-Z0-9-]*[A-Z][A-Z0-9-]*-[0-9]+'
+MARKUP='(\*\*|⚠️|✅|❌|🔄|🔴|🟡|🟢|📋)'
+
+git diff --name-only --diff-filter=d "$BASE"...HEAD \
+  | grep -E '\.(sh|py|ts|tsx|js|jsx|php|go|rb|rs|java)$' \
+  | grep -vE '(^|/)(vendor|node_modules|dist|build|third_party)/' \
+  | xargs -r grep -HnE "^[[:space:]]*((#|//).*($DATE|$ID|$MARKUP)|(/?\*|\|).*($DATE|$ID))"
 ```
+
+**A comment lives in four places and the first pattern reached one.** An
+inline comment takes all three bans. A **doc comment** keeps its markup —
+a generator renders it, that is the carve-out — but not its dates or IDs,
+because a reader of a doc block can resolve a ticket number no better than
+anyone else; its body is matched on the leading asterisk, the optional
+slash catches a block opened and closed on one line, and the pipe catches
+the banner style some frameworks draw. A **Python docstring** carries no
+line prefix at all and needs a parser:
+
+```bash
+python3 - "$f" <<'PY'
+import ast, re, sys
+src = open(sys.argv[1], encoding="utf-8", errors="replace").read()
+bad = re.compile(r"([Mm]easured 20|[Ff]ound 20|\d{4}-\d{2}-\d{2}"
+                 r"|[A-Z][A-Z0-9]*-[A-Z0-9-]*[A-Z][A-Z0-9-]*-[0-9]+)")
+for n in ast.walk(ast.parse(src)):
+    if isinstance(n, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
+        doc, start = ast.get_docstring(n, clean=False), getattr(n.body[0], "lineno", 0)
+        for i, line in enumerate((doc or "").split("\n")):
+            if bad.search(line): print(f"{start + i}:{line.strip()}")
+PY
+```
+
+**Vendored and generated trees are excluded, not carved out.** An upstream
+licence banner is not a comment this project can revise, and the next build
+overwrites the edit.
+
+**The ID branch requires two alphabetic segments**, which is what separates
+a ticket from an identifier that shares its shape. One leading character is
+enough — `M-PERF-1` is a ticket and the earlier two-character floor made it
+invisible — while `EN-301-549` and `CVE-2026-69246` have one alphabetic
+segment each and are somebody else's numbering.
 
 **Every hit is a candidate, not a verdict.** The carve-outs above cannot
 be expressed as a pattern, so the check flags them too: a forward deadline
@@ -203,7 +241,9 @@ trusted to decide would have to drop the carve-outs, which would make it
 wrong more often than it is useful.
 
 The emoji branch lists the decorative markers that actually turn up; it is
-not a general non-ASCII test, which would fire on every accented word.
+not a general non-ASCII test, which would fire on every accented word. The
+check and cross marks are deliberately absent — codebases emit those as
+literal UI strings.
 
 ### Comments in tests
 
