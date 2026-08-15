@@ -623,4 +623,14 @@ contains_flat "$EXECUTOR_CORE" "re-reading a guard does not find this"
 contains_flat "$TDD" "proven able to fail"
 contains_flat "$IDD" "proven able to fail"
 
+# ---- M58: an assertion can pin the wrong thing and stay green ----
+contains_flat "$EXECUTOR_CORE" "What to assert"
+# the value that arrives, not how it got there
+contains_flat "$EXECUTOR_CORE" "not the spelling of its passing"
+contains_flat "$EXECUTOR_CORE" "green for exactly as long as the code was wrong"
+# which failure, not that one happened
+contains_flat "$EXECUTOR_CORE" "Assert which failure"
+# a count wherever one is knowable
+contains_flat "$EXECUTOR_CORE" "survive a swap"
+
 echo "content contract passed"

@@ -2260,7 +2260,7 @@ code it guards.
 
 ---
 
-### M58: an assertion can pin the wrong thing and stay green while the code is wrong
+### M58: an assertion can pin the wrong thing and stay green while the code is wrong ✅
 
 **Why:** Measured 2026-08-15: six tests went red on correct code because each
 pinned the spelling of a value being passed rather than the value arriving, and
@@ -2273,11 +2273,11 @@ red-proof. They are judgement rather than mechanism, so they are written as what
 to assert and not as a step the executor performs.
 
 **Tasks:**
-- [ ] `tests/test_content.sh`: M58 anchors, red first
-- [ ] `EXECUTOR-CORE.md`: assert the value that arrives, not the spelling of its passing
-- [ ] `EXECUTOR-CORE.md`: assert which failure, not that one happened
-- [ ] `EXECUTOR-CORE.md`: a count wherever one is knowable — "any match" and `>=` survive a swap
-- [ ] Both suites; `./install.sh --force`; commit & push
+- [x] `tests/test_content.sh`: M58 anchors, red first
+- [x] `EXECUTOR-CORE.md`: assert the value that arrives, not the spelling of its passing
+- [x] `EXECUTOR-CORE.md`: assert which failure, not that one happened
+- [x] `EXECUTOR-CORE.md`: a count wherever one is knowable — "any match" and `>=` survive a swap
+- [x] Both suites; `./install.sh --force`; commit & push
 
 **Done when:** each of the three rules carries the measurement that produced it.
 
