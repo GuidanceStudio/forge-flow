@@ -2189,6 +2189,121 @@ standard alone.
 
 ---
 
+### M55: what a test costs is decided when it is written, and nothing said so
+
+**Why:** Measured 2026-08-15 while shortening an established suite: **180s of a
+415s tier was one test**, which stubbed its container runtime but not the 120s
+readiness poll on the same path — a stub never satisfies one. Two more resolved
+a bare hostname at five seconds each; one parsed 550KB of PDF to assert a list
+emptied.
+
+**Approach:** The Test policy has only ever carried coverage, never cost. It
+gains one rule per cause above, and the green step checks the budget in the same
+pass rather than beside it.
+
+**Tasks:**
+- [ ] `tests/test_content.sh`: M55 anchors, red first
+- [ ] `EXECUTOR-CORE.md` Test policy: one write-time cost rule per cause, each with its measurement
+- [ ] `TDD.md` + `IDD.md`: the green step includes the per-test budget
+- [ ] Both suites; `./install.sh --force`; commit & push
+
+**Done when:** each measured cause has a rule in the payload, and a test over
+budget is fixed before the commit that adds it.
+
+---
+
+### M56: a runner that reports tier totals cannot show which test is the slow one
+
+**Why:** The generated runner reports a tier total and nothing per test, so one
+test holding 43% of a tier looks exactly like a tier that is evenly slow.
+Measured 2026-08-15: that state held until the files were timed by hand, one
+process at a time.
+
+**Approach:** The runner times each test and prints the five slowest on every
+run, red over a generous ceiling. Printing unconditionally is what catches drift
+below the ceiling — a reporter that speaks only when the ceiling breaks says
+nothing until it already has.
+
+**Tasks:**
+- [ ] `tests/test_content.sh`: M56 anchors, red first
+- [ ] `SCAFFOLD.md`: runner times each test, prints five slowest, reds over a ceiling
+- [ ] Ceiling generous enough that a legitimately slow test does not red
+- [ ] Reporter proven against the format the runner emits, not its documented one
+- [ ] Both suites; `./install.sh --force`; commit & push
+
+**Done when:** a generated runner names its five slowest tests and fails on one
+over the ceiling.
+
+---
+
+### M57: five guards written in one session could not fail, and reading caught none
+
+**Why:** Measured 2026-08-15: a slow-test reporter parsed the wrong one of its
+runner's two output formats and so reported nothing; a guard counted a token
+that also appears elsewhere in its own file and passed with half the code
+deleted; a test asserted the wrong consequence of a regex and stayed green
+against both spellings. Each was found by breaking the code, none by re-reading.
+
+**Approach:** Red-before-green is unavailable for a test written against code
+that already exists — most guards, and every regression test. The green step
+therefore requires each new test to have been proven able to fail: break the
+code, confirm red, restore.
+
+**Tasks:**
+- [ ] `tests/test_content.sh`: M57 anchors, red first
+- [ ] `EXECUTOR-CORE.md` Test policy: the red-proof, and when red-before-green cannot apply
+- [ ] `TDD.md` + `IDD.md`: the green step names the red-proof
+- [ ] Both suites; `./install.sh --force`; commit & push
+
+**Done when:** the payload requires a red-proof for every test written after the
+code it guards.
+
+---
+
+### M58: an assertion can pin the wrong thing and stay green while the code is wrong
+
+**Why:** Measured 2026-08-15: six tests went red on correct code because each
+pinned the spelling of a value being passed rather than the value arriving, and
+one stayed green for exactly as long as the code was wrong, because it matched a
+phrase the code never emits. Four more promised a usage hint nothing checked,
+and an any-request assertion passed with the defect inside it.
+
+**Approach:** Three rules, one per cause, in the Test policy beside the
+red-proof. They are judgement rather than mechanism, so they are written as what
+to assert and not as a step the executor performs.
+
+**Tasks:**
+- [ ] `tests/test_content.sh`: M58 anchors, red first
+- [ ] `EXECUTOR-CORE.md`: assert the value that arrives, not the spelling of its passing
+- [ ] `EXECUTOR-CORE.md`: assert which failure, not that one happened
+- [ ] `EXECUTOR-CORE.md`: a count wherever one is knowable — "any match" and `>=` survive a swap
+- [ ] Both suites; `./install.sh --force`; commit & push
+
+**Done when:** each of the three rules carries the measurement that produced it.
+
+---
+
+### M59: the ban on foreign names is enforced by a habit, and one name outlived the sweep
+
+**Why:** `CLAUDE.md` forbids naming any project outside forge-flow in any file,
+and records eight such references removed on 2026-08-14 after they had reached
+the public remote. One survives in `DEVPLAN.md`, in a proposal written before
+that sweep: the pre-commit grep is manual, and it covered the payload.
+
+**Approach:** genericise the surviving name, then move the check off the habit
+and into the suite, where it runs on every commit instead of when somebody
+remembers. The pattern is the one `CLAUDE.md` already documents.
+
+**Tasks:**
+- [ ] `tests/test_content.sh`: the foreign-identifier check, red against the current tree
+- [ ] Genericise the surviving project name in `DEVPLAN.md`
+- [ ] `CLAUDE.md`: point at the check instead of the manual grep
+- [ ] Both suites; `./install.sh --force`; commit & push
+
+**Done when:** a foreign project name anywhere in the tree fails the suite.
+
+---
+
 ## Proposed — pending discussion (2026-07-04)
 
 Items below are **not milestones**: no M-number, no Tasks to execute, not
