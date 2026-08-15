@@ -39,6 +39,10 @@ covering the finished code. Tests are written AFTER the implementation
 and must PASS immediately. Unit tests must be green before proceeding,
 **and each must run within the per-test budget** (Test policy, "What a test
 costs"). A test over it is fixed here, while you still know what it waits on.
+
+Every test in this mode is written after the code, so none of them was ever red
+for the right reason. Each is **proven able to fail** before moving on: break
+the code, confirm red, restore (Test policy, "Prove it can fail").
 If the implementation from step 2 or its tests won't go green, follow
 the Stuck protocol in EXECUTOR-CORE.md.
 

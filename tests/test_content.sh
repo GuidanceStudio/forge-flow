@@ -612,4 +612,15 @@ contains_flat "$SCAFFOLD" "generous enough that a legitimately slow test"
 # a runner may pick its output format by whether stdout is a terminal
 contains_flat "$SCAFFOLD" "whether stdout is a terminal"
 
+# ---- M57: red-before-green is unavailable for a test written after the code ----
+contains_flat "$EXECUTOR_CORE" "Prove it can fail"
+contains_flat "$EXECUTOR_CORE" "break the code, confirm red, restore"
+# most guards and every regression test are written against code that exists
+contains_flat "$EXECUTOR_CORE" "written against code that already exists"
+# reading does not find a vacuous guard
+contains_flat "$EXECUTOR_CORE" "re-reading a guard does not find this"
+# both playbooks name it in the step that reaches green
+contains_flat "$TDD" "proven able to fail"
+contains_flat "$IDD" "proven able to fail"
+
 echo "content contract passed"
