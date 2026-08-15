@@ -556,6 +556,28 @@ spellings of it.
 Break the thing the test names, not something adjacent. A test that goes red
 because the file no longer parses has proved nothing about its assertion.
 
+### What to assert
+
+The red-proof catches a test that cannot fail. These three catch a test that
+fails for the wrong reason, or passes for one. They are judgement rather than a
+step, so they are read while writing the assertion.
+
+**Assert the value that arrives, not the spelling of its passing.** Pinning how
+a value travels — the flag, the env name, the order of two calls — reds on
+correct code the day the route changes, and says nothing about the value
+landing. The mirror is worse: one test matched a phrase the code never emits
+and was **green for exactly as long as the code was wrong**, then reded the
+moment it was fixed.
+
+**Assert which failure, not that one happened.** A test satisfied by any
+non-zero exit is satisfied by a typo in the dispatcher and by a file that no
+longer parses. When the name promises a message — a usage hint, a named
+service, a replacement setting — the assertion has to reach it.
+
+**Count wherever a count is knowable.** "Some call matched" and "at least N"
+both **survive a swap**: add a wrong item beside the right one and they stay
+green. Where the number is fixed by the test's own setup, assert the number.
+
 A test's name is where its intent belongs; comment only what the name
 cannot hold (see "Comments in tests").
 
