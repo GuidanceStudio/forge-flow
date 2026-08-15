@@ -2283,27 +2283,6 @@ to assert and not as a step the executor performs.
 
 ---
 
-### M59: the ban on foreign names is enforced by a habit, and one name outlived the sweep
-
-**Why:** `CLAUDE.md` forbids naming any project outside forge-flow in any file,
-and records eight such references removed on 2026-08-14 after they had reached
-the public remote. One survives in `DEVPLAN.md`, in a proposal written before
-that sweep: the pre-commit grep is manual, and it covered the payload.
-
-**Approach:** genericise the surviving name, then move the check off the habit
-and into the suite, where it runs on every commit instead of when somebody
-remembers. The pattern is the one `CLAUDE.md` already documents.
-
-**Tasks:**
-- [ ] `tests/test_content.sh`: the foreign-identifier check, red against the current tree
-- [ ] Genericise the surviving project name in `DEVPLAN.md`
-- [ ] `CLAUDE.md`: point at the check instead of the manual grep
-- [ ] Both suites; `./install.sh --force`; commit & push
-
-**Done when:** a foreign project name anywhere in the tree fails the suite.
-
----
-
 ## Proposed — pending discussion (2026-07-04)
 
 Items below are **not milestones**: no M-number, no Tasks to execute, not
@@ -2312,6 +2291,29 @@ raises, so a future design pass can turn them into a real milestone (or
 reject them) with the context intact. **Do not execute these via forge-flow
 TDD/IDD** — "Everything is pre-approved" (Operating mode) applies to approved
 milestones only.
+
+### Proposal: automate the ban on foreign names — REJECTED (2026-08-15)
+
+**Status:** ❌ rejected, with the measurement. Kept so it is not re-derived.
+
+**Trigger:** one foreign project name was found in `DEVPLAN.md`, in a proposal
+dated 2026-07-04. It was genericised in M55.
+
+**Why not a check.** The name predates the rule, which was written 2026-08-14,
+so nothing shows the rule failing since it exists — the sweep that day was
+incomplete, once. And the check is not writable. Measured on this tree: a
+pattern broad enough to catch a foreign project name flags this repo's own
+GitHub URL, the install one-liner, a cited standard and a credited third-party
+repo. A guard that reds on legitimate content is switched off, and takes the
+rule with it. The narrow version — developer-machine paths — has exactly one
+hit, the line in `CLAUDE.md` documenting the check itself: a mention, not a use.
+
+**What that leaves.** A rule whose violations cannot be recognised mechanically
+stays a rule for the reader. `CLAUDE.md` is the right home and already holds it.
+Revisit only if a name reaches the remote *after* 2026-08-14, which would be
+evidence the rule itself is not enough.
+
+---
 
 ### Proposal: Sub-agent delegation — should EXECUTOR-CORE gain a git-boundary + scope-recency rule?
 
