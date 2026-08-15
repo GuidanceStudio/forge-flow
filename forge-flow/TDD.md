@@ -49,7 +49,10 @@ Tests that cannot be run locally are exempt from the red check.
 
 - Implement the minimum code needed to make the failing tests pass.
 - Run the relevant tests after each meaningful change.
-- Iterate until ALL runnable tests are green.
+- Iterate until ALL runnable tests are green **and each new one runs within
+  the per-test budget** (Test policy, "What a test costs"). A test over it is
+  fixed here, while you still know what it waits on — not in a later pass,
+  where the cause is no longer legible.
 - If green won't come, follow the Stuck protocol in EXECUTOR-CORE.md.
 - Don't over-engineer — simplification comes next.
 

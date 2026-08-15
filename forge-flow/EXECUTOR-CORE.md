@@ -506,6 +506,38 @@ Then apply this rule:
 Avoid overfitting tests to a single prompt or log line. Test the
 behavioral class instead.
 
+### What a test costs
+
+Coverage is the only thing this policy used to ask for, and a suite pays for
+the rest at every run. Three rules, each from a measured cause. Apply them
+while writing: afterwards the cause is invisible, because a slow suite looks
+uniformly slow.
+
+**Neutralise every wait on a path you have stubbed.** A stub never satisfies a
+readiness check, so a poll waiting for the real dependency runs to its full
+deadline every time. **The wait is not in the test body** — it is in the code
+under test, so it is found by reading that path rather than the test. Measured:
+one test stubbed its container runtime and its health command but not a
+120-second readiness poll reached three times by the function it called, and
+held 180s of a 415s tier.
+
+**Resolve no name and open no socket the test is not testing.** Prefer a
+literal address, which resolves to nothing. **A hostname with no dot** is the
+expensive form: the resolver appends every search domain in turn before giving
+up, while a dotted name fails at once. Measured: two tests cost five seconds
+each this way and their neighbours, differing only in the host, cost 0.05s.
+Lowering the connect timeout changes nothing, because resolution finishes
+before any timeout applies.
+
+**Size the fixture to what the assertion reads.** When the assertion never
+looks at the content, the content is minimal and **generated rather than
+borrowed** — a real document also carries whatever it carried. Measured: one
+test parsed 550KB of PDF for 26 seconds to assert that a pending list emptied
+and that two sources existed, reading nothing out of either file.
+
+A test over the budget is fixed in the step that wrote it, not in a later pass.
+The cause is legible for as long as you still remember what the test waits on.
+
 A test's name is where its intent belongs; comment only what the name
 cannot hold (see "Comments in tests").
 

@@ -587,4 +587,20 @@ contains_flat "$EXECUTOR_CORE" "excluded, not carved out"
 contains_flat "$SCAFFOLD" "All four surfaces, not just the inline one"
 contains_flat "$SCAFFOLD" "pass the push range explicitly"
 
+# ---- M55: what a test costs is decided when it is written ----
+# The Test policy carried coverage and never cost
+contains_flat "$EXECUTOR_CORE" "What a test costs"
+# a stub cannot satisfy a readiness check, so the waits on that path go too
+contains_flat "$EXECUTOR_CORE" "stub never satisfies a readiness check"
+contains_flat "$EXECUTOR_CORE" "The wait is not in the test body"
+# name resolution is charged before any connect timeout applies
+contains_flat "$EXECUTOR_CORE" "Resolve no name and open no socket"
+contains_flat "$EXECUTOR_CORE" "A hostname with no dot"
+# the fixture is sized to what the assertion reads, and generated
+contains_flat "$EXECUTOR_CORE" "Size the fixture to what the assertion reads"
+contains_flat "$EXECUTOR_CORE" "generated rather than borrowed"
+# the budget is checked in the green step, not beside it
+contains_flat "$TDD" "within the per-test budget"
+contains_flat "$IDD" "within the per-test budget"
+
 echo "content contract passed"

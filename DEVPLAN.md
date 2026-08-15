@@ -2189,7 +2189,7 @@ standard alone.
 
 ---
 
-### M55: what a test costs is decided when it is written, and nothing said so
+### M55: what a test costs is decided when it is written, and nothing said so ✅
 
 **Why:** Measured 2026-08-15 while shortening an established suite: **180s of a
 415s tier was one test**, which stubbed its container runtime but not the 120s
@@ -2202,10 +2202,10 @@ gains one rule per cause above, and the green step checks the budget in the same
 pass rather than beside it.
 
 **Tasks:**
-- [ ] `tests/test_content.sh`: M55 anchors, red first
-- [ ] `EXECUTOR-CORE.md` Test policy: one write-time cost rule per cause, each with its measurement
-- [ ] `TDD.md` + `IDD.md`: the green step includes the per-test budget
-- [ ] Both suites; `./install.sh --force`; commit & push
+- [x] `tests/test_content.sh`: M55 anchors, red first
+- [x] `EXECUTOR-CORE.md` Test policy: one write-time cost rule per cause, each with its measurement
+- [x] `TDD.md` + `IDD.md`: the green step includes the per-test budget
+- [x] Both suites; `./install.sh --force`; commit & push
 
 **Done when:** each measured cause has a rule in the payload, and a test over
 budget is fixed before the commit that adds it.
@@ -2317,8 +2317,8 @@ milestones only.
 
 **Status:** 🗣️ under discussion — not approved, not scheduled.
 
-**Observed trigger:** Executing CUTLR's scaffold milestone S3 via forge-flow
-TDD, the executing agent delegated S3's implementation to an Opus sub-agent.
+**Observed trigger:** Executing a project's scaffold milestone S3 via forge-flow
+TDD, the executing agent delegated S3's implementation to a sub-agent.
 Its first prompt bundled "implement + commit + push"; the user rejected the
 tool call before it ran. The corrected instruction was "chiudi solo s3. poi
 fermati. commit e push" — the user wanted the commit/push step under the

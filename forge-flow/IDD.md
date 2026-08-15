@@ -36,7 +36,9 @@
 
 Write tests at all applicable levels (see Test policy in EXECUTOR-CORE.md)
 covering the finished code. Tests are written AFTER the implementation
-and must PASS immediately. Unit tests must be green before proceeding.
+and must PASS immediately. Unit tests must be green before proceeding,
+**and each must run within the per-test budget** (Test policy, "What a test
+costs"). A test over it is fixed here, while you still know what it waits on.
 If the implementation from step 2 or its tests won't go green, follow
 the Stuck protocol in EXECUTOR-CORE.md.
 
