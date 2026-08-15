@@ -2236,7 +2236,7 @@ over the ceiling.
 
 ---
 
-### M57: five guards written in one session could not fail, and reading caught none
+### M57: five guards written in one session could not fail, and reading caught none ✅
 
 **Why:** Measured 2026-08-15: a slow-test reporter parsed the wrong one of its
 runner's two output formats and so reported nothing; a guard counted a token
@@ -2250,10 +2250,10 @@ therefore requires each new test to have been proven able to fail: break the
 code, confirm red, restore.
 
 **Tasks:**
-- [ ] `tests/test_content.sh`: M57 anchors, red first
-- [ ] `EXECUTOR-CORE.md` Test policy: the red-proof, and when red-before-green cannot apply
-- [ ] `TDD.md` + `IDD.md`: the green step names the red-proof
-- [ ] Both suites; `./install.sh --force`; commit & push
+- [x] `tests/test_content.sh`: M57 anchors, red first
+- [x] `EXECUTOR-CORE.md` Test policy: the red-proof, and when red-before-green cannot apply
+- [x] `TDD.md` + `IDD.md`: the green step names the red-proof
+- [x] Both suites; `./install.sh --force`; commit & push
 
 **Done when:** the payload requires a red-proof for every test written after the
 code it guards.

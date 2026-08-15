@@ -53,6 +53,9 @@ Tests that cannot be run locally are exempt from the red check.
   the per-test budget** (Test policy, "What a test costs"). A test over it is
   fixed here, while you still know what it waits on — not in a later pass,
   where the cause is no longer legible.
+- Any test that could not be red before implementation — a guard over existing
+  behaviour, a regression test — is **proven able to fail** here instead: break
+  the code, confirm red, restore (Test policy, "Prove it can fail").
 - If green won't come, follow the Stuck protocol in EXECUTOR-CORE.md.
 - Don't over-engineer — simplification comes next.
 

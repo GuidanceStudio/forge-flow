@@ -538,6 +538,24 @@ and that two sources existed, reading nothing out of either file.
 A test over the budget is fixed in the step that wrote it, not in a later pass.
 The cause is legible for as long as you still remember what the test waits on.
 
+### Prove it can fail
+
+TDD's red-before-green proves a test can fail, and it is unavailable for any
+test **written against code that already exists** — most guards, and every
+regression test. Those get the same proof after the fact: **break the code,
+confirm red, restore.** Thirty seconds, and it is the only thing that
+distinguishes a guard from a comment that runs.
+
+**Do it because re-reading a guard does not find this.** Five written in one
+session all looked right and none held: one parsed the wrong one of its
+runner's two output formats and so reported nothing; one counted a token that
+also appears elsewhere in its own file and passed with half the code deleted;
+one asserted the wrong consequence of a pattern and was green against both
+spellings of it.
+
+Break the thing the test names, not something adjacent. A test that goes red
+because the file no longer parses has proved nothing about its assertion.
+
 A test's name is where its intent belongs; comment only what the name
 cannot hold (see "Comments in tests").
 
