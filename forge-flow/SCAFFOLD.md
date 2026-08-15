@@ -80,7 +80,23 @@ Standard scope:
      silently and never pretend it ran,
    - scriptable **exit code**s (non-zero on any real failure) so CI and other
      scripts can gate on it,
-   - a final pass/fail/skip recap.
+   - a final pass/fail/skip recap,
+   - **per-test timing**: the runner times each test and prints the five slowest
+     on every run, and fails on one over a ceiling. A tier total cannot show
+     which test is the slow one, so a single test holding half a tier reads as
+     a tier that is evenly slow. **Printing them every run** matters as much as
+     the ceiling: drift underneath it is how the next slow test arrives, and a
+     reporter that speaks only when the ceiling breaks says nothing until it
+     already has. Set the ceiling **generous enough that a legitimately slow
+     test** — one doing real crypto or archiving — does not red; it is there to
+     catch a test that waits, which is an order of magnitude away, not a test
+     that works.
+
+     ⚠️ Prove the reporter against the output the runner really emits. Many
+     test runners carry two formats and choose by **whether stdout is a
+     terminal**, so a parser written against the documented one can report
+     nothing at all on every real run — a guard against slow tests that cannot
+     see a slow test.
 
 3. **`.env.example`** listing every variable the app and the live tier need,
    with **test-credential placeholders** (`<REPLACE_WITH_…>`), never real
