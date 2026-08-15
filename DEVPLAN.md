@@ -2212,7 +2212,7 @@ budget is fixed before the commit that adds it.
 
 ---
 
-### M56: a runner that reports tier totals cannot show which test is the slow one
+### M56: a runner that reports tier totals cannot show which test is the slow one ✅
 
 **Why:** The generated runner reports a tier total and nothing per test, so one
 test holding 43% of a tier looks exactly like a tier that is evenly slow.
@@ -2225,11 +2225,11 @@ below the ceiling — a reporter that speaks only when the ceiling breaks says
 nothing until it already has.
 
 **Tasks:**
-- [ ] `tests/test_content.sh`: M56 anchors, red first
-- [ ] `SCAFFOLD.md`: runner times each test, prints five slowest, reds over a ceiling
-- [ ] Ceiling generous enough that a legitimately slow test does not red
-- [ ] Reporter proven against the format the runner emits, not its documented one
-- [ ] Both suites; `./install.sh --force`; commit & push
+- [x] `tests/test_content.sh`: M56 anchors, red first
+- [x] `SCAFFOLD.md`: runner times each test, prints five slowest, reds over a ceiling
+- [x] Ceiling generous enough that a legitimately slow test does not red
+- [x] Reporter proven against the format the runner emits, not its documented one
+- [x] Both suites; `./install.sh --force`; commit & push
 
 **Done when:** a generated runner names its five slowest tests and fails on one
 over the ceiling.

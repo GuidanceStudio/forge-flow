@@ -603,4 +603,13 @@ contains_flat "$EXECUTOR_CORE" "generated rather than borrowed"
 contains_flat "$TDD" "within the per-test budget"
 contains_flat "$IDD" "within the per-test budget"
 
+# ---- M56: a tier total cannot show which test is the slow one ----
+contains_flat "$SCAFFOLD" "times each test and prints the five slowest"
+# printing every run is what catches drift below the ceiling
+contains_flat "$SCAFFOLD" "Printing them every run"
+# the ceiling is generous, or it reds on work that is legitimately slow
+contains_flat "$SCAFFOLD" "generous enough that a legitimately slow test"
+# a runner may pick its output format by whether stdout is a terminal
+contains_flat "$SCAFFOLD" "whether stdout is a terminal"
+
 echo "content contract passed"
