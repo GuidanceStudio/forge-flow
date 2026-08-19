@@ -2295,7 +2295,7 @@ whole plan can miss a convention an earlier milestone established without naming
 it — preflight's commit-convention read and the project's instruction files are
 what remain.
 
-### M60: The devplan is two files, and the executor reads only the active one
+### M60: The devplan is two files, and the executor reads only the active one ✅
 
 **Why:** the active plan is read whole every session to act on one pending
 milestone, and on this repo every milestone in it is closed.
@@ -2307,16 +2307,22 @@ file and opens the completed one only when an Approach names an earlier mileston
 ID; DESIGN reads both. Single-file projects stay valid.
 
 **Tasks:**
-- [ ] `tests/test_content.sh`: M60 anchors — red first
-- [ ] `DESIGN.md`: two-file layout and name derivation under File location
-- [ ] `DESIGN.md`: discovery takes the last milestone ID from the completed file
-- [ ] `DESIGN.md`: version close opens a new pair, the old active file being empty
-- [ ] `EXECUTOR-CORE.md`, `TDD.md`, `IDD.md`: executor reads the active file, zooms on named IDs
-- [ ] `forge-flow/README.md`: narrow the "no specific format is required" promise
-- [ ] Run both suites; `./install.sh --force`; commit & push
+- [x] `tests/test_content.sh`: M60 anchors — red first
+- [x] `DESIGN.md`: two-file layout and name derivation under File location
+- [x] `DESIGN.md`: discovery takes the last milestone ID from the completed file
+- [x] `DESIGN.md`: version close opens a new pair, the old active file being empty
+- [x] `EXECUTOR-CORE.md`, `TDD.md`, `IDD.md`: executor reads the active file, zooms on named IDs
+- [x] `DESIGN.md`: Archive separates lossless relocation from user-decided compression
+- [x] `forge-flow/README.md`: narrow the "no specific format is required" promise
+- [x] Run both suites; `./install.sh --force`; commit & push
 
 **Done when:** the layout, the numbering source and the executor's read scope are
 pinned by anchors, both suites green, deployed.
+
+**Deviations:** `DESIGN.md`'s Archive rule already sent closed milestones to a
+completed file in compressed form, so the same file had two formats; a task was
+added to split lossless relocation from user-decided compression. The root README
+documents the devplan format too and gained the layout in the same pass.
 
 ### M61: Closing a milestone moves it, and nothing is lost in the move
 

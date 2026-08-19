@@ -81,6 +81,10 @@ relevant tests are green.
 Simpler Markdown plans can still be executed when milestone intent is
 unambiguous, but they are not the preferred format for reliable TDD/IDD runs.
 
+A plan lives in one file or two. In the two-file layout the active file holds
+pending milestones and a companion `*-COMPLETED.md` holds the closed ones, so a
+session loads the work queue instead of the project's whole history.
+
 ## Inspiration
 
 ### Core methodology
