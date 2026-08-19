@@ -682,4 +682,14 @@ if grep -qF "Never archive a milestone or compress closed ones mid-run" "$EXECUT
     fail "EXECUTOR-CORE still bans relocating a closed milestone"
 fi
 
+# ---- M62: the split is offered, never performed unasked ----
+contains_flat "$DESIGN" "suggest the two-file split"
+contains_flat "$DESIGN" "Never split a devplan unasked"
+# a section heading follows its milestones once they have all closed
+contains_flat "$DESIGN" "moves with them once every milestone under it is closed"
+# a version's out-of-scope list is tied to that version
+contains_flat "$DESIGN" "Out-of-scope list moves with that version"
+# what a planner still needs stays where a planner looks
+contains_flat "$DESIGN" "stay in the active file"
+
 echo "content contract passed"
