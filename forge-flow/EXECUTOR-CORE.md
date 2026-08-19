@@ -72,6 +72,11 @@ active is a dangling marker: either resume it or close it — never leave it.
   code state (verify which tasks are truly done), note the resume in the
   devplan, and continue from the real state instead of redoing or skipping
   work.
+- **Half-moved milestone.** In the two-file layout, a heading that appears in
+  both files — or in neither — means a run died during the close-out move.
+  Appended-then-removed is the written order, so the usual case is the duplicate:
+  verify the two copies match, then drop the one in the active file. A heading in
+  neither file is recovered from git before anything else proceeds.
 - **Commit convention.** Read the repo's commit-message convention from
   recent history (`git log --oneline -20`): milestone-ID prefix style
   (e.g. `M12: title`, `D5-4: title`) and any trailers used
@@ -369,6 +374,19 @@ same location+title pair already exists (idempotent).
   If a box is still `- [ ]` or `- [~]`, fix it now — the plan must report what
   is actually done. This is a gate, not advice: a green milestone with
   `- [ ]` or `- [~]` tasks is an incomplete milestone.
+- **Move the closed milestone to the completed file** when the project uses the
+  two-file layout (DESIGN.md "Two files: active and completed"). The block
+  moves verbatim — heading, Why, Approach, ticked tasks, Done-when, Deviations —
+  and never in the compressed archive form, whose only pointer is a `sha`:
+  a force-rewritten history leaves that pointer resolving to nothing, and the
+  detail is gone from both places. **Append to the completed file before removing it from
+  the active one**, so a run that dies mid-move leaves the block in both files
+  rather than in neither. Verify the moved copy, since the re-read follows the
+  block to where it now lives.
+- **The milestone's heading resolves in exactly one file.** Grep it in both: it
+  appears once in the completed file and no longer in the active one. Grep the
+  heading rather than the bare milestone ID — an ID also appears as a
+  cross-reference inside other milestones, so an ID search reds on correct work.
 - **The write-back is bounded.** Append a `**Deviations:**` block of **at most
   5 lines**, and write it **only when execution diverged from the plan** — after
   a run that followed the plan, the ticks are the record and no prose is owed.
@@ -430,11 +448,13 @@ two versions to keep true.
 - **Stage the devplan with the milestone.** The checkbox and heading
   updates from the previous step are part of this milestone's changes —
   include the devplan file in the same commit, never as a later catch-up
-  commit. The work and the record that it is done ship together.
+  commit. The work and the record that it is done ship together. In the two-file
+  layout the close-out touched both files, so stage both.
 - Commit following the repo's convention detected in preflight
   (default `MNN: <title>`).
 - **Verify the devplan shipped in the commit.** After committing, run
-  `git show --stat HEAD` and confirm the active devplan file is listed.
+  `git show --stat HEAD` and confirm the active devplan file is listed — and the
+  completed file too when the milestone moved.
   If it is missing, `git commit --amend` to add it before pushing — the
   bookkeeping must travel in the milestone commit, never in a later
   catch-up. (Staging is asserted above; this is the check that proves it.)
@@ -657,8 +677,10 @@ Documentation: updated ✅
 - ❌ Never stage with `git add -A` / `git add .` — explicit paths only
 - ❌ Never commit a milestone whose devplan tasks and heading aren't
   marked done — the bookkeeping ships in the milestone commit
-- ❌ Never archive a milestone or compress closed ones mid-run —
-  archiving is the user's call in design mode (DESIGN.md "Archive")
+- ❌ Never compress a closed milestone mid-run — relocating it to the
+  completed file is the close-out step above; compressing the completed
+  file to the one-line form is the user's call in design mode
+  (DESIGN.md "Archive")
 - ❌ Never make a fourth same-shape fix attempt — after three failures
   on the same failure, revisit the design (see Stuck protocol)
 - ❌ Never claim completion on stale or unread output — evidence is a

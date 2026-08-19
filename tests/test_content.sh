@@ -482,8 +482,8 @@ contains_flat "$DESIGN" "MNN | title | date | sha"
 contains_flat "$DESIGN" "the sha is the pointer to the detail"
 # Archiving is the user's call, like closing a version
 contains_flat "$DESIGN" "Never archive on your own initiative"
-# The executor never archives
-contains_flat "$EXECUTOR_CORE" "Never archive a milestone"
+# The executor never compresses; relocation is the close-out step (M61)
+contains_flat "$EXECUTOR_CORE" "Never compress a closed milestone"
 
 # ---- M49: four gaps the first production application found ----
 # A measurement that motivates unstarted work has a destination, and it is here
@@ -659,5 +659,27 @@ contains_flat "$TDD" "the active file when the project uses the two-file layout"
 contains_flat "$IDD" "the active file when the project uses the two-file layout"
 # the payload README no longer promises that no format is required
 contains_flat "$SKILL_README" "one file or two"
+
+# ---- M61: closing a milestone moves it, and nothing is lost in the move ----
+contains_flat "$EXECUTOR_CORE" "Move the closed milestone to the completed file"
+# verbatim, never the compressed form whose only pointer is a sha
+contains_flat "$EXECUTOR_CORE" "moves verbatim"
+contains_flat "$EXECUTOR_CORE" "a force-rewritten history leaves that pointer resolving to nothing"
+# append before removing, so a dead run leaves the block in both files
+contains_flat "$EXECUTOR_CORE" "Append to the completed file before removing it from the active one"
+# the bookkeeping re-read follows the block to where it now lives
+contains_flat "$EXECUTOR_CORE" "the re-read follows the block"
+# the gate greps the heading; a bare ID appears as a cross-reference
+contains_flat "$EXECUTOR_CORE" "resolves in exactly one file"
+contains_flat "$EXECUTOR_CORE" "an ID also appears as a cross-reference"
+# the commit carries both files
+contains_flat "$EXECUTOR_CORE" "stage both"
+contains_flat "$EXECUTOR_CORE" "and the completed file too when the milestone moved"
+# preflight recognises a run that died mid-move
+contains_flat "$EXECUTOR_CORE" "died during the close-out move"
+# the old absolute ban on relocating is gone
+if grep -qF "Never archive a milestone or compress closed ones mid-run" "$EXECUTOR_CORE"; then
+    fail "EXECUTOR-CORE still bans relocating a closed milestone"
+fi
 
 echo "content contract passed"
