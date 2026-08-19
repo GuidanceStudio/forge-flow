@@ -336,7 +336,9 @@ same location+title pair already exists (idempotent).
   count. Hedged phrasing in a would-be claim ("should", "probably",
   "seems to") means it is not verified — run the command instead. A
   subagent's success report counts only when it carries the command and
-  its output.
+  its output. A red-proof is a claim of the same kind — that a test failed before
+  the code existed, or failed when the code was deliberately broken — and it is
+  held to the same evidence.
 - **Use the scaffolded bring-up** when the milestone needs the app
   running: start the stack with the one-command bring-up, never a manual
   sequence, and verify behavior against the running service. If no
@@ -445,6 +447,12 @@ two versions to keep true.
   restores the index exactly as it was, the user's staged work included —
   then commit again with the paths named. After a push, stop and report
   it rather than rewriting what others may already have.
+- **The agent that commits is the one holding the baseline.** What bounds a commit
+  is the dirty set recorded in preflight and this milestone's file list, plus the
+  commit convention read there; an agent given none of them cannot honour that
+  bound, so work fanned out to a subagent comes back for the orchestrator to
+  review and commit. A subagent with its own worktree is a different case — it
+  carries its own baseline and this does not reach it.
 - **Stage the devplan with the milestone.** The checkbox and heading
   updates from the previous step are part of this milestone's changes —
   include the devplan file in the same commit, never as a later catch-up
@@ -689,7 +697,8 @@ Documentation: updated ✅
 - ❌ Never make a fourth same-shape fix attempt — after three failures
   on the same failure, revisit the design (see Stuck protocol)
 - ❌ Never claim completion on stale or unread output — evidence is a
-  command run in this session whose output you actually read
+  command run in this session whose output you actually read, and
+  a red-proof is held to the same standard
 - ✅ Encode the business requirement in tests, not the implementation
 - ✅ Ambiguity → choose and proceed
 - ✅ Milestone too large → decompose internally without flagging it
