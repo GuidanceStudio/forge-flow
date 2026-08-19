@@ -33,7 +33,7 @@ assert_run() {  # <expected_exit> <needle> <label> -- <args...>
     local exp="$1" needle="$2" label="$3"; shift 3; [ "$1" = "--" ] && shift
     local out rc=0
     out="$(bash "$INSTALL_SH" "$@" 2>&1)" || rc=$?
-    if [ "$rc" -eq "$exp" ] && printf '%s' "$out" | grep -qF "$needle"; then
+    if [ "$rc" -eq "$exp" ] && printf '%s' "$out" | grep -qF -- "$needle"; then
         echo "  PASS: $label"; PASS=$((PASS+1))
     else
         echo "  FAIL: $label — exit=$rc (want $exp); output:"; printf '%s\n' "$out" | head -4; FAIL=$((FAIL+1))
@@ -111,5 +111,36 @@ assert_file "$H/.claude/skills/forge-flow/SKILL.md" "remote: SKILL.md installed 
 cleanup "$H"; cleanup "$ISO"; cleanup "$SNAP"
 
 echo ""
+echo "=== M65: the installer names targets it left behind ==="
+# a sibling target holding an older payload is named, with the fix
+H="$(fake_home)"
+HOME="$H" bash "$INSTALL_SH" --force --target codex >/dev/null
+echo "stale" >> "$H/.codex/skills/forge-flow/SKILL.md"
+HOME="$H" assert_run 0 "$H/.codex/skills/forge-flow" "stale sibling is named" -- --force --target claude
+HOME="$H" assert_run 0 "--target all --force" "the fix command is given" -- --force --target claude
+cleanup "$H"
+
+# nothing to warn about when this is the only installation
+H="$(fake_home)"
+out="$(HOME="$H" bash "$INSTALL_SH" --force --target claude 2>&1)"
+if printf '%s' "$out" | grep -q "a different payload"; then
+    echo "  FAIL: lone install warns about siblings"; FAIL=$((FAIL+1))
+else
+    echo "  PASS: lone install prints no warning"; PASS=$((PASS+1))
+fi
+cleanup "$H"
+
+# --target all leaves nothing behind, so it stays silent
+H="$(fake_home)"
+HOME="$H" bash "$INSTALL_SH" --force --target codex >/dev/null
+echo "stale" >> "$H/.codex/skills/forge-flow/SKILL.md"
+out="$(HOME="$H" bash "$INSTALL_SH" --force --target all 2>&1)"
+if printf '%s' "$out" | grep -q "a different payload"; then
+    echo "  FAIL: --target all still warns"; FAIL=$((FAIL+1))
+else
+    echo "  PASS: --target all leaves nothing stale"; PASS=$((PASS+1))
+fi
+cleanup "$H"
+
 echo "=== Results: $PASS passed, $FAIL failed ==="
 [ "$FAIL" -eq 0 ]
