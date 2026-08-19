@@ -41,7 +41,7 @@ file; Git with a remote for push.
 - `SCAFFOLD.md` — operational-spine generation playbook (bring-up + tiered runner)
 - `EXECUTOR-CORE.md` — shared behavior for execution modes (operating mode,
   preflight, simplify ladder, comment rules, ponytail, debt registration,
-  test policy, etc.)
+  test policy, the close-out move to the completed file, etc.)
 - `agents/openai.yaml` — optional Codex interface metadata (ignored by
   other assistants)
 
@@ -95,9 +95,14 @@ The skill works with any Markdown file that has milestone headings and checkbox 
 - [ ] Implement token validation
 ```
 
-No specific format is required beyond readable headings and checkboxes. A plan
-lives in one file or two — an active file for pending work plus a completed one
-for closed milestones; see `DESIGN.md`.
+No specific format is required beyond readable headings and checkboxes.
+
+A plan lives in one file or two. In the two-file layout the active file carries
+the work queue and a companion `*-COMPLETED.md` carries the closed milestones,
+which keeps a session's context proportional to the work left rather than to the
+project's age. A closed milestone moves verbatim at close-out; compressing it is
+a separate decision the user makes in `design` mode. Single-file plans stay
+valid, and the split is suggested, never applied unasked.
 
 ## License
 

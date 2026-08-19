@@ -692,4 +692,16 @@ contains_flat "$DESIGN" "Out-of-scope list moves with that version"
 # what a planner still needs stays where a planner looks
 contains_flat "$DESIGN" "stay in the active file"
 
+# ---- M63: the READMEs carry the two-file model ----
+# the layout tree lists the file M62 created
+contains_flat "$ROOT_README" "DEVPLAN-COMPLETED.md"
+# both READMEs state the model, not just the file names
+contains_flat "$ROOT_README" "the active file carries the work queue"
+contains_flat "$SKILL_README" "the active file carries the work queue"
+# relocation and compression are named apart
+contains_flat "$ROOT_README" "compressing it is a separate decision"
+contains_flat "$SKILL_README" "compressing it is a separate decision"
+# the shared-core entry names the close-out
+contains_flat "$SKILL_README" "close-out move"
+
 echo "content contract passed"
