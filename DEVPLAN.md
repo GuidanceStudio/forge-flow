@@ -2283,6 +2283,91 @@ to assert and not as a step the executor performs.
 
 ---
 
+## Follow-up — Closed milestones leave the active devplan (2026-08-19)
+
+Measured here: `DEVPLAN.md` is 126,701 bytes and every milestone in it is closed,
+yet it is read in full each session to act on one pending milestone. The weight
+tracks the project's age rather than its remaining work, and the production plan
+M48 measured reached 1.3 MB. Three milestones: the layout and who reads what
+(M60), the close-out that maintains it (M61), the migration offered and then run
+on this repo (M62). Residual risk, accepted: an executor that no longer reads the
+whole plan can miss a convention an earlier milestone established without naming
+it — preflight's commit-convention read and the project's instruction files are
+what remain.
+
+### M60: The devplan is two files, and the executor reads only the active one
+
+**Why:** the active plan is read whole every session to act on one pending
+milestone, and on this repo every milestone in it is closed.
+
+**Approach:** an optional two-file layout in `DESIGN.md` — the active file holds
+pending and in-progress milestones, a completed file holds closed ones, named by
+derivation (`DEVPLAN.md` → `DEVPLAN-COMPLETED.md`). The executor reads the active
+file and opens the completed one only when an Approach names an earlier milestone
+ID; DESIGN reads both. Single-file projects stay valid.
+
+**Tasks:**
+- [ ] `tests/test_content.sh`: M60 anchors — red first
+- [ ] `DESIGN.md`: two-file layout and name derivation under File location
+- [ ] `DESIGN.md`: discovery takes the last milestone ID from the completed file
+- [ ] `DESIGN.md`: version close opens a new pair, the old active file being empty
+- [ ] `EXECUTOR-CORE.md`, `TDD.md`, `IDD.md`: executor reads the active file, zooms on named IDs
+- [ ] `forge-flow/README.md`: narrow the "no specific format is required" promise
+- [ ] Run both suites; `./install.sh --force`; commit & push
+
+**Done when:** the layout, the numbering source and the executor's read scope are
+pinned by anchors, both suites green, deployed.
+
+### M61: Closing a milestone moves it, and nothing is lost in the move
+
+**Why:** with two files, closing a milestone stops being a tick and becomes a
+delete plus an append. Today the worst bookkeeping failure is an unchecked box; a
+botched move leaves a milestone in both files or in neither.
+
+**Approach:** the update step moves the block verbatim after the ticks, never in
+the compressed archive form, whose only pointer is a `sha` — seven histories in
+this workspace were force-rewritten on 2026-08-14. The gates below follow the
+block to where it now lives and check the **heading**, since a bare ID also
+appears as a cross-reference.
+
+**Tasks:**
+- [ ] `tests/test_content.sh`: M61 anchors — red first
+- [ ] `EXECUTOR-CORE.md`: the move step, and the bookkeeping re-read follows the block
+- [ ] `EXECUTOR-CORE.md`: heading-resolves-in-exactly-one-file gate
+- [ ] `EXECUTOR-CORE.md`: commit stages and verifies both files
+- [ ] `EXECUTOR-CORE.md`: Common rule bans compression mid-run, not relocation
+- [ ] `EXECUTOR-CORE.md`: preflight detects a milestone left in both files or neither
+- [ ] Run both suites; `./install.sh --force`; commit & push
+
+**Done when:** a closed milestone's heading resolves in exactly one file, both
+files ship in the milestone commit, and the ban is worded against loss rather than
+against moving.
+
+### M62: Offer the split, then run it on this repo's own plan
+
+**Why:** forge-flow installs onto other people's plans, and splitting one rewrites
+it. Closing a version and archiving are both suggestions the user accepts.
+
+**Approach:** the suggestion joins `DESIGN.md` version management beside Archive,
+raised when closed milestones outweigh pending ones and never acted on unasked.
+Only milestone blocks move, which keeps the migration mechanical. Then run it
+here, where 58 closed milestones and none pending make the first real case, as M49
+applied M45-M48 to production plans.
+
+**Tasks:**
+- [ ] `tests/test_content.sh`: M62 anchors — red first
+- [ ] `DESIGN.md`: migration suggested under Version management, never performed unasked
+- [ ] `DESIGN.md`: only milestone blocks move; other sections stay
+- [ ] Split `DEVPLAN.md` → `DEVPLAN-COMPLETED.md`, milestone blocks verbatim
+- [ ] Verify every closed heading resolves in exactly one file
+- [ ] Run both suites; `./install.sh --force`; commit & push
+
+**Done when:** `DESIGN.md` suggests the split without performing it, and this
+repo's active devplan holds no closed milestone while every heading still
+resolves.
+
+---
+
 ## Proposed — pending discussion (2026-07-04)
 
 Items below are **not milestones**: no M-number, no Tasks to execute, not
