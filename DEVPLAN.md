@@ -2324,7 +2324,7 @@ completed file in compressed form, so the same file had two formats; a task was
 added to split lossless relocation from user-decided compression. The root README
 documents the devplan format too and gained the layout in the same pass.
 
-### M61: Closing a milestone moves it, and nothing is lost in the move
+### M61: Closing a milestone moves it, and nothing is lost in the move ✅
 
 **Why:** with two files, closing a milestone stops being a tick and becomes a
 delete plus an append. Today the worst bookkeeping failure is an unchecked box; a
@@ -2337,17 +2337,23 @@ block to where it now lives and check the **heading**, since a bare ID also
 appears as a cross-reference.
 
 **Tasks:**
-- [ ] `tests/test_content.sh`: M61 anchors — red first
-- [ ] `EXECUTOR-CORE.md`: the move step, and the bookkeeping re-read follows the block
-- [ ] `EXECUTOR-CORE.md`: heading-resolves-in-exactly-one-file gate
-- [ ] `EXECUTOR-CORE.md`: commit stages and verifies both files
-- [ ] `EXECUTOR-CORE.md`: Common rule bans compression mid-run, not relocation
-- [ ] `EXECUTOR-CORE.md`: preflight detects a milestone left in both files or neither
-- [ ] Run both suites; `./install.sh --force`; commit & push
+- [x] `tests/test_content.sh`: M61 anchors — red first
+- [x] `EXECUTOR-CORE.md`: the move step, and the bookkeeping re-read follows the block
+- [x] `EXECUTOR-CORE.md`: heading-resolves-in-exactly-one-file gate
+- [x] `EXECUTOR-CORE.md`: commit stages and verifies both files
+- [x] `EXECUTOR-CORE.md`: Common rule bans compression mid-run, not relocation
+- [x] `EXECUTOR-CORE.md`: preflight detects a milestone left in both files or neither
+- [x] Run both suites; `./install.sh --force`; commit & push
 
 **Done when:** a closed milestone's heading resolves in exactly one file, both
 files ship in the milestone commit, and the ban is worded against loss rather than
 against moving.
+
+**Deviations:** the move now has a written order — append to the completed file,
+then remove from the active one — so a run that dies mid-move leaves a recoverable
+duplicate instead of nothing. Both gates were exercised on a scratch copy: the
+heading gate resolved 1/0, and the bare-ID variant it rejects matched a live
+cross-reference in this plan.
 
 ### M62: Offer the split, then run it on this repo's own plan
 
