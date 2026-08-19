@@ -81,9 +81,17 @@ relevant tests are green.
 Simpler Markdown plans can still be executed when milestone intent is
 unambiguous, but they are not the preferred format for reliable TDD/IDD runs.
 
-A plan lives in one file or two. In the two-file layout the active file holds
-pending milestones and a companion `*-COMPLETED.md` holds the closed ones, so a
-session loads the work queue instead of the project's whole history.
+A plan lives in one file or two. In the two-file layout the active file carries
+the work queue — pending and in-progress milestones — and a companion
+`*-COMPLETED.md` carries the closed ones, so a session loads what is left to do
+instead of the project's whole history. This plan's own active file went from
+131,996 bytes to 5,905 when it split.
+
+Closing a milestone relocates its block verbatim: nothing is dropped, and
+compressing it is a separate decision the user makes later (`DESIGN.md`
+"Archive"). The layout is optional: a single-file devplan stays valid, and `design` mode
+proposes the split once closed milestones outweigh pending ones, never applying
+it unasked.
 
 ## Inspiration
 
@@ -128,7 +136,9 @@ MIT licensed.
 forge-flow/
 ├── README.md          ← you are here
 ├── install.sh         ← multi-assistant installer
-├── DEVPLAN.md         ← this project's own dev plan
+├── CLAUDE.md          ← contributor rules for this public repo
+├── DEVPLAN.md         ← this project's own dev plan (pending work)
+├── DEVPLAN-COMPLETED.md ← its closed milestones, moved at close-out
 ├── tests/             ← test suites (test_install.sh + test_content.sh)
 └── forge-flow/           ← the flat, assistant-neutral skill payload
     ├── SKILL.md       ← router (design / TDD / IDD / scaffold)

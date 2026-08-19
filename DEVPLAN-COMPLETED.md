@@ -2375,3 +2375,34 @@ plan: 131,996 bytes to 7,823 in the active file, 61 headings resolving in exactl
 one file, no source line lost.
 
 ---
+
+## Follow-up — The READMEs carry the two-file model (2026-08-19)
+
+### M63: Both READMEs explain the two-file plan, and the layout tree matches the repo ✅
+
+**Why:** the root README's layout tree does not contain `DEVPLAN-COMPLETED.md`, so
+it describes a structure that no longer exists. Neither README says why a plan is
+in two files, what moves at close, or that compression stays separate from
+relocation.
+
+**Approach:** correct the tree, then extend `## Devplan format` in both READMEs
+with the model a reader needs to adopt the layout: the active file carries the
+work queue, the completed file the history, a closed milestone moves verbatim, and
+compressing that file is a separate decision the user makes. The `EXECUTOR-CORE.md`
+entry under `## Skill files` names the close-out. `DESIGN.md` stays the normative
+text.
+
+**Tasks:**
+- [x] `tests/test_content.sh`: M63 anchors — red first
+- [x] `README.md`: layout tree lists `DEVPLAN-COMPLETED.md`
+- [x] `README.md`: Devplan format states the two-file model
+- [x] `forge-flow/README.md`: the same model, sized for the payload doc
+- [x] `forge-flow/README.md`: Skill files entry names the close-out move
+- [x] Run both suites; `./install.sh --force`; commit & push
+
+**Done when:** the layout tree matches the repo root, both READMEs state the
+two-file model with relocation and compression named apart, both suites green.
+
+**Deviations:** verifying the tree against `ls` found a second omission — the
+repo's `CLAUDE.md` was never listed either — so the tree gained both files rather
+than only the one M62 created.
