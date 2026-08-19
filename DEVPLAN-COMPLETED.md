@@ -2406,3 +2406,31 @@ two-file model with relocation and compression named apart, both suites green.
 **Deviations:** verifying the tree against `ls` found a second omission — the
 repo's `CLAUDE.md` was never listed either — so the tree gained both files rather
 than only the one M62 created.
+
+## Follow-up — Bookkeeping checks follow the milestone (2026-08-19)
+
+### M64: Two bookkeeping checks look for a milestone that has moved ✅
+
+**Why:** measured on M63, planned and closed inside one run: the active file ends
+byte-identical, so `git show --stat` omits it correctly, while the commit check
+calls that a failure and prescribes amending a file with no changes. The
+completion sweep looks for closed milestones in the file they have just left.
+
+**Approach:** the commit check verifies the milestone's record is in the commit —
+the active file, the completed file, or both — and names the same-run case as
+legitimate. The sweep follows the milestone to whichever file now holds it. M33's
+pinned phrases stay verbatim, as M47 established.
+
+**Tasks:**
+- [x] `tests/test_content.sh`: M64 anchors — red first
+- [x] `EXECUTOR-CORE.md`: the commit check accepts an unchanged active file
+- [x] `EXECUTOR-CORE.md`: the completion sweep follows the milestone to its file
+- [x] Run both suites; `./install.sh --force`; commit & push
+
+**Done when:** the commit check passes on a milestone planned and closed in one
+run, the sweep names both files, and M33's phrases are unchanged.
+
+**Deviations:** rewriting the commit check invalidated an M61 anchor pinning the
+old wording; realigned in the same pass, red to green. Verified on this milestone
+itself, which is the same-run case: `DEVPLAN.md` ends unchanged and the record
+ships in the completed file alone.

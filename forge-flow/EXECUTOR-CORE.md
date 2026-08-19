@@ -453,9 +453,12 @@ two versions to keep true.
 - Commit following the repo's convention detected in preflight
   (default `MNN: <title>`).
 - **Verify the devplan shipped in the commit.** After committing, run
-  `git show --stat HEAD` and confirm the active devplan file is listed — and the
-  completed file too when the milestone moved.
-  If it is missing, `git commit --amend` to add it before pushing — the
+  `git show --stat HEAD` and confirm the milestone's record is in the commit: the
+  active devplan file, and the completed file when the milestone moved. A
+  milestone planned and closed inside one run leaves the active file unchanged, so
+  the completed file alone carries its record and the active file is legitimately
+  absent.
+  If the record is missing, `git commit --amend` to add it before pushing — the
   bookkeeping must travel in the milestone commit, never in a later
   catch-up. (Staging is asserted above; this is the check that proves it.)
 - Push to the active branch when network/auth/repo policy allows it.
@@ -642,7 +645,9 @@ When all milestones are done:
    can run locally) to verify everything works together.
 2. **Sweep the devplan for unfinished bookkeeping:** every milestone
    closed during this run must show `- [x]` for all its tasks and a done
-   marker on its heading. Fix any milestone still showing an unchecked
+   marker on its heading, in whichever file now holds it — the two-file layout
+   moves a closed milestone out of the active file. Fix any milestone still
+   showing an unchecked
    task before the recap — the run is not complete while the plan still
    misreports its own state.
 3. Show the final recap:

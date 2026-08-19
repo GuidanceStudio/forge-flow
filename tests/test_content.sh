@@ -674,7 +674,7 @@ contains_flat "$EXECUTOR_CORE" "resolves in exactly one file"
 contains_flat "$EXECUTOR_CORE" "an ID also appears as a cross-reference"
 # the commit carries both files
 contains_flat "$EXECUTOR_CORE" "stage both"
-contains_flat "$EXECUTOR_CORE" "and the completed file too when the milestone moved"
+contains_flat "$EXECUTOR_CORE" "the completed file when the milestone moved"
 # preflight recognises a run that died mid-move
 contains_flat "$EXECUTOR_CORE" "died during the close-out move"
 # the old absolute ban on relocating is gone
@@ -703,5 +703,16 @@ contains_flat "$ROOT_README" "compressing it is a separate decision"
 contains_flat "$SKILL_README" "compressing it is a separate decision"
 # the shared-core entry names the close-out
 contains_flat "$SKILL_README" "close-out move"
+
+# ---- M64: the bookkeeping checks follow the milestone to its file ----
+# a milestone planned and closed in one run leaves the active file unchanged
+contains_flat "$EXECUTOR_CORE" "the milestone's record is in the commit"
+contains_flat "$EXECUTOR_CORE" "planned and closed inside one run leaves the active file unchanged"
+contains_flat "$EXECUTOR_CORE" "the active file is legitimately absent"
+# the completion sweep looks where the milestone now is
+contains_flat "$EXECUTOR_CORE" "in whichever file now holds it"
+# M33's pinned phrases survive the rewrite
+contains "$EXECUTOR_CORE" "Verify the devplan shipped in the commit"
+contains "$EXECUTOR_CORE" "Sweep the devplan for unfinished bookkeeping"
 
 echo "content contract passed"
