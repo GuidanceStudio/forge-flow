@@ -633,4 +633,31 @@ contains_flat "$EXECUTOR_CORE" "Assert which failure"
 # a count wherever one is knowable
 contains_flat "$EXECUTOR_CORE" "survive a swap"
 
+# ---- M60: the devplan is two files, and the executor reads only the active one ----
+contains "$DESIGN" "#### Two files: active and completed"
+# the completed file's name is derived from the active one
+contains_flat "$DESIGN" "DEVPLAN-COMPLETED.md"
+contains_flat "$DESIGN" "devplan/v0.3-completed.md"
+# the read split: executor on the active file, design on both
+contains_flat "$DESIGN" "The executor reads the active file"
+contains_flat "$DESIGN" "Design mode reads both"
+# a one-file plan is still a valid plan
+contains_flat "$DESIGN" "A single-file devplan stays valid"
+# numbering comes from the completed file, or a session reuses assigned IDs
+contains_flat "$DESIGN" "the last milestone ID lives in the completed file"
+contains_flat "$DESIGN" "reuses IDs already assigned"
+# closing a version opens a new pair; nothing is moved at version close
+contains_flat "$DESIGN" "closing one opens a new pair"
+# Archive: relocation is lossless and automatic, compression is the user's call
+contains_flat "$DESIGN" "the move and the compression come apart"
+contains_flat "$DESIGN" "compressing the completed file"
+# the executor reads the active file and zooms only on a named ID
+contains_flat "$EXECUTOR_CORE" "Read the active devplan file"
+contains_flat "$EXECUTOR_CORE" "names an earlier milestone ID"
+# both playbooks say which file step 1 reads
+contains_flat "$TDD" "the active file when the project uses the two-file layout"
+contains_flat "$IDD" "the active file when the project uses the two-file layout"
+# the payload README no longer promises that no format is required
+contains_flat "$SKILL_README" "one file or two"
+
 echo "content contract passed"

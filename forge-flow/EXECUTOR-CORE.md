@@ -13,6 +13,10 @@ recap, and common rules.
 - **Everything is pre-approved.** Never ask for confirmation between
   milestones; run fully autonomously from start to finish.
 - Treat the devplan as the source of truth for scope and ordering.
+- **Read the active devplan file.** When the project uses the two-file layout
+  (DESIGN.md "Two files: active and completed"), closed milestones live in the
+  completed file; open it only when the milestone you are executing names an
+  earlier milestone ID.
 - Work milestone by milestone; do not batch unrelated milestones together.
 - Before editing, check the project's instruction files (`CLAUDE.md` —
   root and global — for Claude Code; `AGENTS.md` / `.codex/instructions.md`

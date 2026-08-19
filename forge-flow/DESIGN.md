@@ -254,6 +254,24 @@ new milestones come after the pending ones they depend on.
 - **`refactor` mode:** edit in-place. The diff was already approved in
   Phase 3.
 
+#### Two files: active and completed
+
+A devplan is one file or two. In the **two-file layout** the active file holds
+pending and in-progress milestones only, and a completed file beside it holds the
+closed ones, named by derivation from the active file: `DEVPLAN.md` →
+`DEVPLAN-COMPLETED.md`, `devplan/v0.3.md` → `devplan/v0.3-completed.md`.
+
+The executor reads the active file, and opens the completed one only when the milestone it is executing names an
+earlier milestone ID. Design mode reads both, because discovery needs the last
+milestone ID, the milestone count and the convention in use, and all three sit in
+the completed file once the active one carries pending work alone.
+
+Measured on one plan: 126,701 bytes of closed milestones, read in full to act on a
+milestone whose own text is 200 words.
+
+A single-file devplan stays valid, and every rule in this playbook applies to it
+with the active file being the only file.
+
 #### Numbering
 - Follow the target file's **existing milestone ID scheme** (e.g.
   `M12`, `D5-4`, `SEC-3`) — read the last ID and continue it. `MNN`
@@ -261,6 +279,8 @@ new milestones come after the pending ones they depend on.
   convention.
 - Continue from the last ID. Never reset numbering.
 - If the file is empty or new, start from `M1`.
+- In a two-file devplan the last milestone ID lives in the completed file — read
+  it there, or a design session reuses IDs already assigned.
 
 #### Milestone format
 
@@ -367,6 +387,8 @@ point to forge-flow scaffold instead. It is **opt-out** — an explicit
   has ~50 milestones — do you want to close this version and open a new
   one (e.g. v0.4.md), or keep going here?"*. The user decides.
 - Never close a version or create a new version file on your own.
+- In a two-file devplan the active file is already empty when a version closes, so
+  closing one opens a new pair rather than moving anything.
 
 #### Archive
 
@@ -387,6 +409,11 @@ records what it delivered.
 (`core a1b2c3d · ops 4e5f6a7 · dash 89bcdef`). A milestone routinely closes
 across several — measured on one that landed in three — and a bare sha sends the
 reader to a history that does not contain it.
+
+With the two-file layout the move and the compression come apart: relocating a
+closed milestone to the completed file is lossless, while compressing the
+completed file to the one-line form above drops Why, Approach and the ticked
+tasks.
 
 Never archive on your own initiative. Like closing a version, it is the user's
 decision; suggest it when a completed section outgrows the pending work, and

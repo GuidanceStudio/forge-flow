@@ -95,7 +95,9 @@ The skill works with any Markdown file that has milestone headings and checkbox 
 - [ ] Implement token validation
 ```
 
-No specific format is required beyond readable headings and checkboxes.
+No specific format is required beyond readable headings and checkboxes. A plan
+lives in one file or two — an active file for pending work plus a completed one
+for closed milestones; see `DESIGN.md`.
 
 ## License
 

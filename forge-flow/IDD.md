@@ -12,7 +12,7 @@
 
 ### 1. 📋 Plan
 
-- Read the current milestone from the devplan.
+- Read the current milestone from the devplan — the active file when the project uses the two-file layout (EXECUTOR-CORE.md "Operating mode").
 - Validate that it is executable with high confidence. Prefer milestones
   that include `Why`, `Approach`, `Tasks`, and `Done when`. If the plan
   is simpler, infer the missing structure only when the requirement is
