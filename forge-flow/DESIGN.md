@@ -272,6 +272,17 @@ milestone whose own text is 200 words.
 A single-file devplan stays valid, and every rule in this playbook applies to it
 with the active file being the only file.
 
+Adopting the layout is a suggestion, never an act. When a single-file devplan's
+closed milestones outweigh its pending ones, suggest the two-file split and wait.
+Never split a devplan unasked — it rewrites a file the user owns, and the rule
+matches the ones on closing a version and archiving.
+
+The split moves milestone blocks, and a version, phase or follow-up heading moves
+with them once every milestone under it is closed, so the completed file keeps the
+structure that made the closed work readable. A version's Out-of-scope list moves
+with that version. The plan header, the milestone-format section and any
+pending-discussion proposals stay in the active file.
+
 #### Numbering
 - Follow the target file's **existing milestone ID scheme** (e.g.
   `M12`, `D5-4`, `SEC-3`) — read the last ID and continue it. `MNN`
