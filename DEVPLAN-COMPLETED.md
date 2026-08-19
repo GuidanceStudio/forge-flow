@@ -2467,3 +2467,35 @@ needle is `--target all --force`. The two silence guards could not be red before
 the code existed and were proven able to fail instead. The message says "a
 different payload" rather than "older", which is what the comparison actually
 shows.
+
+## Follow-up — Guarantees that assume one actor (2026-08-19)
+
+### M66: Name who holds the baseline, and widen evidence to the red-proof ✅
+
+**Why:** an audit of all seven payload files found exactly three rules bound to an
+actor: the dirty set recorded in preflight, the commit convention read from
+`git log`, and the evidence rule, which covers completion claims and leaves the
+red-proof out. forge-flow already regulates delegation for evidence, so the
+silence elsewhere is an inconsistency rather than a scope boundary.
+
+**Approach:** the first two are one rule, both being baselines the commit consumes:
+whoever commits holds them, so delegated work returns to the orchestrator, while a
+subagent in its own worktree is unaffected. The third widens evidence to the
+red-proof, in both places it lives. No new section, no ban on a subagent running
+git.
+
+**Tasks:**
+- [x] `tests/test_content.sh`: M66 anchors — red first
+- [x] `EXECUTOR-CORE.md`: Commit & push names who holds the baseline
+- [x] `EXECUTOR-CORE.md`: evidence covers the red-proof, at both points
+- [x] `DEVPLAN.md`: close the 2026-07-04 proposal, scope-recency ruled out of scope
+- [x] Run both suites; `./install.sh --target all --force`; commit & push
+
+**Done when:** the payload names who holds the commit baseline and requires
+evidence for a red-proof, the proposal carries its verdict, both suites green.
+
+**Deviations:** the audit's three findings became two edits — the dirty set and
+the commit convention are both baselines the commit consumes, so one sentence
+covers them. An anchor written before the code (`so is a red-proof`) had no
+grammatical sentence containing it; reworded while still red rather than bending
+the prose to fit it.

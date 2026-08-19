@@ -47,9 +47,24 @@ evidence the rule itself is not enough.
 
 ---
 
-### Proposal: Sub-agent delegation — should EXECUTOR-CORE gain a git-boundary + scope-recency rule?
+### Proposal: Sub-agent delegation — RESOLVED (2026-08-19)
 
-**Status:** 🗣️ under discussion — not approved, not scheduled.
+**Status:** ✅ split. The git-boundary half became M66; scope-recency is out of
+scope, kept here so neither half is re-derived.
+
+**Resolution.** Question 3 — whether this is forge-flow's concern — was answered
+by the text rather than by discussion: `EXECUTOR-CORE.md` already regulated
+delegation for evidence, so the silence elsewhere was an inconsistency. An audit
+of all seven payload files found exactly three actor-bound rules, and the first
+two are one rule, which M66 carries. Question 2 dissolved with them, since each
+sentence landed where its guarantee already lives. Question 1 changed shape: "a
+subagent never runs git" bans a mechanism and would be wrong for a subagent in
+its own worktree, so the rule states the invariant instead.
+
+**Out of scope — the scope-recency half:** a user's most recent instruction
+winning over a standing goal is session behaviour, not devplan execution, and in
+`Operating mode` it would collide with "never ask for confirmation between
+milestones". It belongs in the global instruction file if anywhere.
 
 **Observed trigger:** Executing a project's scaffold milestone S3 via forge-flow
 TDD, the executing agent delegated S3's implementation to a sub-agent.

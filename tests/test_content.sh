@@ -715,4 +715,14 @@ contains_flat "$EXECUTOR_CORE" "in whichever file now holds it"
 contains "$EXECUTOR_CORE" "Verify the devplan shipped in the commit"
 contains "$EXECUTOR_CORE" "Sweep the devplan for unfinished bookkeeping"
 
+# ---- M66: guarantees that assume the agent reading them is the agent acting ----
+# the commit is bounded by baselines preflight recorded, so the holder commits
+contains_flat "$EXECUTOR_CORE" "The agent that commits is the one holding the baseline"
+contains_flat "$EXECUTOR_CORE" "comes back for the orchestrator to review and commit"
+# a subagent with its own worktree is not the case being ruled on
+contains_flat "$EXECUTOR_CORE" "its own worktree is a different case"
+# evidence covers the red-proof, not only completion claims
+contains_flat "$EXECUTOR_CORE" "A red-proof is a claim of the same kind"
+contains_flat "$EXECUTOR_CORE" "a red-proof is held to the same standard"
+
 echo "content contract passed"
