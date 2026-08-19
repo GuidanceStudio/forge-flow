@@ -2434,3 +2434,36 @@ run, the sweep names both files, and M33's phrases are unchanged.
 old wording; realigned in the same pass, red to green. Verified on this milestone
 itself, which is the same-run case: `DEVPLAN.md` ends unchanged and the record
 ships in the completed file alone.
+
+## Follow-up — The installer reports what it left behind (2026-08-19)
+
+### M65: install.sh names the targets it left behind ✅
+
+**Why:** measured on this machine — `./install.sh --force` wrote the `claude`
+target while `codex` and `opencode` kept an older payload, and nothing said so.
+The non-interactive default is `claude`, so a scripted or agent-run deploy
+updates one of three installations in silence.
+
+**Approach:** after installing, compare every known target directory that exists
+against the source, reusing `check_copy`'s `diff -r --exclude=.installed-from`,
+and name the ones that differ alongside `--target all --force`. A warning rather
+than a failure, since scripted installs must keep working, and `--target all`
+leaves nothing differing so it stays silent on its own. Behavioural tests in
+`tests/test_install.sh`, which already builds throwaway HOMEs.
+
+**Tasks:**
+- [x] `tests/test_install.sh`: a stale sibling target is named — red first
+- [x] `tests/test_install.sh`: silence with no sibling, and with `--target all`
+- [x] `install.sh`: warn after installing about targets that differ from the source
+- [x] Run both suites; `./install.sh --target all --force`; commit & push
+
+**Done when:** installing one target while another holds a different payload names
+that target and the all-targets command, and an install with no stale sibling
+prints no warning.
+
+**Deviations:** `assert_run` passed its needle to `grep` without `--`, so any
+needle starting with a dash was read as an option; fixed, since this milestone's
+needle is `--target all --force`. The two silence guards could not be red before
+the code existed and were proven able to fail instead. The message says "a
+different payload" rather than "older", which is what the comparison actually
+shows.

@@ -31,7 +31,9 @@ bash <(curl -fsSL https://raw.githubusercontent.com/GuidanceStudio/forge-flow/ma
 ```
 
 `claude`, `codex`, and `opencode` get the `forge-flow/` folder copied
-verbatim — one payload serves all three. Flags: `--force` (overwrite),
+verbatim — one payload serves all three. Installing one target leaves the
+others on the payload they already had, so the installer names any it finds
+holding a different one. Flags: `--force` (overwrite),
 `--check` (report `OK`/`DRIFT` vs source). Or skip the installer —
 `forge-flow/` is self-contained, copy it anywhere your tool reads skills.
 

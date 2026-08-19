@@ -153,6 +153,20 @@ AGENTS
     echo "✅ Added forge-flow pointer → $file (payload in $NEUTRAL_HOME)"
 }
 
+warn_stale_targets() {
+    # Installing one target leaves the others on whatever payload they had.
+    local stale=""
+    for d in "$CLAUDE_DEST" "$CODEX_DEST" "$OPENCODE_DEST" "$NEUTRAL_HOME"; do
+        [ -d "$d" ] || continue
+        diff -r --exclude=.installed-from "$SRC_ROOT" "$d" >/dev/null 2>&1 && continue
+        stale="$stale   $d"$'\n'
+    done
+    [ -n "$stale" ] || return 0
+    echo "⚠️  Other forge-flow installations on this machine hold a different payload:"
+    printf '%s' "$stale"
+    echo "   Update them with: ./install.sh --target all --force"
+}
+
 check_copy() {  # <dest> <label>
     local dest="$1" label="$2"
     if [ ! -d "$dest" ]; then echo "DRIFT: $label not installed at $dest"; return 1; fi
@@ -228,3 +242,4 @@ if [ "$CHECK" = true ]; then
 fi
 
 run_install "$TARGET"
+warn_stale_targets
