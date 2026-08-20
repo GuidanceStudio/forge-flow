@@ -128,6 +128,21 @@ Standard scope:
      nothing at all on every real run — a guard against slow tests that cannot
      see a slow test.
 
+   - **a per-tier budget beside the per-test ceiling**: each tier declares the
+     wall-clock time it is allowed, the runner prints the tier total against it,
+     and a tier over its budget reds. The two ceilings answer different
+     questions and neither covers the other. A per-test ceiling catches a test
+     that waits; it cannot catch a tier that is expensive because of what
+     surrounds the tests. Measured on one project: its test framework ran in
+     four seconds and the remaining eleven minutes of that tier was rebuilding
+     the artifact under test. Measured separately: 1,508 cases averaging ~200 ms
+     summed to 5.2 minutes, none of them within an order of magnitude of a
+     per-case ceiling. In both the cost sat outside any one test, so the
+     per-test rule reported every test healthy. When a tier goes over budget,
+     read the total before the slowest five — what a budget usually names is a
+     build, a fixture rebuilt per test, or a container started per file, and
+     none of those is a test to fix.
+
 3. **`.env.example`** listing every variable the app and the live tier need,
    with **test-credential placeholders** (`<REPLACE_WITH_…>`), never real
    secrets.
@@ -169,6 +184,15 @@ Standard scope:
    CI needs a deterministic verdict, so it gets an explicit way to record a
    cleared hit; the executor reads the hits and judges them directly.
 
+7. **A local gate only for what CI does not already pay for.** When CI builds
+   the artifact and runs the full tier on every push, a pre-commit or pre-push
+   hook doing the same buys one answer twice: the developer waits for the build,
+   then the remote builds it again, and the remote's run is the verdict that
+   counts. Decide each check by whether the check needs the artifact rebuilt —
+   if it does, it runs on the push. What stays local is fast and specific: the
+   `fast` tier over the changed files, a lint, a formatter, the `comments` check
+   over the diff.
+
 Leave project-specific decisions the playbook cannot safely infer as explicit
 `TODO:` markers in the generated files (e.g. `# TODO: add the readiness check
 for <service>`), so a human or a later run completes them deliberately.
@@ -190,6 +214,8 @@ Reuse `EXECUTOR-CORE.md` verify/commit discipline:
 The project has a one-command bring-up and a tiered `run_tests.sh` that runs
 green (or skips with reason), `.env.example` documents the test credentials,
 a prod-isolation skeleton exists when external services are present, the
-`comments` check runs over the merge-base diff (or skips with reason),
+`comments` check runs over the merge-base diff (or skips with reason), the
+`fast` tier refuses an unscoped run and its verdict has been proven equal to the
+full tier's on the same selection, each tier carries a budget the runner checks,
 re-running scaffold does not clobber, and a non-runnable project is refused
 with a clear message.
