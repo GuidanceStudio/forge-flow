@@ -15,7 +15,7 @@ elsewhere. Every task is a markdown checkbox.
 
 ---
 
-## M67 — The spine has no inner loop
+## M67 — The spine has no inner loop 🔄
 
 **Why:** `SCAFFOLD.md` generates `unit`, `integration`, `live` — split by how real a test is, never by
 what it costs. `fast` and `inner loop` appear zero times there and in `EXECUTOR-CORE.md`, so a
@@ -30,11 +30,11 @@ here.
 answer are two answers, and the playbook already has a rule for neither.
 
 **Tasks:**
-- [ ] A cost-defined tier, refusing an unscoped run
-- [ ] The equivalence rule and the falsification it requires
-- [ ] A per-tier budget beside the per-test ceiling
-- [ ] The inner loop never rebuilds what CI rebuilds
-- [ ] `tests/test_content.sh` covers all four and reds without them
+- [x] A cost-defined tier, refusing an unscoped run
+- [x] The equivalence rule and the falsification it requires
+- [~] A per-tier budget beside the per-test ceiling
+- [~] The inner loop never rebuilds what CI rebuilds
+- [~] `tests/test_content.sh` covers all four and reds without them
 
 **Done when:** a scaffolded project has a loop it can run while typing.
 

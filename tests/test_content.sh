@@ -725,4 +725,17 @@ contains_flat "$EXECUTOR_CORE" "its own worktree is a different case"
 contains_flat "$EXECUTOR_CORE" "A red-proof is a claim of the same kind"
 contains_flat "$EXECUTOR_CORE" "a red-proof is held to the same standard"
 
+# ---- M67: a tier defined by cost, and a fast route that must agree ----
+# the fourth tier is split from the others by price, not by how real a test is
+contains_flat "$SCAFFOLD" "defined by what it costs rather than by how real it is"
+contains_flat "$SCAFFOLD" "runs tests the other tiers already own, over the artifact that is already built"
+# a route whose value is its scope refuses to run without one
+contains_flat "$SCAFFOLD" "It refuses an unscoped run"
+contains_flat "$SCAFFOLD" "run_tests.sh fast --changed"
+# two routes to the same tests are one verdict only once that is proven
+contains_flat "$SCAFFOLD" "must be proven to return the same verdict as the slow route on the same selection, or refuse to run"
+contains_flat "$SCAFFOLD" "270 failed against 3,681 passed"
+# and the proof is falsified, or it is proving nothing
+contains_flat "$SCAFFOLD" "remove the precondition, and the failures must come back"
+
 echo "content contract passed"
