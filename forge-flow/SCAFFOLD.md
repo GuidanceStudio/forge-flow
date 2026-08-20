@@ -75,6 +75,36 @@ Standard scope:
 
 2. **A tiered test runner `run_tests.sh`** with:
    - tiers `unit`, `integration`, and `live` (run all, or one tier by name),
+   - **a fourth tier, `fast`, defined by what it costs rather than by how real
+     it is.** The three above split on how much of the system a test touches.
+     This one runs tests the other tiers already own, over the artifact that is
+     already built — the working tree mounted or copied into the service that is
+     already up, no image rebuild and no stack restart — and it is measured in
+     seconds, so it is the loop somebody runs while typing. It owns no test
+     directory: it is a route over the existing ones.
+     **It refuses an unscoped run**, or narrows itself to the files changed
+     against the merge-base and says which of the two it did. A tier whose value
+     comes from being scoped, and which runs everything when given no argument,
+     spends minutes on the first invocation anybody tries and is not tried a
+     second time — measured on a route added outside a spine like this one: with
+     no argument it ran for six and a half minutes, under the name fast. The
+     refusal prints the scoped forms, `./run_tests.sh fast <path>` and
+     `./run_tests.sh fast --changed`, and exits non-zero.
+   - **a faster route over the same tests must be proven to return the same
+     verdict as the slow route on the same selection, or refuse to run.** Until
+     that is proven its result is a second opinion, not the tier's. The failure
+     it guards against is specific: the fast route's environment is missing a
+     precondition the slow route's setup writes — a migration, a seeded fixture,
+     a variable the build step exports — so it reports failures that exist only
+     in it. Measured on one such route: 270 failed against 3,681 passed, where
+     the full tier over the same tests reported 4,018 passed and none failed,
+     all 270 of them from a single precondition the fast route's container never
+     received. Once a route has reported failures that were not real, its next
+     report is not read either.
+     Prove it before offering the route, and falsify the proof: run both over
+     the same selection, require identical pass and fail sets, then **remove the
+     precondition, and the failures must come back**. A comparison that stays
+     green with the precondition gone is comparing nothing.
    - **skip-with-reason** gating: when a tier's prerequisites are absent
      (no credentials, service down), skip it and print *why* — never fail
      silently and never pretend it ran,
