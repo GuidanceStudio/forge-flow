@@ -2499,3 +2499,37 @@ the commit convention are both baselines the commit consumes, so one sentence
 covers them. An anchor written before the code (`so is a red-proof`) had no
 grammatical sentence containing it; reworded while still red rather than bending
 the prose to fit it.
+
+---
+
+## Follow-up — The spine's inner loop (2026-08-20)
+
+### M67 — The spine has no inner loop ✅
+
+**Why:** `SCAFFOLD.md` generates `unit`, `integration`, `live` — split by how real a test is, never by
+what it costs. `fast` and `inner loop` appear zero times there and in `EXECUTOR-CORE.md`, so a
+scaffolded project invents that route later, with nothing keeping it honest. On one that did, it
+reported **270 failed against 3,681 passed**, against the full tier's 4,018 passed and none
+failed — all 270 from one precondition its container never got — and unscoped it billed 6 m 30 s.
+
+⚠️ **The per-test ceiling cannot see it** — the rationale goes beside the rule in `SCAFFOLD.md`, not
+here.
+
+**Approach:** three additions to `SCAFFOLD.md`, below. The second is the general one: two routes to one
+answer are two answers, and the playbook already has a rule for neither.
+
+**Tasks:**
+- [x] A cost-defined tier, refusing an unscoped run
+- [x] The equivalence rule and the falsification it requires
+- [x] A per-tier budget beside the per-test ceiling
+- [x] The inner loop never rebuilds what CI rebuilds
+- [x] `tests/test_content.sh` covers all four and reds without them
+
+**Done when:** a scaffolded project has a loop it can run while typing.
+
+**Deviations:** the Approach said three additions and the Tasks named four; four
+landed, plus one clause in the generation contract so Done when names the tier
+it now has to produce. The plan's phrasing of the equivalence rule was not
+carried over — the playbook states what an unproven fast route's verdict is
+worth instead of asserting the contrast.
+

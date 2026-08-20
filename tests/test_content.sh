@@ -738,4 +738,18 @@ contains_flat "$SCAFFOLD" "270 failed against 3,681 passed"
 # and the proof is falsified, or it is proving nothing
 contains_flat "$SCAFFOLD" "remove the precondition, and the failures must come back"
 
+# ---- M67: a per-tier budget, and a local gate CI does not already pay for ----
+# the second ceiling, and what the first one is blind to
+contains_flat "$SCAFFOLD" "per-tier budget beside the per-test ceiling"
+contains_flat "$SCAFFOLD" "cannot catch a tier that is expensive because of what surrounds the tests"
+# both measurements: cost outside every test, and cost spread thin across many
+contains_flat "$SCAFFOLD" "ran in four seconds and the remaining eleven minutes"
+contains_flat "$SCAFFOLD" "1,508 cases averaging ~200 ms summed to 5.2 minutes"
+# the inner loop does not rebuild what the push rebuilds anyway
+contains_flat "$SCAFFOLD" "A local gate only for what CI does not already pay for"
+contains_flat "$SCAFFOLD" "buys one answer twice"
+contains_flat "$SCAFFOLD" "whether the check needs the artifact rebuilt"
+# the generation contract names the tier it now has to produce
+contains_flat "$SCAFFOLD" "refuses an unscoped run and its verdict has been proven equal"
+
 echo "content contract passed"
