@@ -83,6 +83,14 @@ active is a dangling marker: either resume it or close it — never leave it.
   consistently. Use it for every milestone commit; default to
   `MNN: <title>` if the repo has no clear convention.
 
+- **Decision log.** Read `DECISIONS.md` if the project has one (see "Record a
+  binding decision"), once, before the first milestone. Every Active entry is a
+  constraint on this run. When a milestone's own text says one of those choices
+  changes, append the superseding entry as part of that milestone. When it does
+  not and the work would contradict an entry anyway, the plan was written
+  without the entry in view: that is a contradictory requirement, and it stops
+  the run under Operating mode.
+
 ---
 
 ## Simplify step
@@ -458,6 +466,16 @@ written twice.
   it is the evidence that it passed — a received header, an alert that fired, a
   DNS query answered. Keep that. It is the same case as an archived milestone
   with no commit: nothing else records it.
+- **A decision that binds future work is written where it will be read.** When the
+  run settled a choice meeting both conditions in "Record a binding decision" —
+  usually the same fact that produced the Deviations line — append its `DEC-N`
+  entry to `DECISIONS.md` and stage that file with the milestone. It ships in the
+  milestone's own commit for the reason the tick does: a record written in a later
+  pass is a separate edit to a different file, and nothing recouples them. Most
+  milestones settle nothing of the kind and write nothing.
+- **Verify the decision landed.** Where an entry was owed, re-read the log and
+  confirm it is there, then confirm `git show --stat HEAD` lists the file. Same
+  gate as the devplan's own bookkeeping.
 - Keep the devplan accurate enough that another agent could resume from it.
   That is a test of **state** — which milestone, which task, what is left — not
   of narrative completeness.
