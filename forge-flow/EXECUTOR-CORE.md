@@ -318,6 +318,60 @@ same location+title pair already exists (idempotent).
 
 ---
 
+## Record a binding decision
+
+A milestone closes, moves to the completed file and compresses to one line whose
+only pointer is a sha. A choice it took can keep constraining work months later,
+and by then the trace is code that shows what was built and not what was ruled
+out. Those choices go in a **decision log**: `DECISIONS.md` beside the active
+devplan, named by derivation from it as the completed file is — `DEVPLAN.md` →
+`DECISIONS.md`, `devplan/v0.3.md` → `devplan/decisions.md`.
+
+**What earns an entry — both conditions, or none.**
+
+1. A future milestone could plausibly contradict it.
+2. The code shows the choice and not what it rules out, or why.
+
+Fail either and nothing is written: a choice the code makes obvious is already
+recorded, and one nothing can contradict costs nothing to rediscover. A log that
+collects every choice becomes a second devplan, and a second devplan is not read.
+
+**A rule about how work is done is not one of these.** Test-first, explicit paths
+on every commit, which language chat happens in — that belongs in the project's
+instruction file (`CLAUDE.md`, `AGENTS.md`). Propose it there and leave the write
+to the user; the decision log holds technical choices that bind the code.
+
+**The entry.** Six lines, one field per line, `DEC-N` continuing the file's last
+ID:
+
+```markdown
+## DEC-7: Queue delivery is polled, not pushed
+**Status:** Active
+**Context:** the provider exposes no outbound webhook below its top tier
+**Decision:** the worker polls every 30s; nothing may depend on push ordering
+**Consequence:** 30s of delivery latency is accepted, and a later move to push
+touches the worker alone
+```
+
+`Context` is the constraint that forced the choice, not an account of the day it
+was made. `Consequence` is what the project now lives with, and it is what stops
+the entry being re-argued by someone who sees only the cost.
+
+**Supersession is the only edit an existing entry may receive.** A decision that
+contradicts an `Active` entry appends its own, then sets the old one's status to
+`Superseded by DEC-N (YYYY-MM-DD)` and compresses it to a single line:
+
+```
+DEC-7 | Queue delivery is polled, not pushed | Superseded by DEC-14 (2026-08-21)
+```
+
+Editing the old entry in place instead leaves two statements both in the present
+tense, and nothing saying which one is current — the failure the log exists to
+prevent. Appending is idempotent: a decision already standing in the file is not
+written twice.
+
+---
+
 ## Shared execution-loop steps
 
 ### Update documentation
@@ -421,6 +475,7 @@ Execution produces more knowledge than the plan should carry. Route it:
 | Design rationale, trade-off, gotcha about the code | a comment where that code lives |
 | What happened, in what order, and why | the commit body |
 | A contract readers outside the plan need | `docs/` |
+| A choice that constrains work not yet planned | `DECISIONS.md` — see "Record a binding decision" |
 | Residual or newly discovered work | a new milestone, never inside a closed one |
 | A measured ceiling accepted on purpose | `ponytail:` + `.tech-audit/debt.tsv` |
 | A measurement motivating work not yet started | the milestone's own Why/Approach — **nothing else holds it yet** |
