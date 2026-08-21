@@ -15,6 +15,76 @@ elsewhere. Every task is a markdown checkbox.
 
 ---
 
+## Follow-up — A binding decision outlives the milestone that took it (2026-08-21)
+
+### M69: The executor reads the log before it acts, and writes it in the same commit
+
+**Why:** A log nobody reads at the start of a run changes no behaviour, and one written in
+a later pass comes apart from the work — the failure already measured on the devplan
+tick.
+
+**Approach:** Two steps in `EXECUTOR-CORE.md`. Preflight reads the log once before the
+first milestone, where an `Active` entry binds the run and a milestone needing to
+contradict one writes the superseding entry instead of diverging silently. `Update the
+devplan` appends a qualifying decision in the milestone's own commit, under the landing
+check the tick already carries.
+
+**Tasks:**
+- [ ] Add the decision-log read to Preflight, with the contradiction rule
+- [ ] Add the write step to `Update the devplan`, bound to the milestone's commit
+- [ ] Add the landing check — the entry is present and the file is in the commit
+- [ ] Test: content — anchors for the preflight read, write step, landing check
+- [ ] Commit & push
+
+**Done when:** `bash tests/test_content.sh` is green and both steps name `DECISIONS.md`
+and point at M68's section for the schema.
+
+### M70: Design mode reads the log, and writes what the clarification settled
+
+**Why:** The answers a user gives in Phase 2 are a project's standing choices; today they
+reach a milestone's `**Why:**` and go when it is archived, leaving a planner to propose
+work that contradicts them.
+
+**Approach:** `DESIGN.md` gains a ninth discovery source — read the log when present,
+where `Active` entries bound what may be proposed — and a Phase 4 rule turning qualifying
+Phase 2 answers into entries, written with the milestones on the same approval. The budget
+warning that routes a decision-shaped milestone to `docs/` gains the split: a contract
+outside readers need stays there, a binding choice goes to the log.
+
+**Tasks:**
+- [ ] Add discovery source 9 to `DESIGN.md`, with the constraint on proposals
+- [ ] Add the Phase 4 write rule, gated on the same approval as the milestones
+- [ ] Split the milestone-budget warning between `docs/` and the decision log
+- [ ] Test: content — anchors for source 9, the Phase 4 rule, the split warning
+- [ ] Commit & push
+
+**Done when:** `bash tests/test_content.sh` is green and `DESIGN.md` references the schema
+rather than restating it.
+
+### M71: forge-flow keeps its own decision log, and the READMEs point to it
+
+**Why:** Two closed proposals sit in `DEVPLAN.md` kept explicitly so they are "not
+re-derived" — decisions parked in a section meant for open discussion. And someone
+installing the skill has no way to learn the file exists.
+
+**Approach:** Open `DECISIONS.md` at the repo root and move both closed proposals into it
+as `DEC-` entries, leaving the proposals section holding only what is still open. Both
+READMEs gain the file in the layout tree and one line on what it holds; `Core methodology`
+credits Nygard's ADR, whose supersede-never-edit rule this borrows.
+
+**Tasks:**
+- [ ] Create `DECISIONS.md` with the two decisions moved out of `DEVPLAN.md`
+- [ ] Remove the two closed proposals from `DEVPLAN.md`
+- [ ] Add the file to the layout tree and docs list in both READMEs
+- [ ] Credit ADR under `Core methodology` in `README.md`
+- [ ] Test: content — anchors for the layout tree entry and the ADR credit
+- [ ] Commit & push
+
+**Done when:** `DECISIONS.md` holds both decisions, neither appears in `DEVPLAN.md`, and
+`bash tests/test_content.sh` is green.
+
+---
+
 ## Proposed — pending discussion (2026-07-04)
 
 Items below are **not milestones**: no M-number, no Tasks to execute, not

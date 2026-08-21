@@ -2533,3 +2533,27 @@ it now has to produce. The plan's phrasing of the equivalence rule was not
 carried over — the playbook states what an unproven fast route's verdict is
 worth instead of asserting the contrast.
 
+## Follow-up — A binding decision outlives the milestone that took it (2026-08-21)
+
+### M68: A binding decision has a place to live ✅
+
+**Why:** A choice that constrains future work survives today only in a closed milestone
+nothing reopens, in a `**Why:**` the archive drops, or in code that shows the choice and
+not what it ruled out. `Where the rest goes` has no row for it.
+
+**Approach:** New `## Record a binding decision` section in `EXECUTOR-CORE.md`, after
+`Register intentional debt` and in its shape — an append-only file outside the devplan,
+fixed schema, idempotent append. It sits beside the active devplan, derived as the
+completed file is.
+
+**Tasks:**
+- [x] Write `## Record a binding decision` after `Register intentional debt`
+- [x] State the location derivation and the six-line `DEC-N` entry schema
+- [x] State the two-condition gate, and where a process rule goes instead
+- [x] State supersession as the only permitted edit, plus one-line compression
+- [x] Add the missing row to the `Where the rest goes` table
+- [x] Test: content — anchors for the section, gate, `DEC-`, supersession, table row
+- [x] Commit & push
+
+**Done when:** `bash tests/test_content.sh` is green and the section states location,
+schema, gate and supersession in one place.

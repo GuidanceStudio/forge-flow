@@ -752,4 +752,40 @@ contains_flat "$SCAFFOLD" "whether the check needs the artifact rebuilt"
 # the generation contract names the tier it now has to produce
 contains_flat "$SCAFFOLD" "refuses an unscoped run and its verdict has been proven equal"
 
+# ---- M68: a binding decision has a place to live ----
+# the log sits beside the active devplan and is named by derivation from it
+contains "$EXECUTOR_CORE" "## Record a binding decision"
+contains_flat "$EXECUTOR_CORE" "beside the active devplan"
+contains_flat "$EXECUTOR_CORE" "devplan/decisions.md"
+# both gate conditions, and the reason the gate is narrow
+contains_flat "$EXECUTOR_CORE" "both conditions, or none"
+contains_flat "$EXECUTOR_CORE" "A future milestone could plausibly contradict it"
+contains_flat "$EXECUTOR_CORE" "not what it rules out, or why"
+contains_flat "$EXECUTOR_CORE" "a second devplan is not read"
+# a rule about how work is done goes to the instruction file instead
+contains_flat "$EXECUTOR_CORE" "belongs in the project's instruction file"
+# the entry carries the constraint and what the project now lives with
+contains_flat "$EXECUTOR_CORE" "DEC-7: Queue delivery is polled, not pushed"
+contains_flat "$EXECUTOR_CORE" "what stops the entry being re-argued"
+# supersession replaces editing, which is what leaves two current-tense statements
+contains_flat "$EXECUTOR_CORE" "Supersession is the only edit an existing entry may receive"
+contains_flat "$EXECUTOR_CORE" "Superseded by DEC-N"
+contains_flat "$EXECUTOR_CORE" "both in the present tense, and nothing saying which one is current"
+# appending the same decision twice is a no-op
+contains_flat "$EXECUTOR_CORE" "is not written twice"
+
+# the routing table gained the row, and gained exactly one
+python3 - "$EXECUTOR_CORE" <<'ROUTING'
+import re, sys
+text = open(sys.argv[1]).read()
+start = text.index("#### Where the rest goes")
+end = text.index("\n### ", start)
+table = [l for l in text[start:end].splitlines() if l.startswith("|")]
+rows = [l for l in table if not re.match(r"^\|[\s:-]+\|", l) and "What | Where" not in l]
+assert len(rows) == 7, f"routing table has {len(rows)} rows, expected 7"
+hits = [r for r in rows if "DECISIONS.md" in r]
+assert len(hits) == 1, f"{len(hits)} rows name DECISIONS.md, expected 1"
+assert "Record a binding decision" in hits[0], f"row does not point at the section: {hits[0]}"
+ROUTING
+
 echo "content contract passed"
