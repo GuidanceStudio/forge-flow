@@ -788,4 +788,33 @@ assert len(hits) == 1, f"{len(hits)} rows name DECISIONS.md, expected 1"
 assert "Record a binding decision" in hits[0], f"row does not point at the section: {hits[0]}"
 ROUTING
 
+# ---- M69: the executor reads the log before acting, and writes it in the commit ----
+# preflight reads it once, and an Active entry bounds the run
+contains_flat "$EXECUTOR_CORE" "Every Active entry is a constraint on this run"
+# a milestone that means to change a decision records the change; one that does not is a blocker
+contains_flat "$EXECUTOR_CORE" "append the superseding entry as part of that milestone"
+contains_flat "$EXECUTOR_CORE" "the plan was written without the entry in view"
+# the write rides the milestone commit, for the reason the tick does
+contains_flat "$EXECUTOR_CORE" "A decision that binds future work is written where it will be read"
+contains_flat "$EXECUTOR_CORE" "a record written in a later pass is a separate edit to a different file"
+contains_flat "$EXECUTOR_CORE" "Most milestones settle nothing of the kind and write nothing"
+# and it is verified to have landed, like the devplan's own bookkeeping
+contains_flat "$EXECUTOR_CORE" "Verify the decision landed"
+
+# both steps name the file and defer the schema to M68's section
+python3 - "$EXECUTOR_CORE" <<'BOTHSIDES'
+import re, sys
+text = re.sub(r"\s+", " ", open(sys.argv[1]).read())
+def section(start, end):
+    a = text.index(start)
+    return text[a:text.index(end, a)]
+spans = {
+    "preflight": section("## Preflight (once, before the first milestone)", "## Simplify step"),
+    "close-out": section("### Update the devplan", "#### Where the rest goes"),
+}
+for name, body in spans.items():
+    assert "DECISIONS.md" in body, f"{name} does not name DECISIONS.md"
+    assert "Record a binding decision" in body, f"{name} does not point at the schema section"
+BOTHSIDES
+
 echo "content contract passed"

@@ -17,28 +17,6 @@ elsewhere. Every task is a markdown checkbox.
 
 ## Follow-up — A binding decision outlives the milestone that took it (2026-08-21)
 
-### M69: The executor reads the log before it acts, and writes it in the same commit
-
-**Why:** A log nobody reads at the start of a run changes no behaviour, and one written in
-a later pass comes apart from the work — the failure already measured on the devplan
-tick.
-
-**Approach:** Two steps in `EXECUTOR-CORE.md`. Preflight reads the log once before the
-first milestone, where an `Active` entry binds the run and a milestone needing to
-contradict one writes the superseding entry instead of diverging silently. `Update the
-devplan` appends a qualifying decision in the milestone's own commit, under the landing
-check the tick already carries.
-
-**Tasks:**
-- [ ] Add the decision-log read to Preflight, with the contradiction rule
-- [ ] Add the write step to `Update the devplan`, bound to the milestone's commit
-- [ ] Add the landing check — the entry is present and the file is in the commit
-- [ ] Test: content — anchors for the preflight read, write step, landing check
-- [ ] Commit & push
-
-**Done when:** `bash tests/test_content.sh` is green and both steps name `DECISIONS.md`
-and point at M68's section for the schema.
-
 ### M70: Design mode reads the log, and writes what the clarification settled
 
 **Why:** The answers a user gives in Phase 2 are a project's standing choices; today they
