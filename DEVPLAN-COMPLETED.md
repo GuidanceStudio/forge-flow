@@ -2579,3 +2579,25 @@ check the tick already carries.
 
 **Done when:** `bash tests/test_content.sh` is green and both steps name `DECISIONS.md`
 and point at M68's section for the schema.
+
+### M70: Design mode reads the log, and writes what the clarification settled ✅
+
+**Why:** The answers a user gives in Phase 2 are a project's standing choices; today they
+reach a milestone's `**Why:**` and go when it is archived, leaving a planner to propose
+work that contradicts them.
+
+**Approach:** `DESIGN.md` gains a ninth discovery source — read the log when present,
+where `Active` entries bound what may be proposed — and a Phase 4 rule turning qualifying
+Phase 2 answers into entries, written with the milestones on the same approval. The budget
+warning that routes a decision-shaped milestone to `docs/` gains the split: a contract
+outside readers need stays there, a binding choice goes to the log.
+
+**Tasks:**
+- [x] Add discovery source 9 to `DESIGN.md`, with the constraint on proposals
+- [x] Add the Phase 4 write rule, gated on the same approval as the milestones
+- [x] Split the milestone-budget warning between `docs/` and the decision log
+- [x] Test: content — anchors for source 9, the Phase 4 rule, the split warning
+- [x] Commit & push
+
+**Done when:** `bash tests/test_content.sh` is green and `DESIGN.md` references the schema
+rather than restating it.

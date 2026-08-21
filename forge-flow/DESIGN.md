@@ -96,6 +96,11 @@ Estimate the likely number of milestones from the request:
    the user which repos are in scope, and locate where the devplan
    lives (it may sit in one repo while planning work across several).
    *(when the request spans more than one repo)*
+9. **Decision log** — read `DECISIONS.md` if the project has one
+   (EXECUTOR-CORE.md "Record a binding decision"). Its Active entries are
+   constraints on what may be proposed: a milestone that goes against one
+   either supersedes it in its own text or does not get proposed.
+   *(always, when the file exists)*
 
 #### Output: Discovery Brief
 
@@ -283,6 +288,18 @@ structure that made the closed work readable. A version's Out-of-scope list move
 with that version. The plan header, the milestone-format section and any
 pending-discussion proposals stay in the active file.
 
+#### Decisions the clarification settled
+
+Phase 2 answers questions the plan could not answer on its own, and some of
+those answers keep binding work long after the milestone that used them has
+closed. When one meets both conditions in EXECUTOR-CORE.md "Record a binding
+decision", it becomes a `DEC-N` entry in the project's decision log, written
+with the milestones and on the same approval — never before it, and never as a
+second ask. The proposal in Phase 3 names the entries it intends to write, so
+approving the plan approves them.
+
+Most clarifications settle scope or naming and leave no entry.
+
 #### Numbering
 - Follow the target file's **existing milestone ID scheme** (e.g.
   `M12`, `D5-4`, `SEC-3`) — read the last ID and continue it. `MNN`
@@ -354,9 +371,10 @@ only what the executor cannot act without goes in **`Notes:`**. *"27 call sites,
 2 of them guarded"* is the Approach; how they were counted is not.
 
 ⚠️ **This is not a licence for a milestone whose product IS a decision** — a
-policy, a chosen provider, a table of verdicts. That is *"a contract readers
-outside this plan need"*, and it goes to `docs/` with the plan carrying the
-pointer. The test: once the work is done, will anything outside this file hold
+policy, a chosen provider, a table of verdicts. Route it by who needs it: a
+contract readers outside this plan need goes to `docs/` with the plan carrying
+the pointer, and a choice that constrains work not yet planned goes to the
+decision log (EXECUTOR-CORE.md "Record a binding decision"). The test: once the work is done, will anything outside this file hold
 the decision? If the answer is no, the routing was skipped, not exhausted.
 
 #### Live test task for external dependencies

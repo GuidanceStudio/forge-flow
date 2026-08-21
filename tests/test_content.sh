@@ -817,4 +817,29 @@ for name, body in spans.items():
     assert "Record a binding decision" in body, f"{name} does not point at the schema section"
 BOTHSIDES
 
+# ---- M70: design mode reads the log, and writes what the clarification settled ----
+# a ninth discovery source, and what an Active entry does to a proposal
+contains "$DESIGN" "9. **Decision log**"
+contains_flat "$DESIGN" "constraints on what may be proposed"
+contains_flat "$DESIGN" "supersedes it in its own text or does not get proposed"
+# Phase 4 writes the entries on the same approval as the milestones
+contains "$DESIGN" "#### Decisions the clarification settled"
+contains_flat "$DESIGN" "written with the milestones and on the same approval"
+contains_flat "$DESIGN" "The proposal in Phase 3 names the entries it intends to write"
+contains_flat "$DESIGN" "Most clarifications settle scope or naming and leave no entry"
+# the budget warning routes by who needs it, instead of sending everything to docs/
+contains_flat "$DESIGN" "Route it by who needs it"
+contains_flat "$DESIGN" "a choice that constrains work not yet planned goes to the decision log"
+# the original test sentence survives the rewrite
+contains_flat "$DESIGN" "will anything outside this file hold the decision?"
+
+# DESIGN.md points at the schema rather than carrying a second copy of it
+python3 - "$DESIGN" <<'NOCOPY'
+import re, sys
+text = re.sub(r"\s+", " ", open(sys.argv[1]).read())
+assert text.count("Record a binding decision") >= 2, "DESIGN.md cites the section fewer than twice"
+for field in ("**Context:**", "**Decision:**", "**Consequence:**", "**Status:**"):
+    assert field not in text, f"DESIGN.md restates the entry schema: {field}"
+NOCOPY
+
 echo "content contract passed"
