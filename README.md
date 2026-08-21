@@ -106,6 +106,9 @@ it unasked.
   `stdlib:` / `native:` / `yagni:` / `shrink:`), `ponytail:` structured
   comments for intentional shortcuts, debt register, simplification step
   order, comment-weight scan.
+- **[Michael Nygard — Architecture Decision Records](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)** —
+  the decision log: a record per choice, and supersede rather than edit, so two
+  entries never both read as current.
 - **[Jez Humble & Dave Farley — Continuous Delivery](https://continuousdelivery.com/)** —
   shippable milestones, commit-and-push per increment, never-break-main discipline.
 
@@ -141,6 +144,7 @@ forge-flow/
 ├── CLAUDE.md          ← contributor rules for this public repo
 ├── DEVPLAN.md         ← this project's own dev plan (pending work)
 ├── DEVPLAN-COMPLETED.md ← its closed milestones, moved at close-out
+├── DECISIONS.md       ← choices that bind future work, superseded not edited
 ├── tests/             ← test suites (test_install.sh + test_content.sh)
 └── forge-flow/           ← the flat, assistant-neutral skill payload
     ├── SKILL.md       ← router (design / TDD / IDD / scaffold)

@@ -12,6 +12,8 @@ OPENAI_YAML="$REPO_ROOT/forge-flow/agents/openai.yaml"
 ROOT_README="$REPO_ROOT/README.md"
 SKILL_README="$REPO_ROOT/forge-flow/README.md"
 WORKFLOW="$REPO_ROOT/.github/workflows/tests.yml"
+DEVPLAN="$REPO_ROOT/DEVPLAN.md"
+DECISIONS="$REPO_ROOT/DECISIONS.md"
 
 fail() {
     echo "FAIL: $1" >&2
@@ -841,5 +843,48 @@ assert text.count("Record a binding decision") >= 2, "DESIGN.md cites the sectio
 for field in ("**Context:**", "**Decision:**", "**Consequence:**", "**Status:**"):
     assert field not in text, f"DESIGN.md restates the entry schema: {field}"
 NOCOPY
+
+# ---- M71: forge-flow keeps its own decision log, and the READMEs point to it ----
+# the entry is five fields, not six physical lines — a real entry needs eight
+contains_flat "$EXECUTOR_CORE" "Five fields, one per line"
+# ADR is credited for the mechanic borrowed from it
+contains "$ROOT_README" "Michael Nygard"
+contains_flat "$ROOT_README" "supersede rather than edit"
+# both READMEs name the file
+contains "$SKILL_README" "DECISIONS.md"
+
+# the layout tree lists the decision log
+python3 - "$ROOT_README" <<'LAYOUT'
+import sys
+text = open(sys.argv[1]).read()
+start = text.index("## Project layout")
+tree = text[start:text.index("```", text.index("```", start) + 3)]
+hits = [l for l in tree.splitlines() if "DECISIONS.md" in l]
+assert len(hits) == 1, f"{len(hits)} layout lines name DECISIONS.md, expected 1"
+assert "←" in hits[0], f"layout line has no description: {hits[0]}"
+LAYOUT
+
+# this repo's own log parses against the schema it publishes
+python3 - "$DECISIONS" <<'SCHEMA'
+import re, sys
+text = open(sys.argv[1]).read()
+entries = re.split(r"\n(?=## DEC-)", text)[1:]
+assert len(entries) >= 2, f"{len(entries)} entries, expected at least 2"
+for n, e in enumerate(entries, start=1):
+    lines = [l for l in e.strip().splitlines() if l.strip()]
+    head = lines[0]
+    assert head.startswith(f"## DEC-{n}:"), f"entry {n} is out of sequence: {head}"
+    assert len(lines) <= 8, f"{head} runs {len(lines)} lines, cap is 8"
+    labels = [l.split("**")[1] for l in lines if l.startswith("**")]
+    assert labels == ["Status:", "Context:", "Decision:", "Consequence:"], f"{head} fields: {labels}"
+SCHEMA
+
+# the two closed proposals left the devplan
+python3 - "$DEVPLAN" <<'MOVED'
+import sys
+text = open(sys.argv[1]).read()
+for marker in ("REJECTED", "RESOLVED"):
+    assert marker not in text, f"a closed proposal is still in the devplan: {marker}"
+MOVED
 
 echo "content contract passed"

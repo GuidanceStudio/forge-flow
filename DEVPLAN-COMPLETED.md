@@ -2601,3 +2601,33 @@ outside readers need stays there, a binding choice goes to the log.
 
 **Done when:** `bash tests/test_content.sh` is green and `DESIGN.md` references the schema
 rather than restating it.
+
+### M71: forge-flow keeps its own decision log, and the READMEs point to it ✅
+
+**Why:** Two closed proposals sit in `DEVPLAN.md` kept explicitly so they are "not
+re-derived" — decisions parked in a section meant for open discussion. And someone
+installing the skill has no way to learn the file exists.
+
+**Approach:** Open `DECISIONS.md` at the repo root and move both closed proposals into it
+as `DEC-` entries, leaving the proposals section holding only what is still open. Both
+READMEs gain the file in the layout tree and one line on what it holds; `Core methodology`
+credits Nygard's ADR, whose supersede-never-edit rule this borrows.
+
+**Tasks:**
+- [x] Create `DECISIONS.md` with the two decisions moved out of `DEVPLAN.md`
+- [x] Remove the two closed proposals from `DEVPLAN.md`
+- [x] Add the file to the layout tree and docs list in both READMEs
+- [x] Credit ADR under `Core methodology` in `README.md`
+- [x] Test: content — anchors for the layout tree entry and the ADR credit
+- [x] Commit & push
+
+**Done when:** `DECISIONS.md` holds both decisions, neither appears in `DEVPLAN.md`, and
+`bash tests/test_content.sh` is green.
+
+---
+
+**Deviations:** the entry budget was written as six physical lines and no real
+entry fits it — both of this repo's decisions need eight once wrapped — so the
+schema now reads five fields with wrapping free, and the check caps an entry at
+eight lines. The proposals section held only the two closed items, so the
+emptied wrapper went with them.

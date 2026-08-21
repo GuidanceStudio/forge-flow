@@ -78,6 +78,15 @@ Invoke however your assistant invokes skills, then pick a mode:
 - The skill respects your project's existing test structure
 - Interrupt your assistant to pause mid-run
 
+## Decision log
+
+A choice that constrains work beyond the milestone that took it goes in
+`DECISIONS.md` beside the active devplan, not in a milestone that will be
+archived. Both modes use it: design reads it before proposing and writes what
+the clarification settled, execution reads it in preflight and appends in the
+milestone's own commit. Format and the gate on what earns an entry live in
+`EXECUTOR-CORE.md`, "Record a binding decision".
+
 ## Devplan format
 
 The skill works with any Markdown file that has milestone headings and checkbox task lists. A minimal example:

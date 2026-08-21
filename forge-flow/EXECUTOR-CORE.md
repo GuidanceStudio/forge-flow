@@ -349,8 +349,8 @@ on every commit, which language chat happens in — that belongs in the project'
 instruction file (`CLAUDE.md`, `AGENTS.md`). Propose it there and leave the write
 to the user; the decision log holds technical choices that bind the code.
 
-**The entry.** Six lines, one field per line, `DEC-N` continuing the file's last
-ID:
+**The entry.** Five fields, one per line, `DEC-N` continuing the file's last ID.
+Wrapping is free; a fifth field is not:
 
 ```markdown
 ## DEC-7: Queue delivery is polled, not pushed
