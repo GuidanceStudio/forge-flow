@@ -887,4 +887,25 @@ for marker in ("REJECTED", "RESOLVED"):
     assert marker not in text, f"a closed proposal is still in the devplan: {marker}"
 MOVED
 
+# M72 — a reference without its referent is a defect the word count cannot see
+contains_flat "$DESIGN" "Never de-name."
+contains_flat "$DESIGN" "names its referent"
+contains_flat "$DESIGN" "A name is not restatement"
+contains_flat "$DESIGN" "cut the causal clause"
+contains_flat "$DESIGN" "Identifiers do not count"
+contains_flat "$DESIGN" "are a register, like ticked"
+contains_flat "$DESIGN" "Cold read:"
+contains_flat "$DESIGN" "no memory of writing it"
+contains_flat "$DESIGN" "warning-level, never a hard failure"
+python3 - "$DESIGN" <<'PY'
+import sys
+text = open(sys.argv[1]).read()
+# the naming rule sits with the budget rules, not somewhere a writer never reads
+budget = text.index("#### Milestone budget")
+assert budget < text.index("Never de-name."), "the naming rule is not in the budget section"
+assert text.index("Never restate.") < text.index("Never de-name."), "the complement precedes what it complements"
+# the cold read belongs to the review phase, after the budget section
+assert text.index("Cold read:") > text.index("**Length check:**"), "the cold read is not in the length check"
+PY
+
 echo "content contract passed"

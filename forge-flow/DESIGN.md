@@ -343,7 +343,11 @@ elsewhere (gotchas, external links, decisions to revisit later).
 
 #### Milestone budget
 
-A milestone is **≤200 words** when written. Within it:
+A milestone is **≤200 words** when written. **Identifiers do not count**:
+backticked symbols, `file:line` and measured numbers are a register, like ticked
+task lines, and for the same reason — they are what the executor needs, and a
+word count deletes them first because they are long and read as redundant beside
+the sentence that gestures at them. Within it:
 
 - **Why** 1-2 sentences · **Approach** 2-4 sentences · **Done when** one
   sentence.
@@ -353,6 +357,12 @@ A milestone is **≤200 words** when written. Within it:
 - **Never restate.** The Why does not repeat the title, the Approach does not
   repeat the Why, the Done-when does not re-list the tasks. Restatement is
   where the budget goes first, and it adds no information.
+- **Never de-name.** Every definite or counted reference names its referent
+  inside the milestone: "the three hops" lists them, "both copies" says which,
+  "the create tool" names its package, "two documents" gives their paths. A name
+  is not restatement — the rule above is about clauses, this one about nouns, and
+  a reader with no memory of writing the plan has only the nouns. When trimming,
+  cut the causal clause (the Why carries the reason) and keep the name.
 
 What does not fit is not compressed prose — it is content in the wrong place.
 Route it: a **second milestone** (the plan was carrying two), the **code or its
@@ -468,8 +478,19 @@ assumption was confirmed in the code, not guessed.
 line each, and no section restates another. Over budget → split the milestone or
 route the overflow to code, comments, or `docs/`; never ship it as denser prose.
 Measure it **as written**: its **ticked task lines are the record of work already
-done** and do not count against the budget, so a milestone that is mostly shipped
-legitimately runs long while a mostly-pending one does not.
+done**, and identifiers are a register too, so neither counts against the budget —
+a milestone that is mostly shipped, or dense with paths and symbols, legitimately
+runs long while a mostly-pending prose one does not.
+
+**Cold read:** re-read each milestone as a session with no memory of writing it.
+Every definite or counted reference must resolve inside the milestone; one that
+needs today's conversation is a defect whatever the word count says, and length is
+checked while this is not, so length wins every trade it is allowed to enter. A
+grep helps and must stay **warning-level, never a hard failure**: a task line
+carrying `the N …`, `both …`, or a bare `the <system noun>` — tool, document,
+capability, copy, column, file, page, command, endpoint, table — with no name for
+it on that line. It fires on correct lines as well, and a check that fails on good
+work is removed, taking the rule with it.
 
 **Placeholder scan:** no task may defer a decision the plan should make
 — "handle errors" without naming which errors, "improve X" without the

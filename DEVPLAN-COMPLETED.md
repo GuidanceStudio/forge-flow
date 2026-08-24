@@ -2631,3 +2631,29 @@ entry fits it — both of this repo's decisions need eight once wrapped — so t
 schema now reads five fields with wrapping free, and the check caps an entry at
 eight lines. The proposals section held only the two closed items, so the
 emptied wrapper went with them.
+
+## Follow-up — A reference the writer can resolve and the reader cannot (2026-08-24)
+
+### M72: A milestone names what it refers to ✅
+
+**Why:** `Never restate` has no complement, so under it the natural move is to refer rather
+than name. Measured on a 16-milestone plan: eleven references resolved to nothing inside
+their own milestone — "the three hops", "both catalogue copies", "two documents", "the
+create tool". Nine of the eleven sat in milestones either under budget with words to spare
+or already over it, so the limit did not produce them.
+
+**Approach:** `Never de-name` joins `Never restate` in `#### Milestone budget`, identifiers
+become a register the way ticked lines already are, and the Phase 5 `Length check` gains a
+cold read with a warning-level grep. The budget stays at 200 (`DEC-3`).
+
+**Tasks:**
+- [x] `Never de-name` beside `Never restate`, saying what to cut instead
+- [x] Identifiers excluded from the count, in both places that state the budget
+- [x] `Cold read` in the Phase 5 length check, its grep warning-level
+- [x] Test: nine content anchors and three ordering assertions
+- [x] Falsified — removing the rule reds `tests/test_content.sh`
+- [x] `DEC-3` records why 200 stayed when 250 was offered
+- [x] Commit & push
+
+**Done when:** both suites green and `DESIGN.md` states the naming rule, the exemption and
+the cold read.
