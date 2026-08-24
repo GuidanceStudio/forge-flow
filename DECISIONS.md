@@ -21,3 +21,12 @@ subagent in its own worktree, which carries the baseline that bounds a commit
 instruction wins when a newer one narrows a standing goal stays out of forge-flow
 **Consequence:** a subagent may commit when it holds the baseline, and session
 scoping lives in the user's own instruction file
+
+## DEC-3: The milestone budget stays at 200 and identifiers stop counting
+**Status:** Active
+**Context:** eleven unresolvable references in a 16-milestone plan, nine of them in
+milestones with words to spare or already over the limit, so 250 would have fixed two
+**Decision:** the number stays; backticked symbols, `file:line` and measured numbers
+become a register like ticked lines, and a naming rule joins `Never restate`
+**Consequence:** a milestone dense with paths runs long legitimately and a prose one does
+not, so the pressure that routes a trap into `docs/` is kept rather than relieved
