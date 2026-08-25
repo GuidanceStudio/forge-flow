@@ -908,4 +908,31 @@ assert text.index("Never restate.") < text.index("Never de-name."), "the complem
 assert text.index("Cold read:") > text.index("**Length check:**"), "the cold read is not in the length check"
 PY
 
+# M73 — the archive suggestion fires on the run's close-out, not on a size
+contains_flat "$DESIGN" "Never archive on your own initiative"
+contains_flat "$DESIGN" "suggest it when a run closes"
+contains_flat "$DESIGN" 'EXECUTOR-CORE.md "Completion" holds the'
+contains_flat "$DESIGN" "It therefore named no moment"
+# The size comparison it replaced must not survive anywhere in the payload
+for stale in "suggest it when a completed section outgrows the pending work"; do
+    if grep -rqF "$stale" "$REPO_ROOT/forge-flow"; then
+        fail "the size trigger for archiving is still present: $stale"
+    fi
+done
+contains_flat "$EXECUTOR_CORE" "Ask whether to archive, and wait for the answer"
+contains_flat "$EXECUTOR_CORE" "how many this run added"
+contains_flat "$EXECUTOR_CORE" "Compressing without an answer rewrites a file the user owns"
+contains_flat "$EXECUTOR_CORE" "Neither ban reaches the archive question"
+python3 - "$EXECUTOR_CORE" <<'PY_ORDER'
+import sys
+text = open(sys.argv[1]).read()
+# the ask is the last step of the run, after the final push
+assert text.index("Ensure the final completed state") < text.index("Ask whether to archive"), \
+    "the archive question is asked before the run has been pushed"
+# the carve-out sits with the two bans it qualifies, not somewhere else
+bans = text.index('Never prompt "Do you want to proceed?"')
+carve = text.index("Neither ban reaches the archive question")
+assert text.index("## Common rules") < bans < carve, "the carve-out is not under the bans it qualifies"
+PY_ORDER
+
 echo "content contract passed"
