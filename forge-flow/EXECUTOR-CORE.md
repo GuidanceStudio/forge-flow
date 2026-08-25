@@ -749,6 +749,12 @@ Documentation: updated ✅
 
 4. Ensure the final completed state has already been committed and
    pushed (or the exact blocker recorded in the devplan).
+5. **Ask whether to archive, and wait for the answer.** Say how many closed
+   milestones the completed file now holds — a single-file devplan carries them
+   inline and the count is the same question — and how many this run added, then
+   ask whether to compress them to the one-line form (DESIGN.md "#### Archive").
+   Compressing without an answer rewrites a file the user owns: measured
+   2026-08-26, eight archives taken unasked in one session.
 
 ---
 
@@ -757,6 +763,10 @@ Documentation: updated ✅
 - ❌ Never mark a milestone done if its relevant tests are not green
 - ❌ Never ask for approval between milestones
 - ❌ Never prompt "Do you want to proceed?" — everything is pre-approved
+- ⚠️ Neither ban reaches the archive question in "Completion" step 5. Both are
+  about proceeding, which is pre-approved; that step asks permission to rewrite
+  the completed file, which is not, and it comes after the last milestone rather
+  than between two.
 - ❌ Do not turn execution into a long planning exercise
 - ❌ Never mark a milestone done without verifying its **Done when**
   condition

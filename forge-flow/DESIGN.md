@@ -455,8 +455,15 @@ completed file to the one-line form above drops Why, Approach and the ticked
 tasks.
 
 Never archive on your own initiative. Like closing a version, it is the user's
-decision; suggest it when a completed section outgrows the pending work, and
-wait.
+decision; suggest it when a run closes — EXECUTOR-CORE.md "Completion" holds the
+step — and wait for the answer.
+
+The trigger used to be a size comparison between the closed work and the pending
+work, and on a production devplan that comparison had been true for months: 640
+archived rows against 11 open sections. It therefore named no moment, nothing
+ever reached it, and the executor archived eight times unasked in a single
+session while the rule above went on saying not to. A run's close-out happens
+once, so the suggestion is made once and is either taken or declined.
 
 ---
 
