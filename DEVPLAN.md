@@ -122,7 +122,7 @@ feature branch does not exist for them.
 falls back to what it demonstrably does, asks when neither answers, and cannot reach a force
 push or an unagreed landing on a shared branch by following the document.
 
-### M75: Archiving is also suggested when nothing open reads what is closed 📋
+### M75: Archiving is also suggested when nothing open reads what is closed ✅
 
 **Why:** M73 gave the suggestion one moment — a run's close-out — and that is the only one it
 has. A plan reaches the state the archive exists for without a run closing: milestones close
@@ -154,15 +154,15 @@ done. `sha` in the compressed form is named as the commit that MARKED the milest
 which is the commit carrying the work, since the bookkeeping ships with it.
 
 **Tasks:**
-- [ ] `#### Archive` carries the second trigger, the reading test and the once-per-state rule
-- [ ] `#### Archive` says which sha the compressed row takes
-- [ ] `## Completion` step 5 names the second trigger alongside the close-out
-- [ ] Design mode reads the remainder when an archive is taken
-- [ ] Test: content anchors for the trigger, the reading test, the once-per-state rule, the
+- [x] `#### Archive` carries the second trigger, the reading test and the once-per-state rule
+- [x] `#### Archive` says which sha the compressed row takes
+- [x] `## Completion` step 5 names the second trigger alongside the close-out
+- [x] Design mode reads the remainder when an archive is taken
+- [x] Test: content anchors for the trigger, the reading test, the once-per-state rule, the
       sha and the remainder read
-- [ ] Falsified — removing each anchor reds `tests/test_content.sh`
-- [ ] `./install.sh --force`
-- [ ] Commit & push
+- [x] Falsified — removing each anchor reds `tests/test_content.sh`
+- [x] `./install.sh --force`
+- [x] Commit & push
 
 **Done when:** an executor opening a plan whose open milestones read none of its closed ones
 offers the archive without being asked, offers it once, and leaves a file whose remaining
