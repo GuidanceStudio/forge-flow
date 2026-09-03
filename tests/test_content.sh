@@ -935,4 +935,51 @@ carve = text.index("Neither ban reaches the archive question")
 assert text.index("## Common rules") < bans < carve, "the carve-out is not under the bans it qualifies"
 PY_ORDER
 
+# M74 — the shipping route is the project's, read before it is guessed
+contains_flat "$EXECUTOR_CORE" "Shipping route"
+contains_flat "$EXECUTOR_CORE" "What the project WRITES"
+contains_flat "$EXECUTOR_CORE" "What the repository DOES"
+contains_flat "$EXECUTOR_CORE" "A branch name the agent invents is a"
+contains_flat "$EXECUTOR_CORE" "take the run's push permission with it"
+contains_flat "$EXECUTOR_CORE" "A run that is declined still executes and still commits"
+contains_flat "$EXECUTOR_CORE" "graded by the act"
+contains_flat "$EXECUTOR_CORE" "A refused push is a question before it is a conflict"
+contains_flat "$EXECUTOR_CORE" "never rewrite a commit that has been pushed"
+contains_flat "$EXECUTOR_CORE" "Say where it landed"
+contains_flat "$EXECUTOR_CORE" "Nor do they reach the shipping-route ask"
+contains_flat "$TDD" "push under the permission preflight took"
+contains_flat "$IDD" "push under the permission preflight took"
+
+# The promise not to impose is only worth the scan that holds it. A branch-name
+# scheme, a review policy or a merge strategy stated by the skill would override
+# the conventions of whoever installs it, which is the defect M74 exists to
+# avoid — and a rule against it that nothing checks is an intention.
+python3 - "$REPO_ROOT/forge-flow" <<'PY_NOSCHEME'
+import pathlib, re, sys
+
+root = pathlib.Path(sys.argv[1])
+# Shapes a scheme takes when a document states one, rather than reads one.
+patterns = [
+    r'\bfeature/<', r'\bfeat/<', r'\bfix/<', r'\bchore/<',
+    r'\bforge-flow/<', r'\bmilestone/<',
+    r'`(feature|feat|fix|chore|bugfix|hotfix|release)/[a-z0-9<{-]',
+    r'\bsquash and merge\b', r'\brebase and merge\b',
+    r'\bat least one approving review\b', r'\btwo approvals\b',
+]
+bad = []
+for f in sorted(root.rglob('*.md')):
+    for n, line in enumerate(f.read_text().splitlines(), 1):
+        for pat in patterns:
+            if re.search(pat, line, re.I):
+                bad.append(f'{f.relative_to(root)}:{n}: {line.strip()[:100]}')
+if bad:
+    print('the skill states a branch, review or merge convention of its own:')
+    print('\n'.join(bad))
+    sys.exit(1)
+
+# And the scan has to be able to find one, or it is reporting on nothing.
+probe = 'branches are named feature/<ticket>-<slug> and merged with squash and merge'
+assert any(re.search(p, probe, re.I) for p in patterns), 'the scan matches no scheme at all'
+PY_NOSCHEME
+
 echo "content contract passed"
