@@ -89,7 +89,9 @@ resumption, not narrated.
 ### 9. 📦 Commit & push
 
 Per EXECUTOR-CORE.md: stage explicit paths only, commit with the repo's
-convention, push when possible.
+convention, push under the permission preflight took. Landing on a shared branch
+or opening a pull request is an outward act with its own agreement; a force push
+and a rewrite of a pushed commit are refused whatever the project's convention.
 
 ---
 

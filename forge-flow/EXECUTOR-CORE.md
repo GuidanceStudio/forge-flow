@@ -83,6 +83,33 @@ active is a dangling marker: either resume it or close it — never leave it.
   consistently. Use it for every milestone commit; default to
   `MNN: <title>` if the repo has no clear convention.
 
+- **Shipping route.** How this project's work reaches other people, answered in
+  this order and never skipped to the end:
+
+  1. **What the project WRITES.** `CONTRIBUTING.md`, the agent instruction files
+     already loaded, a devplan preamble. Where a team has written its branch and
+     review rules down, follow them as written and ask nothing.
+  2. **What the repository DOES**, read like the commit convention above.
+     `git log --merges --oneline -20` against the same window without `--merges`
+     says whether work lands on the default branch directly or arrives through
+     merges; a pull-request template or `CODEOWNERS` says a review is expected;
+     a push that is refused for policy says the branch is protected. For a NAME,
+     the branches the repository already carries are the convention
+     (`git branch -a --sort=-committerdate`).
+  3. **Ask.** When neither answers, ask. A branch name the agent invents is a
+     branch name somebody has to rename.
+
+  State the reading in one sentence and take the run's push permission with it,
+  once — not once per milestone, which "Common rules" bans and is right to.
+  A run that is declined still executes and still commits: it stops before the
+  outward act and says where the work is.
+
+  ⚠️ **This skill states no branch-naming scheme, no review policy and no merge
+  strategy of its own.** Those belong to whoever installs it, and a skill that
+  writes one in fights its installer on the first milestone. What it does state
+  is the short list that is not a convention: do not destroy work that is not
+  yours, and say where the work went.
+
 - **Decision log.** Read `DECISIONS.md` if the project has one (see "Record a
   binding decision"), once, before the first milestone. Every Active entry is a
   constraint on this run. When a milestone's own text says one of those choices
@@ -542,7 +569,19 @@ two versions to keep true.
   If the record is missing, `git commit --amend` to add it before pushing — the
   bookkeeping must travel in the milestone commit, never in a later
   catch-up. (Staging is asserted above; this is the check that proves it.)
-- Push to the active branch when network/auth/repo policy allows it.
+- **Push under the permission taken in preflight, graded by the act.** A local
+  commit needs no agreement. A push onto a branch that belongs to this run is
+  covered by that permission. Landing on a shared or default branch, and opening
+  or merging a pull request, are outward-facing: they get their own agreement,
+  which is what keeps this from becoming a prompt between milestones.
+- **A refused push is a question before it is a conflict.** `git fetch` first —
+  the remote may simply have moved. Then integrate the way this repository's own
+  history integrates, read in preflight, rather than picking for it.
+- ❌ **Never `--force`, and never rewrite a commit that has been pushed.**
+  Rebasing this run's unpushed commits onto a moved remote is ordinary; the
+  moment one of them has left, a rebase rewrites what somebody else may hold, so
+  it stops and reports instead. Amending is bounded by the same line: before a
+  push it is a fix, after one it is a rewrite.
 - If push or commit requires escalation, authentication, or network
   access not currently available, record the exact blocker in the
   devplan and surface it clearly — then continue with the next
@@ -749,6 +788,12 @@ Documentation: updated ✅
 
 4. Ensure the final completed state has already been committed and
    pushed (or the exact blocker recorded in the devplan).
+   **Say where it landed: `<sha> → <remote>/<branch>`, and where the default
+   branch stands relative to it** — level with it, or behind by N commits.
+   "Committed and pushed" omits the one fact that decides whether anybody else
+   can reach the work: a colleague installs from the default branch, and work
+   that is only on a feature branch does not exist for them. Where the route is
+   pull requests, name the request too.
 5. **Ask whether to archive, and wait for the answer.** Say how many closed
    milestones the completed file now holds — a single-file devplan carries them
    inline and the count is the same question — and how many this run added, then
@@ -767,6 +812,11 @@ Documentation: updated ✅
   about proceeding, which is pre-approved; that step asks permission to rewrite
   the completed file, which is not, and it comes after the last milestone rather
   than between two.
+- ⚠️ Nor do they reach the shipping-route ask in "Preflight". Proceeding is
+  pre-approved; pushing work onto somebody else's branch is not, and the ask is
+  made once before the first milestone rather than between two. The same line
+  covers landing on a shared branch or opening a pull request mid-run: those are
+  outward-facing acts, not permission to carry on.
 - ❌ Do not turn execution into a long planning exercise
 - ❌ Never mark a milestone done without verifying its **Done when**
   condition
