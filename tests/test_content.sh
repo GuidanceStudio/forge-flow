@@ -982,4 +982,27 @@ probe = 'branches are named feature/<ticket>-<slug> and merged with squash and m
 assert any(re.search(p, probe, re.I) for p in patterns), 'the scan matches no scheme at all'
 PY_NOSCHEME
 
+# M75 — archiving is also suggested when nothing open reads what is closed
+contains_flat "$DESIGN" "when nothing open reads what is closed"
+contains_flat "$DESIGN" "An open milestone READS a closed"
+contains_flat "$DESIGN" "the test is a read rather"
+contains_flat "$DESIGN" "fires on a STATE, so it is asked once"
+contains_flat "$DESIGN" "A decline settles it until the state changes"
+contains_flat "$DESIGN" "the commit that MARKED the milestone done"
+contains_flat "$DESIGN" "includes a read of what remains"
+contains_flat "$DESIGN" "what proves it done"
+contains_flat "$EXECUTOR_CORE" "when no open milestone reads any closed one"
+
+python3 - "$DESIGN" <<'PY_ARCH_ORDER'
+import pathlib, sys
+text = pathlib.Path(sys.argv[1]).read_text()
+# The second trigger belongs under the ban it qualifies, not above it.
+ban = text.index("Never archive on your own initiative")
+second = text.index("when nothing open reads what is closed")
+once = text.index("fires on a STATE, so it is asked once")
+assert ban < second < once, "the second trigger is not under the ban, or the once-per-state rule precedes it"
+# And the remainder read has to come after the trigger that causes an archive.
+assert second < text.index("includes a read of what remains"), "the remainder read precedes the trigger"
+PY_ARCH_ORDER
+
 echo "content contract passed"

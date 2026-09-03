@@ -454,9 +454,40 @@ closed milestone to the completed file is lossless, while compressing the
 completed file to the one-line form above drops Why, Approach and the ticked
 tasks.
 
+The `sha` is the commit that MARKED the milestone done. That is also the commit
+carrying the work, because the bookkeeping ships with what it records, so the two
+cannot be different — and a row pointing at a later sweep sends the reader to a
+diff that does not contain the change.
+
 Never archive on your own initiative. Like closing a version, it is the user's
 decision; suggest it when a run closes — EXECUTOR-CORE.md "Completion" holds the
 step — and wait for the answer.
+
+There is a second moment, and it is the one a long-running plan actually reaches,
+because milestones close across many runs while no single run is closing:
+
+- **when nothing open reads what is closed.** An open milestone READS a closed
+  one when it names its ID, or when its Approach or Tasks cite a file, a decision
+  or an artifact that closed one produced. A devplan has no forward dependencies,
+  so what an open milestone needs is stated in it and the test is a read rather
+  than a judgement. When no open milestone reads any closed one, the closed set
+  is history and the file is mostly weight for whoever opens it next.
+
+⚠️ **The second fires on a STATE, so it is asked once.** The condition stays true
+on every later read until the archive is taken or a new milestone reads a closed
+one, and an ask repeated on every pass is the prompt an executor learns to skip.
+A decline settles it until the state changes. This is the same shape the shipping
+route uses in EXECUTOR-CORE.md "Preflight": read the state, say what it is, ask
+once, let the answer stand.
+
+⚠️ **Compressing alone can leave a remainder nobody can work.** Measured on a
+production devplan 2026-09-03: 35 milestones, 32 closed and none of the 3 open
+ones reading any of them — but each survivor was a box and a Done-when, with the
+context that made it workable sitting in the 32 about to be compressed. So an
+archive taken in design mode includes a read of what remains: each surviving
+milestone carries what somebody opening the file cold needs — what to decide when
+the box is not ours, what it costs, and what proves it done. An archive that
+leaves the file unreadable has moved the problem rather than solved it.
 
 The trigger used to be a size comparison between the closed work and the pending
 work, and on a production devplan that comparison had been true for months: 640

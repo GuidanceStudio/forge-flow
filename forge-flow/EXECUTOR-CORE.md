@@ -800,6 +800,9 @@ Documentation: updated ✅
    ask whether to compress them to the one-line form (DESIGN.md "#### Archive").
    Compressing without an answer rewrites a file the user owns: measured
    2026-08-26, eight archives taken unasked in one session.
+   **Say so too when no open milestone reads any closed one**, which is the
+   second trigger and the one a plan reaches without a run closing: the ask is
+   the same, and it is made once for that state rather than on every pass.
 
 ---
 
