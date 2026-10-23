@@ -133,3 +133,31 @@ shipping the defect. The reader also verified that absent configuration does
 not install defaults, and a milestone demanding removal of ownership without
 an approved exception creates a binding-requirement blocker. These are observed
 reader judgements backed by executed probes, separate from textual guard tests.
+
+## M80 — Extract shared meaning within scope, and keep independent concepts apart
+
+**Action:** a reader applied rung 5 and its bounded-search rule to four temporary
+contracts and Python snippets, then recorded an explicit decision for each.
+`python3 -B probe.py` ran in each fixture; all four commands exited 0.
+
+**Observed decisions:**
+
+- Invoice and reminder functions expose the same payment due date under one
+  45-day settlement policy. Both callers and a shared policy function were in
+  scope. Extraction to `payment_due_date` qualified because the concept and its
+  reason to change were shared; both sample outputs stayed unchanged.
+- Returns and trials used identical 30-day arithmetic, with separate policy
+  owners and independent change reasons. The reader kept them separate. A
+  trial-offer change in an in-memory copy produced 14 days while returns stayed
+  30, illustrating the coupling a shared duration policy would introduce.
+- A private label helper had one caller and no required seam or boundary. The
+  reader kept formatting inline; populated and empty-code label outputs matched.
+- Web and batch refund deadlines shared a seven-day rule, but batch edits and
+  a shared dependency were excluded by the display milestone. The reader read
+  that relevant neighbour and reported the possible extraction without a task;
+  the probe verified both source files stayed byte-for-byte unchanged.
+
+The naming examples were read as action, domain role, state and observable
+access rule for function, class, variable and test respectively. These semantic
+and scope decisions came from the reader applying the contract; executed probes
+checked sample behaviour, and content guards separately protect the instructions.

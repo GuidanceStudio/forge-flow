@@ -2913,3 +2913,29 @@ creating in-scope tasks; other findings go to the report.
 
 **Done when:** recorded review scenarios demonstrate evidence-based findings, consolidation,
 constraint-aware routing and configuration-dependent criteria.
+
+### M80: Repeated concepts prompt an abstraction check, and names read like speech ✅
+
+**Why:** duplicated domain rules can drift, while premature extraction couples operations that
+need to evolve independently.
+
+**Approach:** ladder step 5 retains single-use inlining. Two occurrences trigger evaluation,
+not mandatory extraction: merge only semantically identical concepts sharing a reason to change,
+within milestone scope. Search the diff and neighbouring code before commit. Naming pairs
+cover function, class, variable and test; names use requirement language, such as
+`TaxCalculator` over `Helper`, `orders_awaiting_payment` over `list2`, and
+`test_rejects_writes` over `test_case_3`.
+
+**Tasks:**
+- [x] `EXECUTOR-CORE.md` ladder step 5 defines extraction criteria beside the single-use rule
+- [x] `EXECUTOR-CORE.md` bounds the duplication search and extraction to milestone scope
+- [x] `EXECUTOR-CORE.md` adds paired naming examples for function, class, variable and test
+- [x] `TDD.md` and `IDD.md` point test naming at that section
+- [x] Test: content anchors and their removal prove instruction guards
+- [x] Test: recorded examples — shared domain rules qualify; similar code with independent change reasons stays separate
+- [x] Test: examples retain a single-use abstraction inline and defer extraction beyond milestone scope
+- [x] `./install.sh --force`
+- [x] Commit & push
+
+**Done when:** recorded simplification examples distinguish justified extraction from accidental
+similarity, and naming examples cover all four kinds.

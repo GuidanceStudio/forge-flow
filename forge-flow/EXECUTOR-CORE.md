@@ -146,7 +146,11 @@ Apply this ladder in order:
 4. **Reuse an already-installed dependency** before adding another
    package or parallel implementation.
 5. **Inline unearned single-use abstractions** until a second real
-   implementation or caller exists.
+   implementation or caller exists. A second occurrence triggers a check, not
+   mandatory extraction. Extract only when the domain concepts are
+   semantically identical and share a reason to change, within the milestone
+   scope. Similar syntax or a caller count alone does not earn an abstraction;
+   keep independent concepts separate and unearned single-use wrappers inline.
 6. **Reduce files and branches** when the same behavior remains clear.
 7. **Compress or delete comments that don't carry their weight.**
    Apply the rules in "Comments" below: delete what restates the code
@@ -154,6 +158,12 @@ Apply this ladder in order:
    signature, route out what git already holds, and keep the invariant.
    Never remove ponytail: comments — those are intentional debt, not
    dead weight.
+
+Search the diff and relevant neighbouring code before commit for repeated
+domain rules and their callers, reading enough context to assess meaning and
+why each changes. Keep extraction within the milestone contract; report a
+possible extraction outside scope rather than expanding the refactor into
+unrelated code.
 
 Structure only; no behavior changes. Devplan's existing test policy
 wins: keep all applicable tests and established test levels rather
@@ -986,6 +996,25 @@ implementation edits in either mode ("Joining an existing project").
   leak class names, file paths, ticket codes, or internal IDs into
   visible text. Error messages say what happened and what to do.
   Empty states guide the next action.
+
+---
+
+## Naming
+
+Use requirement language for behaviour and domain concepts, following the
+project's naming conventions. A function names an action, a class its domain
+role, and a variable the value or state it holds. A test names the observable
+rule and relevant condition, so its intent is clear without reading the body.
+
+| Kind | Vague | Requirement language |
+|---|---|---|
+| Function | `process_data` | `calculate_tax` |
+| Class | `Helper` | `TaxCalculator` |
+| Variable | `list2` | `orders_awaiting_payment` |
+| Test | `test_case_3` | `test_rejects_writes_from_other_owners` |
+
+These pairs rename constructs that already belong in the design; a class
+example does not justify introducing a class or an extra layer.
 
 ---
 

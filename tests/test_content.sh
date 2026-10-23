@@ -1144,4 +1144,35 @@ assert core.index('## Simplify step') < core.index('## Configured review') < cor
 assert 'Run "Configured review" beside this pass' in core
 PY_REVIEWERS
 
+# M80 — repeated syntax prompts a semantic and scope check, not extraction.
+contains_flat "$EXECUTOR_CORE" 'A second occurrence triggers a check, not mandatory extraction'
+contains_flat "$EXECUTOR_CORE" 'semantically identical and share a reason to change'
+contains_flat "$EXECUTOR_CORE" 'Search the diff and relevant neighbouring code before commit'
+contains_flat "$EXECUTOR_CORE" 'Keep extraction within the milestone contract'
+contains_flat "$EXECUTOR_CORE" 'report a possible extraction outside scope'
+contains "$EXECUTOR_CORE" '## Naming'
+contains_flat "$EXECUTOR_CORE" 'Use requirement language for behaviour and domain concepts'
+contains "$EXECUTOR_CORE" '| Function | `process_data` | `calculate_tax` |'
+contains "$EXECUTOR_CORE" '| Class | `Helper` | `TaxCalculator` |'
+contains "$EXECUTOR_CORE" '| Variable | `list2` | `orders_awaiting_payment` |'
+contains "$EXECUTOR_CORE" '| Test | `test_case_3` | `test_rejects_writes_from_other_owners` |'
+contains "$TDD" 'Name tests using EXECUTOR-CORE.md "Naming"'
+contains "$IDD" 'Name tests using EXECUTOR-CORE.md "Naming"'
+python3 - "$EXECUTOR_CORE" <<'PY_NAMING'
+from pathlib import Path
+import sys
+
+text = Path(sys.argv[1]).read_text()
+rung = text.split('5. **Inline unearned single-use abstractions**', 1)[1].split('6. **Reduce files and branches**', 1)[0]
+flat = ' '.join(rung.split())
+assert 'A second occurrence triggers a check, not mandatory extraction' in flat
+assert 'semantically identical and share a reason to change' in flat
+assert 'within the milestone scope' in flat
+simplify = text.split('## Simplify step', 1)[1].split('## Configured review', 1)[0]
+assert 'Search the diff and relevant neighbouring code before commit' in ' '.join(simplify.split())
+naming = text.split('## Naming', 1)[1].split('\n## ', 1)[0]
+for kind in ('Function', 'Class', 'Variable', 'Test'):
+    assert naming.count('| ' + kind + ' |') == 1, f'{kind}: expected one canonical naming pair'
+PY_NAMING
+
 echo "content contract passed"

@@ -42,6 +42,8 @@
 Write change tests at all applicable levels (see Test policy in EXECUTOR-CORE.md)
 covering the finished code. Only change tests are written AFTER implementation
 and must PASS immediately; the preliminary baseline already passed before code.
+Name tests using EXECUTOR-CORE.md "Naming" so they state the requirement's
+observable rule and relevant condition.
 Read or revise the relevant spec rows for the desired behaviour and derive the
 change tests from them, retaining stable IDs ("Joining an existing project").
 Unit tests must be green before proceeding,

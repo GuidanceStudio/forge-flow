@@ -26,32 +26,6 @@ Source: a talk on keeping AI-built prototypes from degrading, plus a security ta
 Content anchors guard instructions; removing an anchor proves only that textual guard.
 The scenario and fixture tasks below supply separate evidence for each Done-when.
 
-### M80: Repeated concepts prompt an abstraction check, and names read like speech
-
-**Why:** duplicated domain rules can drift, while premature extraction couples operations that
-need to evolve independently.
-
-**Approach:** ladder step 5 retains single-use inlining. Two occurrences trigger evaluation,
-not mandatory extraction: merge only semantically identical concepts sharing a reason to change,
-within milestone scope. Search the diff and neighbouring code before commit. Naming pairs
-cover function, class, variable and test; names use requirement language, such as
-`TaxCalculator` over `Helper`, `orders_awaiting_payment` over `list2`, and
-`test_rejects_writes` over `test_case_3`.
-
-**Tasks:**
-- [ ] `EXECUTOR-CORE.md` ladder step 5 defines extraction criteria beside the single-use rule
-- [ ] `EXECUTOR-CORE.md` bounds the duplication search and extraction to milestone scope
-- [ ] `EXECUTOR-CORE.md` adds paired naming examples for function, class, variable and test
-- [ ] `TDD.md` and `IDD.md` point test naming at that section
-- [ ] Test: content anchors and their removal prove instruction guards
-- [ ] Test: recorded examples — shared domain rules qualify; similar code with independent change reasons stays separate
-- [ ] Test: examples retain a single-use abstraction inline and defer extraction beyond milestone scope
-- [ ] `./install.sh --force`
-- [ ] Commit & push
-
-**Done when:** recorded simplification examples distinguish justified extraction from accidental
-similarity, and naming examples cover all four kinds.
-
 ### M81: Design asks who can abuse a feature and tests prove the rule holds
 
 **Why:** untested access rules can ship with a green suite and surface only after release.

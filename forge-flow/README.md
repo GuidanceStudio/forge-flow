@@ -76,6 +76,8 @@ Invoke however your assistant invokes skills, then pick a mode:
 
 - Milestones need clear, actionable checkboxes (`- [ ]` pending, `- [x]` done)
 - The skill respects your project's existing test structure
+- Repeated concepts prompt a semantic and scope check before extraction;
+  [names use requirement language](EXECUTOR-CORE.md#naming) for code and tests
 - Interrupt your assistant to pause mid-run
 
 ## Decision log

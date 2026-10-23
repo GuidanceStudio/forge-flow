@@ -39,6 +39,8 @@
 Write change tests at all applicable levels (see Test policy in EXECUTOR-CORE.md)
 BEFORE any implementation. Tests must encode the BUSINESS REQUIREMENT,
 not the implementation details.
+Name tests using EXECUTOR-CORE.md "Naming" so they state the requirement's
+observable rule and relevant condition.
 
 Read the relevant spec rows from disk using EXECUTOR-CORE.md "Executable
 specifications"; derive the failing tests from their `when` and `expect` values.
