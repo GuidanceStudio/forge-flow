@@ -23,8 +23,13 @@
   state.
 - Announce: *"▶ Milestone X: [name] (IDD)"*
 - Mark the milestone in progress in the devplan (`🔄` on the heading) per
-  EXECUTOR-CORE's state markers — before writing the code, so an interrupted
+  EXECUTOR-CORE's state markers — before writing any test or code, so an interrupted
   run is unambiguously resumable.
+- For affected existing behaviour without a specified baseline, follow
+  EXECUTOR-CORE.md "Joining an existing project" even if its file already has
+  other rows. The characterization baseline is preliminary and precedes code:
+  write and run it green before implementation edits. This is exempt from
+  step 3's after-code rule. Greenfield work skips this baseline.
 
 ### 2. 🛠️ Develop
 
@@ -32,15 +37,18 @@
 - Keep it functional but not over-engineered — simplification comes
   later.
 
-### 3. 🧪 Tests — written AFTER, must pass
+### 3. 🧪 Change tests — written AFTER, must pass
 
-Write tests at all applicable levels (see Test policy in EXECUTOR-CORE.md)
-covering the finished code. Tests are written AFTER the implementation
-and must PASS immediately. Unit tests must be green before proceeding,
+Write change tests at all applicable levels (see Test policy in EXECUTOR-CORE.md)
+covering the finished code. Only change tests are written AFTER implementation
+and must PASS immediately; the preliminary baseline already passed before code.
+Read or revise the relevant spec rows for the desired behaviour and derive the
+change tests from them, retaining stable IDs ("Joining an existing project").
+Unit tests must be green before proceeding,
 **and each must run within the per-test budget** (Test policy, "What a test
 costs"). A test over it is fixed here, while you still know what it waits on.
 
-Every test in this mode is written after the code, so none of them was ever red
+Every change test in this mode is written after the code, so none was ever red
 for the right reason. Each is **proven able to fail** before moving on: break
 the code, confirm red, restore (Test policy, "Prove it can fail").
 If the implementation from step 2 or its tests won't go green, follow
@@ -88,4 +96,6 @@ and a rewrite of a pushed commit are refused whatever the project's convention.
 
 - ❌ Do not use IDD as an excuse for vague scope; the milestone still
   needs a concrete objective and observable completion state
-- ✅ Tests are written AFTER the code, must PASS immediately
+- ✅ Change tests are written AFTER the code, must PASS immediately;
+  baseline tests are exempt from the all-tests-after rule and must instead
+  pass green before implementation edits.

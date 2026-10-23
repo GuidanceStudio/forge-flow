@@ -2862,3 +2862,28 @@ rows read from disk to inputs, actions and assertions; this is an example, not a
 
 **Done when:** selection fixtures and the documented adapter pass, with demonstrated failures
 for changed expectations and uncovered rows.
+
+### M78: A project the skill joins late grows its specs where work happens ✅
+
+**Why:** whole-project backfill is expensive, and a single specified behaviour cannot establish
+coverage of every operation in its file.
+
+**Approach:** characterize only the existing behaviour being changed when its baseline is
+unspecified, even if neighbouring behaviour already has rows. Run this baseline green before
+editing in both modes; it records observations, not approval of bugs. Separately, TDD's
+change test starts red and IDD's follows implementation. Greenfield skips characterization.
+The index reports partial behavioural coverage; no row means unspecified, not unconstrained.
+
+**Tasks:**
+- [x] `EXECUTOR-CORE.md` defines baseline order, partial coverage and no backfill
+- [x] `DESIGN.md` discovery reports covered behaviours and gaps without claiming whole-file coverage
+- [x] `TDD.md`, `IDD.md` and shared test timing distinguish baseline tests from change tests
+- [x] Write rows from characterization, distinguishing observed baseline from desired behaviour when correcting a bug
+- [x] Test: content anchors and their removal prove instruction guards
+- [x] Test: recorded TDD/IDD scenarios characterize an unspecified operation in a partially covered file
+- [x] Test: scenarios verify baseline green before edits, mode-specific change tests and untouched gaps remaining unspecified
+- [x] `./install.sh --force`
+- [x] Commit & push
+
+**Done when:** recorded TDD/IDD scenarios demonstrate the baseline/change-test distinction
+without backfilling unrelated behaviours or preserving a known bug as the target requirement.

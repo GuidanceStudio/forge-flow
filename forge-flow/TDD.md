@@ -28,10 +28,15 @@
 - Mark the milestone in progress in the devplan (`🔄` on the heading) per
   EXECUTOR-CORE's state markers — before writing any test or code, so an
   interrupted run is unambiguously resumable.
+- For affected existing behaviour without a specified baseline, follow
+  EXECUTOR-CORE.md "Joining an existing project" even if its file already has
+  other rows. The characterization baseline is preliminary and must be green
+  before implementation edits; it is exempt from step 3's red requirement.
+  Greenfield work skips this baseline.
 
-### 2. 🧪 Write tests FIRST
+### 2. 🧪 Write change tests FIRST
 
-Write tests at all applicable levels (see Test policy in EXECUTOR-CORE.md)
+Write change tests at all applicable levels (see Test policy in EXECUTOR-CORE.md)
 BEFORE any implementation. Tests must encode the BUSINESS REQUIREMENT,
 not the implementation details.
 
@@ -44,9 +49,10 @@ Keep the row and index changes in the implementation's commit.
 
 ### 3. 🔴 Run tests — they MUST fail
 
-Run all the runnable tests you just wrote. They MUST fail (red).
+Run all runnable change tests you just wrote. They MUST fail (red). The
+preliminary characterization baseline has already passed green and is exempt.
 
-If any runnable test passes before implementation, either:
+If any runnable change test passes before implementation, either:
 - the test is wrong (it doesn't actually test the new behavior), or
 - the behavior already exists (re-evaluate the milestone scope).
 
@@ -106,6 +112,7 @@ and a rewrite of a pushed commit are refused whatever the project's convention.
 
 *(Common rules are in EXECUTOR-CORE.md.)*
 
-- ❌ Never write the implementation before the tests (this is TDD mode)
-- ✅ Runnable tests must FAIL before implementation begins (classic
-  TDD red→green)
+- ❌ Never write the implementation before its change tests (this is TDD mode)
+- ✅ Runnable change tests must FAIL before implementation begins (classic
+  TDD red→green); baseline tests are exempt from the all-new-tests-red rule
+  and must instead pass green before implementation edits.

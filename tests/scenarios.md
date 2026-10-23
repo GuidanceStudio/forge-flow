@@ -66,3 +66,37 @@ Separately, removing each of the twelve new instruction anchors from an
 isolated temporary repository made the content command fail on that missing
 anchor. This establishes the textual guards; the adapter cases establish the
 example's execution, without claiming a model will apply the playbook correctly.
+
+## M78 — Local characterization in a partially specified file
+
+**Setup:** two temporary projects start with the same `orders.py`: `subtotal`
+has one disk row, `TOTAL-001`; `service_fee` and `receipt_label` have none. The
+approved change fixes `service_fee(100)` from its observed, buggy result 20 to
+10. Discovery reports coverage per operation as partial, despite an index scope
+matching the whole file. `receipt_label` is unrelated to the change.
+
+**Action:** a reader applied CORE's joining-existing-project instructions and
+the TDD/IDD loops separately. In each project, the reader added `FEE-001` with
+the observed result 20 and a named characterization test reading that row.
+`python3 -B -m unittest -v test_orders` ran two tests green before any edit to
+`orders.py`; a byte-for-byte comparison verified the implementation was unchanged.
+The observation and approved target were recorded separately.
+
+**Observed TDD:** revising the same `FEE-001` expectation to 10 and writing its
+change test before implementation produced `AssertionError: 20 != 10 : FEE-001`
+(exit 1). Fixing the implementation then produced two passing tests (exit 0).
+
+**Observed IDD:** the characterization run was green before implementation.
+The reader fixed the implementation first, then revised `FEE-001` to 10 and
+wrote the change test. The first change-test run passed both tests (exit 0).
+An isolated mutation restoring the bug made that change test fail with
+`20 != 10 : FEE-001`; restoring the fix returned it to green. Isolated mutations
+also proved both characterization tests could fail on a changed observed result.
+
+**Final checks:** each project still had only `TOTAL-001` and `FEE-001`, with
+`FEE-001` expecting 10. The observed 20 remained evidence, not an active bug
+snapshot. `subtotal` and `receipt_label` source stayed unchanged; `receipt_label`
+still had no row and remained unspecified. The index retained `path`, `scope`,
+`rows`, now counting two specific behaviours, without claiming complete coverage.
+Commands and write order were recorded during execution. This is an observed
+application of the playbooks, not an automated guarantee of future model choices.

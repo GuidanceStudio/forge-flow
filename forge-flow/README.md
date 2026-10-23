@@ -105,6 +105,10 @@ to the relevant areas, including shared scopes and splits above 40 rows. Tests
 read those rows from disk using the project's adapter. See
 [Executable specifications](EXECUTOR-CORE.md#executable-specifications) for the
 layout, scope rules and an executable example that rejects uncovered rows.
+Existing projects characterize unspecified behaviour only where the milestone
+changes it, with a green baseline before edits in either mode. File scopes and
+row counts establish only partial behavioural coverage; unrelated gaps stay
+unspecified. Observing a bug does not make it the desired requirement.
 
 ## Devplan format
 

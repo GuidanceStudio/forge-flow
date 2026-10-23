@@ -26,31 +26,6 @@ Source: a talk on keeping AI-built prototypes from degrading, plus a security ta
 Content anchors guard instructions; removing an anchor proves only that textual guard.
 The scenario and fixture tasks below supply separate evidence for each Done-when.
 
-### M78: A project the skill joins late grows its specs where work happens
-
-**Why:** whole-project backfill is expensive, and a single specified behaviour cannot establish
-coverage of every operation in its file.
-
-**Approach:** characterize only the existing behaviour being changed when its baseline is
-unspecified, even if neighbouring behaviour already has rows. Run this baseline green before
-editing in both modes; it records observations, not approval of bugs. Separately, TDD's
-change test starts red and IDD's follows implementation. Greenfield skips characterization.
-The index reports partial behavioural coverage; no row means unspecified, not unconstrained.
-
-**Tasks:**
-- [ ] `EXECUTOR-CORE.md` defines baseline order, partial coverage and no backfill
-- [ ] `DESIGN.md` discovery reports covered behaviours and gaps without claiming whole-file coverage
-- [ ] `TDD.md`, `IDD.md` and shared test timing distinguish baseline tests from change tests
-- [ ] Write rows from characterization, distinguishing observed baseline from desired behaviour when correcting a bug
-- [ ] Test: content anchors and their removal prove instruction guards
-- [ ] Test: recorded TDD/IDD scenarios characterize an unspecified operation in a partially covered file
-- [ ] Test: scenarios verify baseline green before edits, mode-specific change tests and untouched gaps remaining unspecified
-- [ ] `./install.sh --force`
-- [ ] Commit & push
-
-**Done when:** recorded TDD/IDD scenarios demonstrate the baseline/change-test distinction
-without backfilling unrelated behaviours or preserving a known bug as the target requirement.
-
 ### M79: Review through explicit heuristics the project chooses
 
 **Why:** a named perspective helps only when its criteria produce findings that another reader

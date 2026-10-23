@@ -1061,4 +1061,35 @@ contains "$TDD" 'Read the relevant spec rows from disk'
 contains "$TDD" 'derive the failing tests from their `when` and `expect` values'
 python3 "$REPO_ROOT/tests/test_specs_adapter.py"
 
+# M78 — scope selection does not establish whole-file behavioural coverage.
+contains "$EXECUTOR_CORE" '### Joining an existing project'
+contains_flat "$EXECUTOR_CORE" 'scope identifies contracts to read, not complete file coverage'
+contains_flat "$EXECUTOR_CORE" 'no row means unspecified, not unconstrained'
+contains_flat "$EXECUTOR_CORE" 'even when another operation in that file already has rows'
+contains_flat "$EXECUTOR_CORE" 'Run the characterization baseline green before implementation edits'
+contains_flat "$EXECUTOR_CORE" 'Do not backfill unrelated behaviours'
+contains_flat "$EXECUTOR_CORE" 'observations do not approve bugs'
+contains_flat "$EXECUTOR_CORE" 'Greenfield work skips characterization'
+contains_flat "$EXECUTOR_CORE" 'Characterization baseline tests are exempt from both timing rules'
+contains_flat "$DESIGN" 'Report specified behaviours and gaps'
+contains_flat "$TDD" 'characterization baseline is preliminary and must be green'
+contains_flat "$TDD" 'Run all runnable change tests you just wrote'
+contains_flat "$TDD" 'baseline tests are exempt from the all-new-tests-red rule'
+contains_flat "$IDD" 'characterization baseline is preliminary and precedes code'
+contains_flat "$IDD" 'Only change tests are written AFTER implementation'
+contains_flat "$IDD" 'baseline tests are exempt from the all-tests-after rule'
+python3 - "$TDD" "$IDD" "$EXECUTOR_CORE" <<'PY_CHARACTERIZATION'
+from pathlib import Path
+import sys
+
+tdd, idd, core = [" ".join(Path(path).read_text().split()) for path in sys.argv[1:]]
+for name, text in (("TDD", tdd), ("IDD", idd)):
+    assert text.index("characterization baseline is preliminary") < text.index("### 2."), \
+        f"{name} characterization must precede the implementation/change-test steps"
+assert tdd.index("baseline tests are exempt from the all-new-tests-red rule") > tdd.index("## TDD-specific rules")
+assert idd.index("baseline tests are exempt from the all-tests-after rule") > idd.index("## IDD-specific rules")
+timing = core[core.index("**Mode-specific timing:**"):core.index("## Implementation standards")]
+assert "Characterization baseline tests are exempt from both timing rules" in timing
+PY_CHARACTERIZATION
+
 echo "content contract passed"

@@ -106,6 +106,13 @@ Estimate the likely number of milestones from the request:
     README, instruction files and decision log; those sources supply candidate
     trade-offs when no principles document exists. Do not invent an existing
     agreement from conventions alone. *(always)*
+11. **Behaviour coverage** — read `specs/INDEX.tsv` and the relevant area rows
+    when present (EXECUTOR-CORE.md "Executable specifications"). Report specified
+    behaviours and gaps for the affected operations and input cases, including
+    gaps inside a file that already has rows. Index scopes select contracts to
+    read; counts and IDs do not prove whole-file coverage. Note missing rows as
+    unspecified, and plan local characterization before implementation in either
+    mode. Do not propose backfilling unrelated behaviour. *(existing projects)*
 
 #### Output: Discovery Brief
 

@@ -467,6 +467,38 @@ scopes and counts in that commit too, including file renames and splits. Tests
 read the TSVs from disk and identify the rows they execute; do not copy their
 expected values into tests. Adapt rows using the project's normal test tools.
 
+### Joining an existing project
+
+The index's scope identifies contracts to read, not complete file coverage.
+Its row counts and IDs enumerate only specified behaviours. Coverage remains
+partial while operations or relevant input cases lack rows; no row means
+unspecified, not unconstrained. The approved milestone, principles and project
+rules still constrain the work. Keep the `path`, `scope`, `rows` index schema;
+do not invent a whole-project inventory or a coverage column.
+
+Before changing existing behaviour, inspect the relevant rows for that operation
+and input case. If its baseline is unspecified, characterize only the behaviour
+being changed, even when another operation in that file already has rows. Read
+the implementation and run it to observe its current result, write a row from
+that observation, and add a test reading the row from disk.
+Run the characterization baseline green before implementation edits in both
+TDD and IDD. Do not backfill unrelated behaviours; leave their gaps explicit.
+Greenfield work skips characterization because no existing baseline exists.
+
+Label characterization as observed baseline in the test name and run evidence;
+observations do not approve bugs. For a bug fix, preserve the observed result
+in the evidence separately from the approved desired result. When writing the
+mode's change test, revise the affected row's expectation to that desired result,
+keeping its stable ID. The final active row and test assert the corrected
+behaviour; do not keep a contradictory snapshot of the bug as a requirement.
+An unchanged baseline can remain as regression coverage.
+
+This preliminary baseline is exempt from the modes' change-test timing. TDD's
+change tests still start red before implementation; IDD's change tests are
+written after implementation. Characterization tests that remain as guards
+still follow "Prove it can fail"; green baseline timing does not waive that
+policy.
+
 ### Executable adapter example
 
 This example assumes `src/basket.py` exports `basket_total(prices)` (sum),
@@ -888,7 +920,10 @@ green. Where the number is fixed by the test's own setup, assert the number.
 A test's name is where its intent belongs; comment only what the name
 cannot hold (see "Comments in tests").
 
-**Mode-specific timing:** In TDD mode, write all applicable test levels BEFORE implementation (red first). In IDD mode, write tests AFTER implementation (green immediately).
+**Mode-specific timing:** For change tests: in TDD mode, write all applicable test levels BEFORE implementation (red first). In IDD mode, write tests AFTER implementation (green immediately).
+Characterization baseline tests are exempt from both timing rules: for affected
+existing behaviour without a specified baseline, write and run them green before
+implementation edits in either mode ("Joining an existing project").
 
 ---
 
