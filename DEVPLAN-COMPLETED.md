@@ -2887,3 +2887,29 @@ The index reports partial behavioural coverage; no row means unspecified, not un
 
 **Done when:** recorded TDD/IDD scenarios demonstrate the baseline/change-test distinction
 without backfilling unrelated behaviours or preserving a known bug as the target requirement.
+
+### M79: Review through explicit heuristics the project chooses ✅
+
+**Why:** a named perspective helps only when its criteria produce findings that another reader
+can assess against the diff.
+
+**Approach:** `## Reviewers` in `PRINCIPLES.md` or its existing equivalent records explicit
+heuristics, published sources and applicable scopes, approved through design. Authors supply
+references rather than impersonated verdicts; no finding is required per author. Beside
+simplification, the executor requires a diff location, criterion and consequence, deduplicates
+findings and resolves conflicts against project principles and the milestone contract before
+creating in-scope tasks; other findings go to the report.
+
+**Tasks:**
+- [x] `DESIGN.md` proposes code references: Kent Beck, Martin Fowler, John Ousterhout, Eric Evans
+- [x] `DESIGN.md` proposes UI references: Don Norman, Jakob Nielsen; legacy: Michael Feathers; security: Adam Shostack
+- [x] `DESIGN.md` records user edits and requires published sources, explicit heuristics and scopes
+- [x] `EXECUTOR-CORE.md` reads reviewer configuration and defines evidence, deduplication, conflict resolution and routing
+- [x] Test: content anchors and their removal prove instruction guards
+- [x] Test: recorded scenario — duplicate findings consolidate, unsupported objections drop, and conflicting advice follows project constraints
+- [x] Test: changing a configured heuristic changes the scenario's review criteria
+- [x] `./install.sh --force`
+- [x] Commit & push
+
+**Done when:** recorded review scenarios demonstrate evidence-based findings, consolidation,
+constraint-aware routing and configuration-dependent criteria.

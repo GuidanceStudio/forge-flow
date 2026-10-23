@@ -118,6 +118,8 @@ active is a dangling marker: either resume it or close it — never leave it.
   document's numbered principles constrain the run. Do not revise them during execution; design
   proposes changes for approval. A milestone departing from a principle needs
   an approved, reasoned exception; otherwise stop as a contradictory requirement.
+  Read its approved `## Reviewers` section too, when present; "Configured review"
+  defines how to apply it without adding criteria during execution.
 
 - **Decision log.** Read `DECISIONS.md` if the project has one (see "Record a
   binding decision"), once, before the first milestone. Every Active entry is a
@@ -163,6 +165,41 @@ requirements, project conventions, or the milestone's **Done when**
 contract.
 
 Re-run all applicable tests: they must stay green.
+
+Run "Configured review" beside this pass, before closing the milestone.
+
+---
+
+## Configured review
+
+Read the approved `## Reviewers` section in `PRINCIPLES.md` or the existing
+equivalent loaded in preflight; re-read it on resume. If the section is absent
+or empty, report that and continue under the existing test, simplify and
+completion rules; do not silently install the design defaults or invent reviewers.
+Apply only configured criteria whose scopes cover the diff. Each needs a
+published source supporting its explicit heuristic and scope (DESIGN.md
+"Reviewer configuration"); reject unsupported entries and report the reason.
+Never impersonate an author or invent their verdict. No finding is required
+per author or criterion.
+
+For each proposed finding, require a diff location (`path:line`), configured
+criterion and concrete consequence. Cite the implementation, test or interaction
+that supports that consequence. A style preference, a name, or a smell without
+investigation is insufficient. Drop unsupported objections from the findings.
+
+Deduplicate findings about the same underlying issue, merging their locations,
+evidence and applicable criteria into one finding rather than one per reference.
+Resolve competing advice against the project principles and approved milestone
+contract. Respect explicitly approved, reasoned exceptions within their bounds.
+Reject an advisory suggestion that would break a binding constraint; for example,
+do not remove an ownership check to simplify a private-record operation.
+An unresolved contradiction between binding requirements is a blocker under
+"Operating mode"; report it rather than rewriting a principle or requirement.
+
+Only confirmed findings within the milestone scope become tasks under that
+milestone. Apply the mode's test timing to each fix and re-run applicable tests
+and the simplify pass. Report out-of-scope findings and rejected objections with
+their reasons; they do not expand the milestone or create tasks on their own.
 
 ---
 

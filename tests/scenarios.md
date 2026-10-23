@@ -100,3 +100,36 @@ still had no row and remained unspecified. The index retained `path`, `scope`,
 `rows`, now counting two specific behaviours, without claiming complete coverage.
 Commands and write order were recorded during execution. This is an observed
 application of the playbooks, not an automated guarantee of future model choices.
+
+## M79 — Configured review consolidates evidence and respects constraints
+
+**Setup:** a temporary profile-update diff swallows a storage error and returns
+success. Two proposed objections describe that same cause. Other objections
+request an unsupported function-to-class change, remove an ownership guard, or
+flag newly added token logging outside the milestone's scope. Saved principles
+require owner isolation and honest persistence results, with no approved exception.
+The saved reviewer table supplies published sources, explicit heuristics and scopes.
+
+**Action:** an independent reader applied the configured-review instructions,
+inspected the diff and configuration, and ran `python3 probe.py`. It observed
+false success after storage failure and rejection of a cross-owner write. A
+second runtime probe confirmed the token reached logging and a successful save
+still returned success after one write.
+
+**Observed:** the two storage objections consolidated into one finding at
+`src/profile.py:6-8`, with `C-SMELL`, reproduction evidence and the consequence
+that callers can discard input after false success. Only this confirmed,
+in-scope cause produced proposed test/fix/verification tasks. The token issue
+at `src/notifications.py:5`, under `C-THREAT`, stayed report-only. The class
+preference was rejected without a configured criterion or consequence; ownership
+removal was rejected against P1 and the milestone contract. No finding was
+required for the interface reference.
+
+With only `C-SMELL` changed to investigating duplicated domain validation, the
+same diff no longer qualified for that configured finding; the token finding
+remained. The independent completion gate still blocked false success against
+P2 and the approved contract. Removing a heuristic therefore did not authorize
+shipping the defect. The reader also verified that absent configuration does
+not install defaults, and a milestone demanding removal of ownership without
+an approved exception creates a binding-requirement blocker. These are observed
+reader judgements backed by executed probes, separate from textual guard tests.

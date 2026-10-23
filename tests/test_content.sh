@@ -1092,4 +1092,56 @@ timing = core[core.index("**Mode-specific timing:**"):core.index("## Implementat
 assert "Characterization baseline tests are exempt from both timing rules" in timing
 PY_CHARACTERIZATION
 
+# M79 — references supply configured criteria, never impersonated verdicts.
+contains "$DESIGN" '#### Reviewer configuration'
+contains_flat "$DESIGN" 'published source supporting the heuristic and an explicit applicable scope'
+contains_flat "$DESIGN" 'Record user additions, removals and edits in the proposed configuration'
+contains_flat "$DESIGN" 'Persist the approved `## Reviewers` section'
+contains "$DESIGN" 'Kent Beck'
+contains "$DESIGN" 'Martin Fowler'
+contains "$DESIGN" 'John Ousterhout'
+contains "$DESIGN" 'Eric Evans'
+contains "$DESIGN" 'Don Norman'
+contains "$DESIGN" 'Jakob Nielsen'
+contains "$DESIGN" 'Michael Feathers'
+contains "$DESIGN" 'Adam Shostack'
+contains "$EXECUTOR_CORE" '## Configured review'
+contains_flat "$EXECUTOR_CORE" 'If the section is absent or empty, report that and continue'
+contains_flat "$EXECUTOR_CORE" 'do not silently install the design defaults'
+contains_flat "$EXECUTOR_CORE" 'Never impersonate an author or invent their verdict'
+contains_flat "$EXECUTOR_CORE" 'No finding is required per author or criterion'
+contains_flat "$EXECUTOR_CORE" 'diff location (`path:line`), configured criterion and concrete consequence'
+contains_flat "$EXECUTOR_CORE" 'Deduplicate findings about the same underlying issue'
+contains_flat "$EXECUTOR_CORE" 'Respect explicitly approved, reasoned exceptions within their bounds'
+contains_flat "$EXECUTOR_CORE" 'An unresolved contradiction between binding requirements is a blocker'
+contains_flat "$EXECUTOR_CORE" 'Only confirmed findings within the milestone scope become tasks'
+contains_flat "$EXECUTOR_CORE" 'Report out-of-scope findings and rejected objections with their reasons'
+python3 - "$DESIGN" "$EXECUTOR_CORE" <<'PY_REVIEWERS'
+from pathlib import Path
+import sys
+
+design, core = [Path(path).read_text() for path in sys.argv[1:]]
+table = design.split('#### Reviewer configuration', 1)[1].split('### Phase 3:', 1)[0]
+sources = (
+    ('Kent Beck', 'https://www.informit.com/store/test-driven-development-by-example-9780321146533'),
+    ('Martin Fowler', 'https://martinfowler.com/bliki/CodeSmell.html'),
+    ('John Ousterhout', 'https://web.stanford.edu/~ouster/cs190-winter24/lectures/codeReview2/'),
+    ('Eric Evans', 'https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf#page=10'),
+    ('Don Norman', 'https://jnd.org/opportunities-and-challenges-for-touch-and-gesture-based-systems/'),
+    ('Jakob Nielsen', 'https://www.nngroup.com/articles/ten-usability-heuristics/'),
+    ('Michael Feathers', 'https://www.informit.com/articles/article.aspx?p=359417&seqNum=2'),
+    ('Adam Shostack', 'https://shostack.org/resources/threat-modeling'),
+)
+for name, url in sources:
+    assert table.count(name) == 1 and url in table, f'{name}: missing primary source in default table'
+    assert design.count(name) == 1 and name not in core, f'{name}: duplicated defaults'
+rows = [line for line in table.splitlines() if line.startswith('| C-')]
+assert len(rows) == 8, 'expected eight scoped default criteria'
+for row in rows:
+    cells = [cell.strip() for cell in row.strip('|').split('|')]
+    assert len(cells) == 4 and all(cells), 'criterion needs source, heuristic and scope'
+assert core.index('## Simplify step') < core.index('## Configured review') < core.index('## Comments')
+assert 'Run "Configured review" beside this pass' in core
+PY_REVIEWERS
+
 echo "content contract passed"

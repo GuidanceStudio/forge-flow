@@ -26,32 +26,6 @@ Source: a talk on keeping AI-built prototypes from degrading, plus a security ta
 Content anchors guard instructions; removing an anchor proves only that textual guard.
 The scenario and fixture tasks below supply separate evidence for each Done-when.
 
-### M79: Review through explicit heuristics the project chooses
-
-**Why:** a named perspective helps only when its criteria produce findings that another reader
-can assess against the diff.
-
-**Approach:** `## Reviewers` in `PRINCIPLES.md` or its existing equivalent records explicit
-heuristics, published sources and applicable scopes, approved through design. Authors supply
-references rather than impersonated verdicts; no finding is required per author. Beside
-simplification, the executor requires a diff location, criterion and consequence, deduplicates
-findings and resolves conflicts against project principles and the milestone contract before
-creating in-scope tasks; other findings go to the report.
-
-**Tasks:**
-- [ ] `DESIGN.md` proposes code references: Kent Beck, Martin Fowler, John Ousterhout, Eric Evans
-- [ ] `DESIGN.md` proposes UI references: Don Norman, Jakob Nielsen; legacy: Michael Feathers; security: Adam Shostack
-- [ ] `DESIGN.md` records user edits and requires published sources, explicit heuristics and scopes
-- [ ] `EXECUTOR-CORE.md` reads reviewer configuration and defines evidence, deduplication, conflict resolution and routing
-- [ ] Test: content anchors and their removal prove instruction guards
-- [ ] Test: recorded scenario — duplicate findings consolidate, unsupported objections drop, and conflicting advice follows project constraints
-- [ ] Test: changing a configured heuristic changes the scenario's review criteria
-- [ ] `./install.sh --force`
-- [ ] Commit & push
-
-**Done when:** recorded review scenarios demonstrate evidence-based findings, consolidation,
-constraint-aware routing and configuration-dependent criteria.
-
 ### M80: Repeated concepts prompt an abstraction check, and names read like speech
 
 **Why:** duplicated domain rules can drift, while premature extraction couples operations that

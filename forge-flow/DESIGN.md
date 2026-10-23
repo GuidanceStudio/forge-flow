@@ -156,6 +156,31 @@ and reason; present that exception for approval with the plan, never infer one
 from the fact that implementation would be easier. Decision entries use the
 optional fields in EXECUTOR-CORE.md “Record a binding decision”.
 
+#### Reviewer configuration
+
+Propose a `## Reviewers` section in `PRINCIPLES.md` or its existing equivalent.
+Use the relevant defaults below for the project's code, UI, legacy and security
+work; preserve an existing approved configuration. Authors supply references,
+not personas. Admit a criterion only with a published source supporting the
+heuristic and an explicit applicable scope. A name or reputation alone is
+insufficient; user-supplied references meet the same admission rule.
+
+This is the canonical default table. Narrow its scope descriptions to the
+project's paths, operations or contexts before approval; omit irrelevant rows.
+Record user additions, removals and edits in the proposed configuration, and
+present the complete resulting section with the plan for approval.
+
+| Criterion | Published source | Heuristic | Applicable scope |
+|---|---|---|---|
+| C-TEST | [Kent Beck, Test Driven Development: By Example](https://www.informit.com/store/test-driven-development-by-example-9780321146533) | Check the failing-test, green and refactor cycle under the selected mode's timing rules. | TDD change tests and their implementation |
+| C-SMELL | [Martin Fowler, Code Smell](https://martinfowler.com/bliki/CodeSmell.html) | Investigate a smell for a concrete problem; the smell alone does not justify a change. | Changed code |
+| C-INTERFACE | [John Ousterhout, Code Review](https://web.stanford.edu/~ouster/cs190-winter24/lectures/codeReview2/) | Prefer simple interfaces that hide implementation knowledge; inspect what callers must know. | Changed module interfaces |
+| C-LANGUAGE | [Eric Evans, Domain-Driven Design Reference](https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf#page=10) | Use the domain's ubiquitous language within its bounded context. | Changed domain terms in their named context |
+| C-FEEDBACK | [Don Norman, Touch and Gesture Systems](https://jnd.org/opportunities-and-challenges-for-touch-and-gesture-based-systems/) | Check discoverability, feedback on results and support for recovery. | Changed interactive UI |
+| C-PREVENT | [Jakob Nielsen, Ten Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/) | Prevent consequential slips with proportionate constraints or confirmation. | Changed UI actions that can cause errors |
+| C-SEAM | [Michael Feathers, Working Effectively with Legacy Code](https://www.informit.com/articles/article.aspx?p=359417&seqNum=2) | Look for seams that isolate dependencies while preserving characterized behaviour. | Legacy behaviour and dependencies being changed |
+| C-THREAT | [Adam Shostack, Threat Modeling](https://shostack.org/resources/threat-modeling) | Ask what is being built, what can go wrong, what mitigates it and how mitigation is verified. | Changed trust boundaries, data flows and controls |
+
 ---
 
 ### Phase 3: Plan Proposal (in chat, NOT on file)
@@ -339,6 +364,10 @@ principle references or reasoned exceptions in that same write. The instruction
 snippets remain a proposal for the user to insert. Re-read the persisted document
 and verify its IDs and text match the approved proposal; approving milestones
 does not authorize silently changing existing principles.
+
+Persist the approved `## Reviewers` section in that document on the same
+approval, including the user's edits; verify it matches the accepted proposal.
+The default table in "Reviewer configuration" supplies proposals only.
 
 #### Numbering
 - Follow the target file's **existing milestone ID scheme** (e.g.

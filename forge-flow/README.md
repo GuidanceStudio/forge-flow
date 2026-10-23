@@ -98,6 +98,12 @@ Decisions may cite a `Principle:` and record an approved departure with a reason
 `Exception:`. Existing decision entries remain valid. A reason alone does not
 authorize an exception.
 
+Projects can approve a `## Reviewers` section there: published references,
+explicit heuristics and applicable scopes. Design proposes the relevant defaults
+and records user edits. [Configured review](EXECUTOR-CORE.md#configured-review)
+applies that saved configuration beside simplification, requires evidence,
+deduplicates findings and routes confirmed work by milestone scope.
+
 ## Executable specifications
 
 Behaviour rows live in `specs/<area>.tsv`; `specs/INDEX.tsv` maps affected files
