@@ -2812,3 +2812,28 @@ which is the commit carrying the work, since the bookkeeping ships with it.
 **Done when:** an executor opening a plan whose open milestones read none of its closed ones
 offers the archive without being asked, offers it once, and leaves a file whose remaining
 milestones can be worked from cold.
+
+### M76: Design settles the project's principles and decisions cite them ✅
+
+**Why:** without explicit trade-offs, an agent cannot explain which project preference a
+decision serves or recognize a departure.
+
+**Approach:** use root `PRINCIPLES.md`, preserving an existing equivalent. Discovery reads
+README, instruction files and `DECISIONS.md`; Phase 2 proposes 3-5 numbered `P1…` principles
+when absent. Each has a sentence title and 2-4 sentences naming a conflict's winner and a
+non-goal. Phase 3 presents the document and linked instruction snippets; Phase 4 writes
+principles and decisions on the plan's approval, leaving snippet insertion to the user.
+
+**Tasks:**
+- [x] `DESIGN.md` defines discovery, principle shape, proposal and approved persistence
+- [x] `EXECUTOR-CORE.md` preflight reads the principles document
+- [x] `EXECUTOR-CORE.md` adds optional `Principle:` and `Exception:`; departures require a referenced principle and reason
+- [x] Update `tests/test_content.sh` decision-schema checks, preserving entries without optional fields
+- [x] Test: content anchors and their removal prove instruction guards
+- [x] Test: scenario — approved principles persist, resume reads them, and an unreasoned departure stops
+- [x] Test: schema fixtures — legacy and extended decisions parse; an `Exception:` without `Principle:` fails
+- [x] `./install.sh --force`
+- [x] Commit & push
+
+**Done when:** recorded design/resume scenarios demonstrate principle persistence and departure
+handling, and decision-schema fixtures pass.

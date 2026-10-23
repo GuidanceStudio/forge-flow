@@ -110,6 +110,15 @@ active is a dangling marker: either resume it or close it — never leave it.
   is the short list that is not a convention: do not destroy work that is not
   yours, and say where the work went.
 
+- **Project principles.** Read the project principles document before the first
+  milestone and again when resuming. Look for root `PRINCIPLES.md`, or the existing
+  equivalent identified by README / instruction files. If neither exists, report
+  its absence and continue under the approved plan, instruction files and decision
+  log; never invent or create principles during execution. When present, the
+  document's numbered principles constrain the run. Do not revise them during execution; design
+  proposes changes for approval. A milestone departing from a principle needs
+  an approved, reasoned exception; otherwise stop as a contradictory requirement.
+
 - **Decision log.** Read `DECISIONS.md` if the project has one (see "Record a
   binding decision"), once, before the first milestone. Every Active entry is a
   constraint on this run. When a milestone's own text says one of those choices
@@ -377,7 +386,8 @@ instruction file (`CLAUDE.md`, `AGENTS.md`). Propose it there and leave the writ
 to the user; the decision log holds technical choices that bind the code.
 
 **The entry.** Five fields, one per line, `DEC-N` continuing the file's last ID.
-Wrapping is free; a fifth field is not:
+Wrapping is free. The five-field base remains valid; the two optional fields
+below add principle context only when applicable:
 
 ```markdown
 ## DEC-7: Queue delivery is polled, not pushed
@@ -391,6 +401,20 @@ touches the worker alone
 `Context` is the constraint that forced the choice, not an account of the day it
 was made. `Consequence` is what the project now lives with, and it is what stops
 the entry being re-argued by someone who sees only the cost.
+
+- **Principle:** optional — the relevant `P1…` IDs in the project's principles
+  document. A decision can support a principle without departing from it.
+- **Exception:** optional — required when the choice departs from a cited
+  principle; state why this case merits an approved exception. An exception
+  without a principle reference, or an empty optional field, is invalid.
+
+Compare the proposed choice with the principles before appending the entry.
+A departure without an explicit reason stops before the decision is recorded;
+adding a reason is not permission to override a principle. An exception needs
+the user's approval in design, or explicit approval when discovered during
+execution. Existing entries without either optional field remain valid and are
+not rewritten merely to add references. Schema checks validate the fields;
+recognizing a semantic departure still requires reading the choice and principles.
 
 **Supersession is the only edit an existing entry may receive.** A decision that
 contradicts an `Active` entry appends its own, then sets the old one's status to

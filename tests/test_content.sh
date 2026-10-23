@@ -864,19 +864,47 @@ assert len(hits) == 1, f"{len(hits)} layout lines name DECISIONS.md, expected 1"
 assert "←" in hits[0], f"layout line has no description: {hits[0]}"
 LAYOUT
 
-# this repo's own log parses against the schema it publishes
-python3 - "$DECISIONS" <<'SCHEMA'
+# Optional fields must not invalidate previously recorded decisions.
+python3 - "$DECISIONS" "$EXECUTOR_CORE" <<'SCHEMA'
 import re, sys
+required = ["Status:", "Context:", "Decision:", "Consequence:"]
+
+def validate(entry):
+    lines = [line for line in entry.strip().splitlines() if line.strip()]
+    labels = [line.split("**")[1] for line in lines if line.startswith("**")]
+    assert labels[:4] == required, f"required fields: {labels}"
+    optional = labels[4:]
+    assert optional in ([], ["Principle:"], ["Principle:", "Exception:"]), f"optional fields: {optional}"
+    assert len(lines) <= 8 + len(optional), f"entry runs {len(lines)} lines"
+    for line in lines:
+        if line.startswith(("**Principle:**", "**Exception:**")):
+            assert line.split("**", 2)[-1].strip(), f"empty optional field: {line}"
+
 text = open(sys.argv[1]).read()
 entries = re.split(r"\n(?=## DEC-)", text)[1:]
 assert len(entries) >= 2, f"{len(entries)} entries, expected at least 2"
-for n, e in enumerate(entries, start=1):
-    lines = [l for l in e.strip().splitlines() if l.strip()]
-    head = lines[0]
-    assert head.startswith(f"## DEC-{n}:"), f"entry {n} is out of sequence: {head}"
-    assert len(lines) <= 8, f"{head} runs {len(lines)} lines, cap is 8"
-    labels = [l.split("**")[1] for l in lines if l.startswith("**")]
-    assert labels == ["Status:", "Context:", "Decision:", "Consequence:"], f"{head} fields: {labels}"
+for n, entry in enumerate(entries, start=1):
+    assert entry.startswith(f"## DEC-{n}:"), f"entry {n} is out of sequence"
+    validate(entry)
+legacy = """## DEC-1: Bound retries
+**Status:** Active
+**Context:** retries may consume the worker
+**Decision:** retry twice
+**Consequence:** a third failure is surfaced
+"""
+validate(legacy)
+validate(legacy + "**Principle:** P1\n")
+validate(legacy + "**Principle:** P1\n**Exception:** a bounded recovery path needs two attempts\n")
+for invalid in ("**Exception:** a recovery path\n", "**Principle:**\n", "**Principle:** P1\n**Exception:**\n"):
+    try:
+        validate(legacy + invalid)
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError(f"invalid optional fields accepted: {invalid!r}")
+core = open(sys.argv[2]).read()
+example = re.search(r"```markdown\n(## DEC-7:.*?)(?:\n```)", core, re.S).group(1)
+validate(example)
 SCHEMA
 
 # the two closed proposals left the devplan
@@ -1004,5 +1032,18 @@ assert ban < second < once, "the second trigger is not under the ban, or the onc
 # And the remainder read has to come after the trigger that causes an archive.
 assert second < text.index("includes a read of what remains"), "the remainder read precedes the trigger"
 PY_ARCH_ORDER
+
+# M76 — principles persist with the approved plan and constrain resumed work.
+contains_flat "$DESIGN" '10. **Project principles**'
+contains_flat "$DESIGN" '3-5 numbered principles (`P1`, `P2`, …)'
+contains_flat "$DESIGN" 'a conflict and which side wins'
+contains_flat "$DESIGN" 'the complete principles text and the linked instruction snippets'
+contains_flat "$DESIGN" 'Write the principles document on the same approval as the milestones'
+contains_flat "$DESIGN" 'leave insertion into `CLAUDE.md` / `AGENTS.md` to the user'
+contains_flat "$EXECUTOR_CORE" 'Read the project principles document before the first milestone and again when resuming'
+contains_flat "$EXECUTOR_CORE" 'If neither exists, report its absence and continue'
+contains_flat "$EXECUTOR_CORE" '**Principle:** optional'
+contains_flat "$EXECUTOR_CORE" '**Exception:** optional'
+contains_flat "$EXECUTOR_CORE" 'A departure without an explicit reason stops before the decision is recorded'
 
 echo "content contract passed"

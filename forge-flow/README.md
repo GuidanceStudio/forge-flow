@@ -87,6 +87,17 @@ the clarification settled, execution reads it in preflight and appends in the
 milestone's own commit. Format and the gate on what earns an entry live in
 `EXECUTOR-CORE.md`, "Record a binding decision".
 
+## Project principles
+
+Design proposes numbered trade-offs in root `PRINCIPLES.md`, preserving an
+existing equivalent, and writes them on the plan's approval. Linked instruction
+snippets are provided for the user to insert. Execution reads saved principles
+before work and on resume; projects without them remain executable.
+
+Decisions may cite a `Principle:` and record an approved departure with a reasoned
+`Exception:`. Existing decision entries remain valid. A reason alone does not
+authorize an exception.
+
 ## Devplan format
 
 The skill works with any Markdown file that has milestone headings and checkbox task lists. A minimal example:

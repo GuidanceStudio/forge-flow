@@ -101,6 +101,11 @@ Estimate the likely number of milestones from the request:
    constraints on what may be proposed: a milestone that goes against one
    either supersedes it in its own text or does not get proposed.
    *(always, when the file exists)*
+10. **Project principles** — use root `PRINCIPLES.md`, or preserve an existing
+    equivalent named by the README or instruction files. Read it alongside the
+    README, instruction files and decision log; those sources supply candidate
+    trade-offs when no principles document exists. Do not invent an existing
+    agreement from conventions alone. *(always)*
 
 #### Output: Discovery Brief
 
@@ -129,6 +134,20 @@ Skip if clear.
 
 **Do NOT ask** when the answer only affects implementation details
 (naming, test placement, variable choices) — the executor decides those.
+
+#### Project principles
+
+When the project has none, propose 3-5 numbered principles (`P1`, `P2`, …)
+derived from discovery and ask the user to confirm or edit them. Each principle
+has a sentence as its title and 2-4 sentences naming a conflict and which side wins,
+plus a non-goal: what the project refuses to build. A quality such as “fast”
+without a trade-off settles nothing. Preserve existing principle IDs and the
+project's equivalent document rather than creating a competing source of truth.
+
+An existing principle constrains the proposal. A departure must name its principle
+and reason; present that exception for approval with the plan, never infer one
+from the fact that implementation would be easier. Decision entries use the
+optional fields in EXECUTOR-CORE.md “Record a binding decision”.
 
 ---
 
@@ -227,6 +246,11 @@ Present the proposal in the user's language (per the Language rule in
 `SKILL.md`); the structure above is what matters, not the literal
 section titles.
 
+Include the complete principles text and the linked instruction snippets when
+proposing a new document or an amendment. A snippet is one line per principle
+linking to its document; leave insertion into `CLAUDE.md` / `AGENTS.md` to the user.
+Name any decision entries and exceptions the same proposal will persist.
+
 **Wait for the user's approval before writing anything to file.**
 Iterate on the proposal if the user gives feedback. Only proceed to
 Phase 4 when they explicitly approve.
@@ -299,6 +323,15 @@ second ask. The proposal in Phase 3 names the entries it intends to write, so
 approving the plan approves them.
 
 Most clarifications settle scope or naming and leave no entry.
+
+#### Principles settled by design
+
+Write the principles document on the same approval as the milestones, never
+during discovery or clarification. Persist approved decision entries and their
+principle references or reasoned exceptions in that same write. The instruction
+snippets remain a proposal for the user to insert. Re-read the persisted document
+and verify its IDs and text match the approved proposal; approving milestones
+does not authorize silently changing existing principles.
 
 #### Numbering
 - Follow the target file's **existing milestone ID scheme** (e.g.
