@@ -46,6 +46,12 @@ Name tests using EXECUTOR-CORE.md "Naming" so they state the requirement's
 observable rule and relevant condition.
 Read or revise the relevant spec rows for the desired behaviour and derive the
 change tests from them, retaining stable IDs ("Joining an existing project").
+Derive negative tests from the approved threat model and milestone contract.
+Example shapes: cross-owner reads are refused; protected requests without
+credentials are refused; startup without a required secret fails. Apply these
+where the policy requires them; public endpoints retain their declared access
+policy. These change tests follow IDD timing above, with the preliminary
+characterization baseline exception from "Joining an existing project".
 Unit tests must be green before proceeding,
 **and each must run within the per-test budget** (Test policy, "What a test
 costs"). A test over it is fixed here, while you still know what it waits on.

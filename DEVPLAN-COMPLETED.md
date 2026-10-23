@@ -2939,3 +2939,27 @@ cover function, class, variable and test; names use requirement language, such a
 
 **Done when:** recorded simplification examples distinguish justified extraction from accidental
 similarity, and naming examples cover all four kinds.
+
+### M81: Design asks who can abuse a feature and tests prove the rule holds ✅
+
+**Why:** untested access rules can ship with a green suite and surface only after release.
+
+**Approach:** for milestones touching data, access or external services, `DESIGN.md` updates
+`THREATS.md` beside the devplan with trust boundaries, assets and STRIDE per component.
+Design also lists the assumptions the code relies on and nothing enforces; each becomes a
+negative test in TDD or IDD: one user cannot read another's data, a request without credentials is
+refused, a missing secret stops the start instead of falling back to a default. After a bug, a
+test covers each other place the same cause appears.
+
+**Tasks:**
+- [x] `DESIGN.md` writes `THREATS.md` for milestones touching data, access or external services
+- [x] `DESIGN.md` lists unenforced assumptions and gives each a negative test task
+- [x] `TDD.md` and `IDD.md` name negative-test shapes: ownership, no credentials, missing secret, following each mode's timing
+- [x] `EXECUTOR-CORE.md` adds the same-cause test after a defect fix
+- [x] Test: content anchors and their removal prove instruction guards
+- [x] Test: recorded scenarios map an unenforced ownership assumption and a repeated defect cause to concrete negative-test tasks
+- [x] `./install.sh --force`
+- [x] Commit & push
+
+**Done when:** recorded planning scenarios produce a threat section, negative-test tasks per
+unenforced assumption and same-cause regression tasks in both execution modes.

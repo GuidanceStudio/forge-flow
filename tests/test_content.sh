@@ -1175,4 +1175,33 @@ for kind in ('Function', 'Class', 'Variable', 'Test'):
     assert naming.count('| ' + kind + ' |') == 1, f'{kind}: expected one canonical naming pair'
 PY_NAMING
 
+# M81 — threat proposals wait for approval; negative cases follow the contract.
+contains "$DESIGN" '#### Threat model and negative-test proposal'
+contains_flat "$DESIGN" 'Show the complete proposed threat section and its mapped test tasks in Phase 3'
+contains_flat "$DESIGN" 'Do not write `THREATS.md` before approval'
+contains_flat "$DESIGN" 'Persist the approved threat section in Phase 4 on the same approval as the plan'
+contains_flat "$DESIGN" 'Use applicable STRIDE categories per component and flow'
+contains_flat "$DESIGN" 'Turn each unenforced assumption into a concrete negative-test task'
+contains "$EXECUTOR_CORE" '### After fixing a defect'
+contains_flat "$EXECUTOR_CORE" 'Search the relevant code for other occurrences of the same cause'
+contains_flat "$EXECUTOR_CORE" 'For each occurrence, add a regression case exercising its variant'
+contains_flat "$EXECUTOR_CORE" 'report occurrences outside the approved scope'
+contains_flat "$TDD" 'cross-owner reads are refused; protected requests without credentials are refused; startup without a required secret fails'
+contains_flat "$IDD" 'cross-owner reads are refused; protected requests without credentials are refused; startup without a required secret fails'
+contains_flat "$TDD" 'public endpoints retain their declared access policy'
+contains_flat "$IDD" 'public endpoints retain their declared access policy'
+python3 - "$DESIGN" <<'PY_THREATS'
+from pathlib import Path
+import sys
+
+text = Path(sys.argv[1]).read_text()
+proposal = text.index('#### Threat model and negative-test proposal')
+persist = text.index('Persist the approved threat section in Phase 4')
+assert text.index('### Phase 3:') < proposal < text.index('### Phase 4:'), 'threat content belongs in the proposal phase'
+assert text.index('### Phase 4:') < persist, 'threat persistence must wait for phase 4'
+section = text[proposal:text.index('#### Operational spine', proposal)]
+for required in ('THREATS.md', 'assets', 'trust boundaries', 'data flows', 'existing', 'unrelated'):
+    assert required in section, f'threat proposal missing: {required}'
+PY_THREATS
+
 echo "content contract passed"

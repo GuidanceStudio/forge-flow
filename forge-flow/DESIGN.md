@@ -200,6 +200,32 @@ or error handling that prevents data-loss. It also never removes a
 verified project convention. If the smaller option conflicts with one
 of these constraints, the constraint wins.
 
+#### Threat model and negative-test proposal
+
+For milestones touching data, access or external services, propose a scoped
+update to `THREATS.md` beside the devplan. Reuse an existing project threat
+model and link its location rather than creating a competing document. Model
+the relevant components, data flows, trust boundaries and protected assets;
+do not backfill unrelated parts of the project.
+
+Use applicable STRIDE categories per component and flow:
+[spoofing, tampering, repudiation, information disclosure, denial of service
+and elevation of privilege](https://learn.microsoft.com/en-us/archive/msdn-magazine/2006/november/uncover-security-design-flaws-using-the-stride-approach).
+Tie threats to the model and describe their concrete failure, proposed
+mitigation and verification; note why a category is irrelevant where needed,
+without inventing six threats for every element.
+
+Read the affected code to identify assumptions it relies on but does not
+enforce. Turn each unenforced assumption into a concrete negative-test task:
+name the operation, attempted violation, expected rejection or startup failure,
+relevant side effects to prevent, and test level. Scope these tasks to the
+approved access/data policy and implementation work; public access is not an
+unenforced authentication assumption when the contract explicitly permits it.
+
+Show the complete proposed threat section and its mapped test tasks in Phase 3,
+along with the plan. Do not write `THREATS.md` before approval. Include the
+target document path in the proposal so the same approval covers its update.
+
 #### Operational spine — propose explicitly
 
 For **runnable apps/services** at **Medium+ scale, or when the plan
@@ -368,6 +394,13 @@ does not authorize silently changing existing principles.
 Persist the approved `## Reviewers` section in that document on the same
 approval, including the user's edits; verify it matches the accepted proposal.
 The default table in "Reviewer configuration" supplies proposals only.
+
+#### Threat model settled by design
+
+Persist the approved threat section in Phase 4 on the same approval as the plan,
+in `THREATS.md` beside the devplan or the existing model named in the proposal.
+Preserve unrelated sections, and verify that assets, boundaries, assumptions,
+mitigations and negative-test tasks match what was approved.
 
 #### Numbering
 - Follow the target file's **existing milestone ID scheme** (e.g.

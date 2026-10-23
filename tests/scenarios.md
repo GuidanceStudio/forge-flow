@@ -161,3 +161,45 @@ The naming examples were read as action, domain role, state and observable
 access rule for function, class, variable and test respectively. These semantic
 and scope decisions came from the reader applying the contract; executed probes
 checked sample behaviour, and content guards separately protect the instructions.
+
+## M81 — Approved threats produce negative tasks and same-cause variants
+
+**Planning action:** a reader prepared a complete proposal for private record
+reads and required startup configuration. It named record contents, trusted
+identity and signing configuration as assets, with caller/handler/store and
+configuration/startup boundaries and flows. Relevant STRIDE prompts identified
+missing identity, cross-owner disclosure and unsafe default startup; unrelated
+categories/components were scoped explicitly. Five negative tasks mapped the
+unenforced assumptions to list/detail ownership, list/detail without identity,
+and startup without the required secret.
+
+The existing `THREATS.md` and devplan stayed unchanged during Phase 3. After an
+explicit fixture approval of the complete proposal, Phase 4 persisted the plan
+and proposed threat section exactly, preserving the unrelated existing section.
+This was an approval fixture for the walkthrough, not inferred user permission.
+
+**Execution action:** separate TDD and IDD projects started with own-record and
+public-health coverage, while the affected negative behaviours were unspecified.
+`python3 -B -m unittest -v test_records` ran seven characterization tests green
+before implementation edits; a source comparison confirmed the baseline order.
+Observed disclosure and default startup were recorded separately from the target.
+
+**Observed TDD:** the initial list/auth/startup change tests failed in three
+specific cases before their fix, then all seven tests passed. After that fix,
+inspection and executed detail probes found the same missing identity and owner
+checks: alpha could read beta's record, and anonymous detail returned a record.
+The two detail negative variants failed before the second fix, then all seven
+tests passed again. Permission/startup tests asserted the intended error types
+and messages, while list ownership asserted the exact permitted record set.
+
+**Observed IDD:** the same seven baseline tests passed before edits. Each fix
+preceded its change-test write, including the detail variants found after the
+list fix; each first change-test run was green. An isolated restoration of the
+original omissions failed all five negative cases; restoring the fixes returned
+seven tests to green.
+
+Public health retained its declared public policy. A same-cause omission in an
+explicitly excluded legacy export was reported with the needed regression case,
+without editing it or adding a task. The public operation and excluded export
+source stayed unchanged. These recorded reader decisions and command outputs
+are separate from the instruction-anchor guards.

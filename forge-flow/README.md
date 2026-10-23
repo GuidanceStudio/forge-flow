@@ -106,6 +106,11 @@ and records user edits. [Configured review](EXECUTOR-CORE.md#configured-review)
 applies that saved configuration beside simplification, requires evidence,
 deduplicates findings and routes confirmed work by milestone scope.
 
+For data, access and external-service changes, design proposes scoped threats
+and negative-test tasks, then persists the approved `THREATS.md` section with
+the plan. Execution checks policy violations at the selected mode's timing and
+looks for other occurrences of a fixed defect's cause within the approved scope.
+
 ## Executable specifications
 
 Behaviour rows live in `specs/<area>.tsv`; `specs/INDEX.tsv` maps affected files

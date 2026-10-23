@@ -972,6 +972,19 @@ Characterization baseline tests are exempt from both timing rules: for affected
 existing behaviour without a specified baseline, write and run them green before
 implementation edits in either mode ("Joining an existing project").
 
+### After fixing a defect
+
+Identify the cause that made the defect possible, beyond the reported input.
+Search the relevant code for other occurrences of the same cause, including
+neighbouring operations and callers. For example, a missing ownership check in
+a list operation prompts inspection of detail reads for the same omission.
+For each occurrence, add a regression case exercising its variant when the work
+falls within the approved milestone scope. Use the selected mode's change-test
+timing and the characterization baseline rule for unspecified existing behaviour.
+Respect project devplan and approval gates before editing; report occurrences
+outside the approved scope with their evidence and needed regression cases,
+without silently repairing them or expanding the milestone.
+
 ---
 
 ## Implementation standards

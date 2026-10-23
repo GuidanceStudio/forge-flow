@@ -49,6 +49,13 @@ IDs. Use the project adapter to turn each selected row into inputs, an action
 and an assertion; all selected rows must execute and unknown IDs must fail.
 Keep the row and index changes in the implementation's commit.
 
+Derive negative tests from the approved threat model and milestone contract.
+Example shapes: cross-owner reads are refused; protected requests without
+credentials are refused; startup without a required secret fails. Apply these
+where the policy requires them; public endpoints retain their declared access
+policy. These change tests follow TDD timing above, with the preliminary
+characterization baseline exception from "Joining an existing project".
+
 ### 3. 🔴 Run tests — they MUST fail
 
 Run all runnable change tests you just wrote. They MUST fail (red). The
