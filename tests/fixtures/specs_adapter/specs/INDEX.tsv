@@ -1,0 +1,5 @@
+path	scope	rows
+specs/basket-prices.tsv	src/basket.py	1
+specs/basket-empty.tsv	src/basket.py	1
+specs/amounts.tsv	src/basket.py;src/display.py	1
+specs/delivery.tsv	src/delivery.py	1

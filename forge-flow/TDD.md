@@ -35,6 +35,13 @@ Write tests at all applicable levels (see Test policy in EXECUTOR-CORE.md)
 BEFORE any implementation. Tests must encode the BUSINESS REQUIREMENT,
 not the implementation details.
 
+Read the relevant spec rows from disk using EXECUTOR-CORE.md "Executable
+specifications"; derive the failing tests from their `when` and `expect` values.
+Add or revise the milestone's rows before the red run, retaining their stable
+IDs. Use the project adapter to turn each selected row into inputs, an action
+and an assertion; all selected rows must execute and unknown IDs must fail.
+Keep the row and index changes in the implementation's commit.
+
 ### 3. 🔴 Run tests — they MUST fail
 
 Run all the runnable tests you just wrote. They MUST fail (red).

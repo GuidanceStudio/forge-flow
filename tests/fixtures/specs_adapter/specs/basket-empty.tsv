@@ -1,0 +1,2 @@
+id	when	expect	file
+SUM-002	empty	0	src/basket.py

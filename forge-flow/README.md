@@ -98,6 +98,14 @@ Decisions may cite a `Principle:` and record an approved departure with a reason
 `Exception:`. Existing decision entries remain valid. A reason alone does not
 authorize an exception.
 
+## Executable specifications
+
+Behaviour rows live in `specs/<area>.tsv`; `specs/INDEX.tsv` maps affected files
+to the relevant areas, including shared scopes and splits above 40 rows. Tests
+read those rows from disk using the project's adapter. See
+[Executable specifications](EXECUTOR-CORE.md#executable-specifications) for the
+layout, scope rules and an executable example that rejects uncovered rows.
+
 ## Devplan format
 
 The skill works with any Markdown file that has milestone headings and checkbox task lists. A minimal example:

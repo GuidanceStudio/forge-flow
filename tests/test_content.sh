@@ -1046,4 +1046,19 @@ contains_flat "$EXECUTOR_CORE" '**Principle:** optional'
 contains_flat "$EXECUTOR_CORE" '**Exception:** optional'
 contains_flat "$EXECUTOR_CORE" 'A departure without an explicit reason stops before the decision is recorded'
 
+# M77 — textual guards are separate from execution of the documented adapter.
+contains "$EXECUTOR_CORE" '## Executable specifications'
+contains "$EXECUTOR_CORE" 'stable IDs'
+contains "$EXECUTOR_CORE" 'many-to-many'
+contains "$EXECUTOR_CORE" 'Read the index and the union of all matching TSVs'
+contains "$EXECUTOR_CORE" 'even when the union is the entire set'
+contains "$EXECUTOR_CORE" 'Never filter a selected TSV by its rows'
+contains "$EXECUTOR_CORE" 'Split a TSV before it exceeds 40 behaviour rows'
+contains "$EXECUTOR_CORE" 'same commit as the implementation'
+contains "$EXECUTOR_CORE" 'unknown IDs and unexecuted rows fail'
+contains "$DESIGN" 'name the added spec row IDs under the milestone'
+contains "$TDD" 'Read the relevant spec rows from disk'
+contains "$TDD" 'derive the failing tests from their `when` and `expect` values'
+python3 "$REPO_ROOT/tests/test_specs_adapter.py"
+
 echo "content contract passed"

@@ -2837,3 +2837,28 @@ principles and decisions on the plan's approval, leaving snippet insertion to th
 
 **Done when:** recorded design/resume scenarios demonstrate principle persistence and departure
 handling, and decision-schema fixtures pass.
+
+### M77: Specs live in small TSV files the tests read ✅
+
+**Why:** prose specifications drift unless tests check their rules, while loading unrelated
+specifications wastes context.
+
+**Approach:** `specs/<area>.tsv` has `id`, `when`, `expect`, `file` and optional `dec`
+referencing `DEC-N`; stable IDs bind rows to tests. `specs/INDEX.tsv` lists each TSV's path,
+scope and row count; split beyond 40 rows. Scope mapping is many-to-many: read the index and
+the union of relevant TSVs, even when that is the entire set. A documented adapter maps
+rows read from disk to inputs, actions and assertions; this is an example, not a generic engine.
+
+**Tasks:**
+- [x] `EXECUTOR-CORE.md` defines layout, stable IDs, scope matching and the row cap
+- [x] `EXECUTOR-CORE.md` documents an executable row-to-input/action/assertion example that rejects unknown or unexecuted rows
+- [x] `EXECUTOR-CORE.md` updates or removes behaviour rows in the implementation's commit
+- [x] `DESIGN.md` names added rows under test tasks; `TDD.md` derives failing tests from them
+- [x] Test: content anchors and their removal prove instruction guards
+- [x] Test: fixtures — shared and split areas select exactly the relevant TSV union
+- [x] Test: execute the adapter; changed expectations, unknown IDs and omitted rows fail
+- [x] `./install.sh --force`
+- [x] Commit & push
+
+**Done when:** selection fixtures and the documented adapter pass, with demonstrated failures
+for changed expectations and uncovered rows.

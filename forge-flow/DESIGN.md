@@ -420,6 +420,20 @@ the pointer, and a choice that constrains work not yet planned goes to the
 decision log (EXECUTOR-CORE.md "Record a binding decision"). The test: once the work is done, will anything outside this file hold
 the decision? If the answer is no, the routing was skipped, not exhausted.
 
+#### Specification rows in test tasks
+
+Use EXECUTOR-CORE.md "Executable specifications" for the TSV layout and scope
+mapping. For each behaviour milestone, name the added spec row IDs under the milestone's
+test tasks, with their `specs/<area>.tsv` paths. Name changed or removed rows
+there too, so the executor knows which contracts the change revises. Plan index
+scope/count updates and splits above 40 rows with the implementation. A test
+task says what the rows verify; the project adapter supplies inputs, actions
+and assertions from those rows read from disk.
+
+```markdown
+- [ ] Test: unit — added `SUM-001`, `SUM-002` in `specs/basket.tsv` verify populated and empty totals
+```
+
 #### Live test task for external dependencies
 
 When a milestone integrates a real external dependency

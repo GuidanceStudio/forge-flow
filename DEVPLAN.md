@@ -26,31 +26,6 @@ Source: a talk on keeping AI-built prototypes from degrading, plus a security ta
 Content anchors guard instructions; removing an anchor proves only that textual guard.
 The scenario and fixture tasks below supply separate evidence for each Done-when.
 
-### M77: Specs live in small TSV files the tests read
-
-**Why:** prose specifications drift unless tests check their rules, while loading unrelated
-specifications wastes context.
-
-**Approach:** `specs/<area>.tsv` has `id`, `when`, `expect`, `file` and optional `dec`
-referencing `DEC-N`; stable IDs bind rows to tests. `specs/INDEX.tsv` lists each TSV's path,
-scope and row count; split beyond 40 rows. Scope mapping is many-to-many: read the index and
-the union of relevant TSVs, even when that is the entire set. A documented adapter maps
-rows read from disk to inputs, actions and assertions; this is an example, not a generic engine.
-
-**Tasks:**
-- [ ] `EXECUTOR-CORE.md` defines layout, stable IDs, scope matching and the row cap
-- [ ] `EXECUTOR-CORE.md` documents an executable row-to-input/action/assertion example that rejects unknown or unexecuted rows
-- [ ] `EXECUTOR-CORE.md` updates or removes behaviour rows in the implementation's commit
-- [ ] `DESIGN.md` names added rows under test tasks; `TDD.md` derives failing tests from them
-- [ ] Test: content anchors and their removal prove instruction guards
-- [ ] Test: fixtures — shared and split areas select exactly the relevant TSV union
-- [ ] Test: execute the adapter; changed expectations, unknown IDs and omitted rows fail
-- [ ] `./install.sh --force`
-- [ ] Commit & push
-
-**Done when:** selection fixtures and the documented adapter pass, with demonstrated failures
-for changed expectations and uncovered rows.
-
 ### M78: A project the skill joins late grows its specs where work happens
 
 **Why:** whole-project backfill is expensive, and a single specified behaviour cannot establish
