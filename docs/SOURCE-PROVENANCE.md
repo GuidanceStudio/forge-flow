@@ -52,7 +52,7 @@ legal conclusion should obtain one; this repository makes none.
 
 | Kind | What it covers | Where |
 |---|---|---|
-| Automated tests | the instructions' wording is present; the installer places the payload; the documented spec adapter runs against fixture files | `tests/test_content.sh`, `tests/test_install.sh`, `tests/test_specs_adapter.py` |
+| Automated tests | the instructions' wording is present; the installer places the payload; the documented spec adapter, flow runner and security flow run against fixture files | `tests/test_content.sh`, `tests/test_install.sh`, `tests/test_specs_adapter.py`, `tests/test_test_flows.py`, `tests/test_security_flow.py` |
 | Reader walkthroughs | one reader applying a playbook to a temporary project, with the outcome recorded | `tests/scenarios.md` |
 | Real-project use | the playbooks applied to an existing project's change | none yet |
 

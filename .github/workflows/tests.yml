@@ -14,3 +14,9 @@ jobs:
         run: bash tests/test_install.sh
       - name: Run content contract suite
         run: bash tests/test_content.sh
+      - name: Run spec adapter suite
+        run: python3 -I tests/test_specs_adapter.py
+      - name: Run flow runner suite
+        run: python3 -I tests/test_test_flows.py
+      - name: Run security flow suite
+        run: python3 -I tests/test_security_flow.py

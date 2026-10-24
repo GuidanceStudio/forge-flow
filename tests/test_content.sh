@@ -59,6 +59,11 @@ contains_flat "$SKILL_README" "is conceptual prior art"
 
 contains "$ROOT_README" "bash tests/test_content.sh"
 contains "$WORKFLOW" "bash tests/test_content.sh"
+# M89: every suite is a named workflow step and a README command
+for suite in tests/test_specs_adapter.py tests/test_test_flows.py tests/test_security_flow.py; do
+    contains "$WORKFLOW" "python3 -I $suite"
+    contains "$ROOT_README" "python3 -I $suite"
+done
 
 python3 - "$SKILL" <<'PY'
 from pathlib import Path

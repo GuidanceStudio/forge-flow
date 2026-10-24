@@ -91,3 +91,38 @@ M85 | Load optional procedures only when applicable | 2026-10-24 | 82bb292011bc
 M86 | The absence of configured reviewers is reported in chat, once per run | 2026-10-24 | b58812465080
 M87 | Make specification conformance an executable test flow | 2026-10-24 | 3987c096ccc4
 M88 | Make security verification an executable test flow | 2026-10-24 | edb90ecb76bc
+
+## Closed verbatim
+
+Milestones closed after the index above was compressed. Each moves here as written and is compressed into the index only with the user's approval.
+
+## ✅ M89: Every test suite is named where a reader looks for it
+
+**Why:** the repo ships five test suites, but the CI workflow lists two steps and
+the root README names two files and two commands. The three Python suites run only
+as calls nested inside the content contract, so a failure there appears as one
+contract failure with no suite name in the CI log, and a contributor following the
+README runs 43 installer cases and the contract without knowing three more suites
+exist. One of the suites also imports a sibling by bare name, which works only
+when the interpreter puts the script directory on the path: under `python3 -I`
+all nine of its tests error before running.
+
+**Approach:** one CI step per suite, in the order a failure is cheapest to read
+(installer, content contract, adapter, runner, security). The root README layout
+tree and "Running the tests" list all five. The provenance table's automated-tests
+row names the two suites it omits. The runner suite puts its own directory on the
+path before importing the security suite's helper.
+
+**Tasks:**
+- [x] `.github/workflows/tests.yml`: five named steps, Python suites run with `python3 -I`
+- [x] `README.md`: layout tree and test commands name all five suites
+- [x] `docs/SOURCE-PROVENANCE.md`: automated-tests row names all five suites
+- [x] `tests/test_test_flows.py`: sibling import independent of invocation mode
+- [x] `tests/test_content.sh`: the contract asserts the workflow names each suite
+
+**Done when:** all five suites pass locally under the exact commands the workflow
+runs, `python3 -I tests/test_test_flows.py` reports 9 tests OK, and the content
+contract fails if a suite's step is removed from the workflow.
+
+
+**Closed:** 2026-10-24. Verified: five suites green under the workflow's exact commands; removing the security step from the workflow fails the content contract.

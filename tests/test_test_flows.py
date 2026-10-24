@@ -13,6 +13,9 @@ import unittest
 
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[1]
+# The security suite's installer helper is imported by name below; -I drops the
+# script directory from the path, so put it back.
+sys.path.insert(0, str(ROOT / "tests"))
 
 
 def example(path, marker):

@@ -157,7 +157,7 @@ forge-flow/
 ├── DEVPLAN.md         ← this project's own dev plan (pending work)
 ├── DEVPLAN-COMPLETED.md ← its closed milestones, moved at close-out
 ├── DECISIONS.md       ← choices that bind future work, superseded not edited
-├── tests/             ← test suites (test_install.sh + test_content.sh)
+├── tests/             ← five suites: installer, content contract, spec adapter, flow runner, security flow
 └── forge-flow/           ← the flat, assistant-neutral skill payload
     ├── SKILL.md       ← router (design / TDD / IDD / scaffold)
     ├── DESIGN.md      ← planning playbook
@@ -181,9 +181,13 @@ skills, or use `install.sh`.
 ```bash
 bash tests/test_install.sh
 bash tests/test_content.sh
+python3 -I tests/test_specs_adapter.py
+python3 -I tests/test_test_flows.py
+python3 -I tests/test_security_flow.py
 ```
 
-CI (GitHub Actions) runs both suites on every push and PR.
+CI (GitHub Actions) runs the five suites as separate steps on every push and PR,
+so a failing suite is named in the log.
 
 ## License
 
