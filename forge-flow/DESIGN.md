@@ -88,6 +88,8 @@ Estimate the likely number of milestones from the request:
    equivalent), and a live/e2e tier. Note the runner, the structure, and
    which spine pieces are **present vs missing**.
    *(medium+ scale, or if the request is test-related)*
+   Inventory the selectable conformance flow, its spec-to-test mapping, full-run
+   inclusion and authorized CI wiring, even for non-runnable projects.
 7. **Stack detection** — identify the tech stack from manifest files
    (package.json, pyproject.toml, Cargo.toml, etc.).
    *(large scale, or if unfamiliar with the project)*
@@ -225,6 +227,17 @@ unenforced authentication assumption when the contract explicitly permits it.
 Show the complete proposed threat section and its mapped test tasks in Phase 3,
 along with the plan. Do not write `THREATS.md` before approval. Include the
 target document path in the proposal so the same approval covers its update.
+
+#### Required test flows
+
+Read [`TEST-FLOWS.md`](TEST-FLOWS.md) before planning test changes. Every project,
+including libraries and skills, needs a dedicated selectable `conformance` suite.
+Map each affected approved requirement to its spec rows and executable tests;
+missing rows become tasks within the behaviour milestone. Include missing runner
+and authorized CI wiring in that milestone, reusing the native test framework.
+Do not make a preparation-only milestone or backfill unrelated legacy behaviour.
+Done-when requires full execution of all declared contracts, with unverified
+rows and unspecified legacy gaps distinguished from passed checks.
 
 #### Operational spine — propose explicitly
 

@@ -3099,3 +3099,20 @@ simplify pass starts. It stays out of the completion recap, which already lists 
 
 **Done when:** a reader given the payload and a project with no `## Reviewers` section says it
 reports that in chat at the start of the simplify pass, and not again later in the run.
+
+### M87: Make specification conformance an executable test flow ✅
+
+**Why:** executable specification rows exist, but no mandatory suite proves that every declared contract has run.
+
+**Approach:** require a selectable `conformance` flow in the native runner and authorized CI, including libraries and skills. Run every indexed row for full verification; label scoped runs partial and leave unspecified legacy behaviour explicit. Reuse existing test levels without duplicating tests. Keep detailed guidance and an executable runner example outside CORE.
+
+**Tasks:**
+- [x] Test: executable fixtures — full-index execution, omitted rows, implementation drift, runner selection and failure propagation
+- [x] Extend `SPECS-ADAPTER.md` with explicit full execution and index integrity checks
+- [x] Add `TEST-FLOWS.md` and an executable project-specific runner example
+- [x] Integrate discovery, planning, TDD/IDD, verification, scaffold and CI guidance
+- [x] Update payload documentation and installer/content checks
+- [x] Run content and installer suites; record mutation evidence and validation limits
+- [x] Commit the verified milestone with its devplan record
+
+**Done when:** the published runner executes all declared contracts, reports partial selections honestly and fails on implementation drift or missing verification.

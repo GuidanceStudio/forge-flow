@@ -5,6 +5,20 @@ application of those instructions; executable fixtures check their documented
 examples. Their observed output is separate evidence, not an automated guarantee
 of future model behaviour.
 
+## M87 — Full conformance differs from scoped verification
+
+The executable tests extract the published adapter and runner into a temporary
+copy of `tests/fixtures/specs_adapter`. `--all` executes four contract rows;
+the basket selection executes three and reports partial scope with delivery
+remaining. Changing the real delivery implementation to return 99 leaves the
+basket selection green but fails full conformance and the default runner.
+Empty index/area, duplicate index paths, unknown IDs and unexecuted rows fail.
+Optimized Python is rejected before it can remove assertion checks.
+
+These cases are run by `tests/test_specs_adapter.py` and
+`tests/test_test_flows.py`. They exercise the shipped examples; no claim is made
+that another project has adopted the flows or that remote CI has executed them.
+
 ## M76 — Approved principles persist and constrain a resumed run
 
 **Setup:** a temporary project has a README stating that records belong to their

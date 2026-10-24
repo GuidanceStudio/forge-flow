@@ -11,6 +11,11 @@ Across modes: **design → implement → simplify** — design removes
 speculative work before it becomes a milestone; execution applies the
 simplify ladder after behavior is working, then re-runs every test.
 
+A required `conformance` flow verifies all declared specification rows against
+actual behaviour through the project's native runner and authorized CI. Focused
+runs remain partial; unspecified legacy behaviour remains visible. See
+[`TEST-FLOWS.md`](forge-flow/TEST-FLOWS.md) for the contract and executable examples.
+
 ## Install
 
 The installer is multi-assistant. Run it with no target for an

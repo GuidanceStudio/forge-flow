@@ -58,3 +58,13 @@ legal conclusion should obtain one; this repository makes none.
 
 A passing automated test shows the text is present, not that a model follows it.
 A walkthrough shows one reader's application of one playbook in a temporary project.
+
+## Required-flow extensions
+
+The conformance extension is exercised by `tests/test_specs_adapter.py` and
+`tests/test_test_flows.py`. They extract the exact Python examples published in
+the payload, execute them against temporary disk fixtures, and alter real
+implementations to prove that drift produces failures. Runner selection and
+exit-code propagation are executable evidence; content guards establish the
+playbook wiring only. This does not establish real-project adoption or execution
+of another project's CI.

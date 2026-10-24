@@ -75,6 +75,11 @@ Standard scope:
 
 2. **A tiered test runner `run_tests.sh`** with:
    - tiers `unit`, `integration`, and `live` (run all, or one tier by name),
+   - a **selectable `conformance` flow**, included in the default/full run and
+     authorized CI. Read [`TEST-FLOWS.md`](TEST-FLOWS.md) before wiring it. Reuse
+     the existing levels and native suites/markers without copying tests; full
+     conformance executes all declared specs. Missing mappings or empty/TODO
+     suites are incomplete and non-passing. A fast/scoped run stays partial.
    - **a fourth tier, `fast`, defined by what it costs rather than by how real
      it is.** The three above split on how much of the system a test touches.
      This one runs tests the other tiers already own, over the artifact that is
@@ -203,6 +208,8 @@ Reuse `EXECUTOR-CORE.md` verify/commit discipline:
 
 - Run the generated `run_tests.sh` — it must execute and report a clean
   pass/skip recap (no tier failing for a setup reason).
+  The required conformance flow must have passing executed evidence; missing or
+  skipped mandatory verification blocks readiness, even if another tier skips.
 - Where possible, run the bring-up and confirm services reach ready.
 - **Re-run scaffold generation** and confirm it does **not clobber**: the
   second pass produces no destructive diff.
@@ -212,7 +219,8 @@ Reuse `EXECUTOR-CORE.md` verify/commit discipline:
 ## Done when
 
 The project has a one-command bring-up and a tiered `run_tests.sh` that runs
-green (or skips with reason), `.env.example` documents the test credentials,
+green (optional checks may skip with reason), full conformance has passing
+executed evidence, `.env.example` documents the test credentials,
 a prod-isolation skeleton exists when external services are present, the
 `comments` check runs over the merge-base diff (or skips with reason), the
 `fast` tier refuses an unscoped run and its verdict has been proven equal to the

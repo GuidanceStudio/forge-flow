@@ -3,6 +3,7 @@
 import csv
 import io
 import json
+import os
 from pathlib import Path
 import re
 import shutil
@@ -31,20 +32,26 @@ class SpecsAdapterTests(unittest.TestCase):
         self.project = Path(self.directory.name) / "project"
         shutil.copytree(FIXTURE, self.project)
 
-    def run_adapter(self, *paths, adapter=None):
+    def run_adapter(self, *paths, adapter=None, environment=None):
         return subprocess.run(
             [sys.executable, "-c", self.adapter if adapter is None else adapter,
              str(self.project), *paths],
             capture_output=True,
             text=True,
             timeout=5,
+            env=environment,
         )
 
-    def assert_result(self, result, selected, executed):
+    def assert_result(self, result, selected, executed, full=False):
         self.assertEqual(result.returncode, 0, result.stderr)
+        with (self.project / "specs/INDEX.tsv").open(newline="") as stream:
+            remaining = [row["path"] for row in csv.DictReader(stream, delimiter="\t")
+                         if row["path"] not in selected]
         self.assertEqual(json.loads(result.stdout), {
+            "scope": "full" if full else "partial",
             "selected": selected,
             "executed": sorted(executed),
+            "remaining": remaining,
         })
 
     def assert_failure(self, result, message):
@@ -87,6 +94,53 @@ class SpecsAdapterTests(unittest.TestCase):
             "specs/amounts.tsv", "specs/delivery.tsv",
         ], ["SUM-001", "SUM-002", "FORMAT-001", "DELIVERY-001"])
 
+    def test_full_run_executes_every_indexed_area_without_affected_paths(self):
+        self.assert_result(self.run_adapter("--all"), [
+            "specs/basket-prices.tsv", "specs/basket-empty.tsv",
+            "specs/amounts.tsv", "specs/delivery.tsv",
+        ], ["SUM-001", "SUM-002", "FORMAT-001", "DELIVERY-001"], full=True)
+
+    def test_optimized_python_cannot_silently_disable_contract_checks(self):
+        self.change_tsv("specs/basket-prices.tsv", lambda rows: rows[0].update(expect="99"))
+        result = self.run_adapter("--all", environment={**os.environ, "PYTHONOPTIMIZE": "1"})
+        self.assert_failure(result, "optimized Python disables contract checks")
+
+    def test_full_run_detects_implementation_drift_outside_a_scoped_selection(self):
+        (self.project / "src/delivery.py").write_text(
+            "def delivery_fee(amount):\n    return 99\n"
+        )
+        self.assert_result(self.run_adapter("src/basket.py"), [
+            "specs/basket-prices.tsv", "specs/basket-empty.tsv", "specs/amounts.tsv",
+        ], ["SUM-001", "SUM-002", "FORMAT-001"])
+        self.assert_failure(self.run_adapter("--all"),
+                            "DELIVERY-001: expected '2', got '99'")
+
+    def test_full_selection_cannot_be_mixed_with_affected_paths(self):
+        for arguments in (("--all", "src/basket.py"), ("src/basket.py", "--all")):
+            with self.subTest(arguments=arguments):
+                self.assert_failure(self.run_adapter(*arguments),
+                                    "--all cannot be combined with affected paths")
+
+    def test_empty_index_cannot_pass_as_verified_conformance(self):
+        self.change_tsv("specs/INDEX.tsv", lambda rows: rows.clear())
+        for arguments in (("--all",), ("src/basket.py",)):
+            with self.subTest(arguments=arguments):
+                self.assert_failure(self.run_adapter(*arguments), "empty spec index")
+
+    def test_empty_indexed_area_cannot_pass_as_verified_conformance(self):
+        self.change_tsv("specs/delivery.tsv", lambda rows: rows.clear())
+        self.change_tsv("specs/INDEX.tsv", lambda rows: rows[3].update(rows="0"))
+        for arguments in (("--all",), ("src/delivery.py",)):
+            with self.subTest(arguments=arguments):
+                self.assert_failure(self.run_adapter(*arguments),
+                                    "specs/delivery.tsv: empty spec area")
+
+    def test_duplicate_index_paths_fail_instead_of_being_silently_deduplicated(self):
+        self.change_tsv("specs/INDEX.tsv", lambda rows: rows.append(dict(rows[0])))
+        for arguments in (("--all",), ("src/basket.py",)):
+            with self.subTest(arguments=arguments):
+                self.assert_failure(self.run_adapter(*arguments), "duplicate index paths")
+
     def test_overlapping_changed_paths_do_not_execute_a_row_twice(self):
         self.assert_result(self.run_adapter("src/basket.py", "src/display.py", "src/basket.py"), [
             "specs/basket-prices.tsv", "specs/basket-empty.tsv", "specs/amounts.tsv",
@@ -113,6 +167,12 @@ class SpecsAdapterTests(unittest.TestCase):
     def test_changed_input_from_disk_reaches_the_action(self):
         self.change_tsv("specs/basket-prices.tsv", lambda rows: rows[0].update(when="4,3"))
         self.assert_failure(self.run_adapter("src/basket.py"), "SUM-001: expected '5', got '7'")
+
+    def test_changed_implementation_fails_the_existing_disk_contract(self):
+        path = self.project / "src/basket.py"
+        path.write_text(path.read_text().replace("sum(prices)", "sum(prices) + 1"))
+        self.assert_failure(self.run_adapter("src/basket.py"),
+                            "SUM-001: expected '5', got '6'")
 
     def test_unknown_id_is_rejected(self):
         self.change_tsv("specs/delivery.tsv", lambda rows: rows[0].update(id="UNKNOWN-001"))

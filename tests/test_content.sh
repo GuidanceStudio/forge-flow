@@ -1292,4 +1292,18 @@ assert 'Apply only configured criteria' in review
 PY_ROUTING
 contains_flat "$REPO_ROOT/tests/scenarios.md" '## M85 — Optional procedures load only where they apply'
 
+# M87 — conformance is a required executable flow across project types.
+FLOWS="$REPO_ROOT/forge-flow/TEST-FLOWS.md"
+test -f "$FLOWS" || fail "TEST-FLOWS.md missing from payload"
+contains_flat "$EXECUTOR_CORE" 'Read [`TEST-FLOWS.md`](TEST-FLOWS.md) before planning test changes'
+contains "$FLOWS" '## Conformance'
+contains_flat "$FLOWS" 'including libraries and skill packages'
+contains_flat "$FLOWS" 'every row in every area listed in `specs/INDEX.tsv`'
+contains_flat "$FLOWS" 'An empty suite or missing mapping is incomplete, never a pass'
+contains_flat "$SCAFFOLD" 'selectable `conformance` flow'
+contains "$DESIGN" '#### Required test flows'
+contains "$TDD" 'Register the change tests in the required flows'
+contains "$IDD" 'Register the change tests in the required flows'
+python3 "$REPO_ROOT/tests/test_test_flows.py"
+
 echo "content contract passed"

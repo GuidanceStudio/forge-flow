@@ -25,15 +25,22 @@ DELIVERY-001	10	2	src/delivery.py
 ```
 
 Save the following example as a test script and run
-`python3 test_specs.py . src/basket.py` from that example project. It reads
+`python3 test_specs.py . --all` for full conformance against every indexed area,
+or `python3 test_specs.py . src/basket.py` for a partial, scoped check.
+Do not combine `--all` with affected paths. A full pass verifies the declared
+rows; it does not establish coverage of unspecified behaviour. It reads
 inputs from `when`, calls the named implementation, and asserts `expect`;
 unknown IDs and unexecuted rows fail. The branches are deliberately specific
 to these four IDs. Extend the project's adapter for new behaviours, using its
 ordinary fixtures and assertions; do not build a generic engine, DSL or runtime.
-This example also fails when no affected paths are supplied or any path is
-unmatched: clarify the scope and its specification rows before testing.
+This example also rejects an empty index, an empty indexed area and duplicate
+index paths. With no arguments after the project root, or when an affected path
+is unmatched, clarify the scope and its specification rows before testing.
+The JSON reports `scope` (`full` only for `--all`, otherwise `partial`) and the
+indexed areas `remaining` outside the selection. Optimized Python is rejected
+because it would disable the assertions that check these contracts.
 The repository's content suite extracts and executes this exact code block
-against disk fixtures, including a changed expectation and a skipped row.
+against disk fixtures, including implementation drift and a skipped row.
 
 <!-- specs-adapter-example -->
 ```python
@@ -43,6 +50,10 @@ import json
 from pathlib import Path
 import runpy
 import sys
+
+
+if not __debug__:
+    raise SystemExit("optimized Python disables contract checks; run without -O or PYTHONOPTIMIZE")
 
 
 def read_tsv(path, required, optional=()):
@@ -56,19 +67,26 @@ def read_tsv(path, required, optional=()):
 root = Path(sys.argv[1])
 affected_paths = sys.argv[2:]
 assert affected_paths, "no affected paths: clarify scope before testing"
+full = affected_paths == ["--all"]
+assert "--all" not in affected_paths or full, "--all cannot be combined with affected paths"
 index = read_tsv(root / "specs/INDEX.tsv", {"path", "scope", "rows"})
-unmatched = sorted({path for path in affected_paths
-                    if not any(fnmatchcase(path, pattern)
-                               for entry in index for pattern in entry["scope"].split(";"))})
-assert not unmatched, f"unmatched affected paths: {unmatched}"
-selected = list(dict.fromkeys(
+assert index, "empty spec index"
+index_paths = [entry["path"] for entry in index]
+assert len(index_paths) == len(set(index_paths)), "duplicate index paths"
+if not full:
+    unmatched = sorted({path for path in affected_paths
+                        if not any(fnmatchcase(path, pattern)
+                                   for entry in index for pattern in entry["scope"].split(";"))})
+    assert not unmatched, f"unmatched affected paths: {unmatched}"
+selected = [
     entry["path"] for entry in index
-    if any(fnmatchcase(path, pattern)
-           for path in affected_paths for pattern in entry["scope"].split(";"))
-))
+    if full or any(fnmatchcase(path, pattern)
+                   for path in affected_paths for pattern in entry["scope"].split(";"))
+]
 rows = []
 for path in selected:
     area = read_tsv(root / path, {"id", "when", "expect", "file"}, {"dec"})
+    assert area, f"{path}: empty spec area"
     assert len(area) <= 40, f"{path}: split beyond 40 rows"
     entry = next(entry for entry in index if entry["path"] == path)
     assert len(area) == int(entry["rows"]), f"{path}: row count mismatch"
@@ -93,5 +111,10 @@ for row in rows:
     executed.add(spec_id)
 missing = sorted(set(ids) - executed)
 assert not missing, f"unexecuted spec rows: {missing}"
-print(json.dumps({"selected": selected, "executed": sorted(executed)}))
+print(json.dumps({
+    "scope": "full" if full else "partial",
+    "selected": selected,
+    "executed": sorted(executed),
+    "remaining": [path for path in index_paths if path not in selected],
+}))
 ```

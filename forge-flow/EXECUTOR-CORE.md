@@ -626,6 +626,8 @@ route or policy-permitted acceptance; do not land first to bypass the gate.
 - **Two-verdict self-check** before marking done:
   - **Spec:** re-read the milestone's Tasks and Done-when — everything
     implemented, and nothing implemented beyond the contract.
+    Require the full `conformance` flow's executed evidence under "Required test
+    flows"; a self-review or partial run cannot replace it.
     Unrequested extras: delete them via ladder rung 1, or record them
     in the devplan when genuinely needed.
   - **Quality:** the simplify pass ran; applicable test outcomes are recorded.
@@ -804,6 +806,15 @@ When green won't come, find the cause — don't patch the symptom.
 
 ## Test policy
 
+### Required test flows
+
+Read [`TEST-FLOWS.md`](TEST-FLOWS.md) before planning test changes or wiring the
+runner. A dedicated `conformance` module/suite is mandatory for every project,
+including libraries and skills. Reuse the project's test levels and commands;
+the full run and authorized CI must include the flow. Full conformance executes
+every declared spec row, and missing or non-passing verification blocks completion.
+Focused runs remain partial evidence; unspecified legacy behaviour stays explicit.
+
 **First run (once per devplan execution):** discover the project's real
 test structure. Check:
 
@@ -981,7 +992,9 @@ example does not justify introducing a class or an extra layer.
 When all milestones are done:
 
 1. Run the broadest local test set that is practical (all levels you
-   can run locally) to verify everything works together. Re-check the
+   can run locally) to verify everything works together. Require full
+   `conformance` evidence under "Required test flows" before claiming completion.
+   Re-check the
    "Security verification" evidence and gate, including mandatory CI results
    after any push. If blocked, report the blocked state instead of the complete
    recap or further shipping.
