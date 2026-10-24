@@ -13,8 +13,7 @@ Each milestone uses 4 required sections — **Why**, **Approach**, **Tasks**,
 **Done when** — and an optional **Notes** section when something doesn't fit
 elsewhere. Every task is a markdown checkbox.
 
-Closed milestones live in **[`DEVPLAN-COMPLETED.md`](DEVPLAN-COMPLETED.md)**, verbatim.
-Numbering continues from the highest ID there.
+Closed milestones live in **[`DEVPLAN-COMPLETED.md`](DEVPLAN-COMPLETED.md)** as a compact index (`MNN | title | date | sha`); full details remain in Git history. Newly closed milestones are recorded verbatim at close-out, and compressed only with the user’s explicit approval. Numbering continues from the highest ID there.
 
 ---
 
