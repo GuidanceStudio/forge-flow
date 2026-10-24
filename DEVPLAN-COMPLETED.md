@@ -182,3 +182,20 @@ when a threat in the example loses its `STRIDE:` line.
 
 
 **Closed:** 2026-10-24. Verified: security suite 14 OK, runner suite 9 OK, contract passes; the contract fails with `THREAT-IDENTITY: no STRIDE category` when that line is removed from the example.
+
+## ✅ M92: Remote execution of the five suites is recorded as observed
+
+**Why:** the acceptance scenarios for M87 and M88 state that remote CI had not
+executed the executable suites. Since M89 the workflow runs them as named steps,
+and the remote run on that commit succeeded; the record still says unverified.
+
+**Approach:** append an observation under a new M89 heading in the scenarios file,
+with the run's date and outcome. Earlier observations stay as written.
+
+**Tasks:**
+- [x] `tests/scenarios.md`: M89 observation naming the remote run and its outcome
+
+**Done when:** the scenarios file records the remote run and the content contract passes.
+
+
+**Closed:** 2026-10-24. Verified: content contract passes with the new observation in place.

@@ -38,6 +38,14 @@ all passed. Installer checks passed 43 cases. An actual redacted directory scan
 with Gitleaks found no leaks; there are no dependency or lockfile changes.
 Remote CI and existing-project adoption remain unverified.
 
+## M89 — Remote CI executes the five suites as named steps
+
+**Observed:** the workflow on the M89 commit ran the installer suite, the content
+contract, the spec adapter suite, the flow runner suite and the security flow suite
+as five separate steps on GitHub-hosted Ubuntu on 2026-10-24, and every step passed.
+The M87 and M88 statements that remote CI had not executed the suites describe the
+state before that commit. Existing-project adoption remains unverified.
+
 ## M76 — Approved principles persist and constrain a resumed run
 
 **Setup:** a temporary project has a README stating that records belong to their
