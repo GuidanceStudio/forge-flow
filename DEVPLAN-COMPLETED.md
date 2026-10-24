@@ -3078,3 +3078,24 @@ update mode references, payload documentation and content checks.
 
 **Done when:** controlled traces show reduced guidance in non-applicable paths and required
 procedure loads before work in applicable paths, with existing invariants and security gates preserved.
+
+## Follow-up — Reviewer absence
+
+### M86: The absence of configured reviewers is reported in chat, once per run ✅
+
+**Why:** `EXECUTOR-CORE.md` "Configured review" says to "report that" when `## Reviewers` is
+absent or empty and names no place, so one run reports in chat, another in the devplan, a
+third not at all, and a project can go on believing it is being reviewed.
+
+**Approach:** the sentence names the place and the moment: in chat, once per run, when the
+simplify pass starts. It stays out of the completion recap, which already lists check outcomes.
+
+**Tasks:**
+- [x] `EXECUTOR-CORE.md` "Configured review" says the absence is reported in chat once per run, at the start of the simplify pass
+- [x] Test: content anchor for the place, the moment and the once-per-run rule
+- [x] Falsified — removing the anchor reds `tests/test_content.sh`
+- [x] `./install.sh --target all --force`
+- [x] Commit & push
+
+**Done when:** a reader given the payload and a project with no `## Reviewers` section says it
+reports that in chat at the start of the simplify pass, and not again later in the run.

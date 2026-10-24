@@ -184,7 +184,8 @@ Run "Configured review" beside this pass, before closing the milestone.
 
 Read the approved `## Reviewers` section in `PRINCIPLES.md` or the existing
 equivalent loaded in preflight; re-read it on resume. If the section is absent
-or empty, report that and continue under the existing test, simplify and
+or empty, report that in chat, once per run, when the simplify pass starts, and
+continue under the existing test, simplify and
 completion rules; do not silently install the design defaults or invent reviewers.
 When it lists reviewers, read [`REVIEW.md`](REVIEW.md) at the simplify pass, not in
 preflight; it holds the procedure.
