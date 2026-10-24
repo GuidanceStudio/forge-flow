@@ -17,6 +17,37 @@ Closed milestones live in **[`DEVPLAN-COMPLETED.md`](DEVPLAN-COMPLETED.md)** as 
 
 ---
 
+## M93: The scaffold's generated runner has an executable shape, like the other generated files
+
+**Why:** the decision log, the threat model, the spec files and the principles
+document each ship a worked shape, and three of them ship an example a test suite
+extracts and runs. The scaffold route generates a bring-up script and a tiered
+`run_tests.sh` from about a hundred lines of requirements and no example: each run
+reimplements the fast-tier refusal, skip-with-reason, per-test timing, the
+`comments` check and the flow selection from prose, and nothing executes the result.
+A generated runner that drops one of those is caught only by a reader.
+
+**Approach:** a `SCAFFOLD-EXAMPLE.md` beside the other examples with the runner in a
+block marked `<!-- scaffold-runner-example -->`, read only from the scaffold route.
+A `tests/test_scaffold.py` suite copies it into a temporary project the way the flow
+runner suite does and drives it: an unscoped `fast` run refuses, exits non-zero and
+prints both scoped forms; a tier whose prerequisite is absent skips and prints why;
+a failing test makes the exit code non-zero; the five slowest tests print on every
+run; `conformance` and `security` are selectable and included in the full run;
+the `comments` check reports a planted hit as `file:line` and skips outside a diff.
+The workflow and the README gain the suite as a sixth named step.
+
+**Tasks:**
+- [ ] `forge-flow/SCAFFOLD-EXAMPLE.md`: the runner example, with a bring-up skeleton
+- [ ] `forge-flow/SCAFFOLD.md`: Phase 2 points at the example; the loading rule follows M85
+- [ ] `tests/test_scaffold.py`: the behaviours above, each falsified once
+- [ ] `.github/workflows/tests.yml`, `README.md`, `tests/test_content.sh`: sixth suite named and asserted
+
+**Done when:** the suite passes under `python3 -I`, each listed behaviour has a test
+that fails when the example loses it, and the content contract names the suite.
+
+---
+
 ## Deferred — Existing-project pilot
 
 This is not an executable milestone. It requires explicit authorization, a selected
