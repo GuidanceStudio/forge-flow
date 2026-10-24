@@ -1040,6 +1040,28 @@ assert ban < second < once, "the second trigger is not under the ban, or the onc
 assert second < text.index("includes a read of what remains"), "the remainder read precedes the trigger"
 PY_ARCH_ORDER
 
+# M90 — the principles document has one shape; the example carries every part.
+contains_flat "$DESIGN" 'A principle without a losing side or a non-goal is incomplete and is not written'
+contains_flat "$DESIGN" 'A principle missing a part is reported, not written'
+python3 - "$DESIGN" <<'PY'
+import re, sys
+from pathlib import Path
+text = Path(sys.argv[1]).read_text()
+m = re.search(r"<!-- principles-shape-example -->\n```markdown\n(.*?)\n```", text, re.S)
+assert m, "principles shape example missing"
+doc = m.group(1)
+assert doc.startswith("# Principles\n\nRead by design"), "purpose header missing"
+assert "`DECISIONS.md`" in doc.split("## P1")[0], "header does not say what a departure costs"
+principles = re.findall(r"^## (P\d+): ([^\n]+)\n(.*?)(?=^## |\Z)", doc, re.S | re.M)
+assert len(principles) >= 2, "example shows fewer than two principles"
+for pid, title, body in principles:
+    assert re.search(r"\bwins? over\b", body), f"{pid}: no winning side"
+    assert "Non-goal:" in body, f"{pid}: no non-goal"
+    assert len(title.split()) >= 4 and not title.endswith(":"), f"{pid}: title is not a sentence"
+assert "## Reviewers\n" in doc and doc.index("## Reviewers") > doc.index("## P2"), "reviewers section does not follow the principles"
+assert "| Criterion | Published source | Heuristic | Applicable scope |" in doc, "reviewers table header"
+PY
+
 # M76 — principles persist with the approved plan and constrain resumed work.
 contains_flat "$DESIGN" '10. **Project principles**'
 contains_flat "$DESIGN" '3-5 numbered principles (`P1`, `P2`, …)'

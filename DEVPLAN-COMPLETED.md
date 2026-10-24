@@ -126,3 +126,32 @@ contract fails if a suite's step is removed from the workflow.
 
 
 **Closed:** 2026-10-24. Verified: five suites green under the workflow's exact commands; removing the security step from the workflow fails the content contract.
+
+## ✅ M90: The principles document has one shape, and carries only what constrains a plan
+
+**Why:** design prescribes what a principle says (a conflict, the side that wins,
+a non-goal) and that a `## Reviewers` table follows, but not what the persisted
+file looks like. The decision log, the threat model and the spec files each ship
+a worked shape; `PRINCIPLES.md` ships none, so every run invents a layout, the
+executor's "verify IDs and text match" has no anchor, and a reader who opens the
+file is not told who reads it or what a departure costs. Nothing says what stays
+out either, so a run can pad the file with the README's stack list or a process
+rule that belongs in the instruction file.
+
+**Approach:** one fenced example of the whole document in the design playbook's
+"Project principles" section: a two-line purpose header, `## P<N>: <sentence>`
+headings with the conflict, the winner and a `Non-goal:` line, then the
+`## Reviewers` table. A short exclusion list beside it. The persist step in
+Phase 4 checks each principle for its three parts and refuses to write an
+incomplete one. The content contract parses the example and asserts the parts.
+
+**Tasks:**
+- [x] `forge-flow/DESIGN.md`: canonical shape and exclusion list under "Project principles"
+- [x] `forge-flow/DESIGN.md`: Phase 4 persist step verifies the three parts and the header
+- [x] `tests/test_content.sh`: parse the example; every principle has the three parts, the reviewers section follows
+
+**Done when:** the content contract passes, and fails when the example loses a
+`Non-goal:` line or its `## Reviewers` heading.
+
+
+**Closed:** 2026-10-24. Verified: the content contract passes, and fails with `P1: no non-goal` when the example loses its Non-goal line and with `reviewers section does not follow the principles` when the heading is removed.

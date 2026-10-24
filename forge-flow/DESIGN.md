@@ -158,6 +158,39 @@ and reason; present that exception for approval with the plan, never infer one
 from the fact that implementation would be easier. Decision entries use the
 optional fields in EXECUTOR-CORE.md “Record a binding decision”.
 
+The persisted document has one shape, so the executor can verify it and a
+reader who opens it knows what it binds:
+
+<!-- principles-shape-example -->
+```markdown
+# Principles
+
+Read by design before a plan is proposed and by the executor before every run.
+A milestone that departs from one needs an approved exception in `DECISIONS.md`.
+
+## P1: Private records stay within their owner's account
+Ownership isolation wins over convenient cross-account reporting.
+Non-goal: anonymous exports that cross accounts.
+
+## P2: The established stack decides the integration shape
+Existing project conventions win over a new preferred runtime.
+Non-goal: a parallel application stack.
+
+## Reviewers
+
+| Criterion | Published source | Heuristic | Applicable scope |
+|---|---|---|---|
+| C-SMELL | *the default row's source, verbatim* | Investigate a smell for a concrete problem; the smell alone does not justify a change. | `src/**` |
+```
+
+Reviewer rows are the approved default rows with their source column copied
+verbatim and their scope narrowed; only the example abbreviates the source.
+The document carries only what constrains a plan. A principle without a losing
+side or a non-goal is incomplete and is not written; propose the missing part.
+Rules about how work is done (test-first, commit shape, chat language) go to the
+instruction file, as for decisions. The README's stack list, a convention the
+code already shows, and a quality with no losing side stay out.
+
 #### Reviewer configuration
 
 Propose a `## Reviewers` section in `PRINCIPLES.md` or its existing equivalent.
@@ -410,7 +443,11 @@ during discovery or clarification. Persist approved decision entries and their
 principle references or reasoned exceptions in that same write. The instruction
 snippets remain a proposal for the user to insert. Re-read the persisted document
 and verify its IDs and text match the approved proposal; approving milestones
-does not authorize silently changing existing principles.
+does not authorize silently changing existing principles. Verify its shape
+against the example in "Project principles": the purpose header, one
+`## P<N>:` heading per principle with the conflict, the winner and its
+`Non-goal:` line, and nothing from the exclusion list. A principle missing a
+part is reported, not written.
 
 Persist the approved `## Reviewers` section in that document on the same
 approval, including the user's edits; verify it matches the accepted proposal.
