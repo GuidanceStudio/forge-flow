@@ -20,3 +20,5 @@ jobs:
         run: python3 -I tests/test_test_flows.py
       - name: Run security flow suite
         run: python3 -I tests/test_security_flow.py
+      - name: Run scaffold runner suite
+        run: python3 -I tests/test_scaffold.py

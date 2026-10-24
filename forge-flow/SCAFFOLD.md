@@ -56,6 +56,10 @@ external services found, and what the spine will add vs. what already exists.
 
 ## Phase 2 — Generate the spine (idempotent, extend-never-clobber)
 
+The runner's executable shape is the block `scaffold-runner-example` in `SCAFFOLD-EXAMPLE.md`, read
+only from this route and executed by `tests/test_scaffold.py`; a generated `run_tests.sh` keeps every behaviour
+that suite falsifies.
+
 Generate only what is missing; extend what exists; **never overwrite** a file
 the project already owns without merging. Re-running scaffold on an already-
 scaffolded project must be a no-op (or a clean extension), never a clobber.

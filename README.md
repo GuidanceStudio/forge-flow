@@ -184,6 +184,7 @@ bash tests/test_content.sh
 python3 -I tests/test_specs_adapter.py
 python3 -I tests/test_test_flows.py
 python3 -I tests/test_security_flow.py
+python3 -I tests/test_scaffold.py
 ```
 
 CI (GitHub Actions) runs the five suites as separate steps on every push and PR,

@@ -17,7 +17,7 @@ Closed milestones live in **[`DEVPLAN-COMPLETED.md`](DEVPLAN-COMPLETED.md)** as 
 
 ---
 
-## M93: The scaffold's generated runner has an executable shape, like the other generated files
+## ✅ M93: The scaffold's generated runner has an executable shape, like the other generated files
 
 **Why:** the decision log, the threat model, the spec files and the principles
 document each ship a worked shape, and three of them ship an example a test suite
@@ -38,10 +38,10 @@ the `comments` check reports a planted hit as `file:line` and skips outside a di
 The workflow and the README gain the suite as a sixth named step.
 
 **Tasks:**
-- [ ] `forge-flow/SCAFFOLD-EXAMPLE.md`: the runner example, with a bring-up skeleton
-- [ ] `forge-flow/SCAFFOLD.md`: Phase 2 points at the example; the loading rule follows M85
-- [ ] `tests/test_scaffold.py`: the behaviours above, each falsified once
-- [ ] `.github/workflows/tests.yml`, `README.md`, `tests/test_content.sh`: sixth suite named and asserted
+- [x] `forge-flow/SCAFFOLD-EXAMPLE.md`: the runner example, with a bring-up skeleton
+- [x] `forge-flow/SCAFFOLD.md`: Phase 2 points at the example; the loading rule follows M85
+- [x] `tests/test_scaffold.py`: the behaviours above, each falsified once
+- [x] `.github/workflows/tests.yml`, `README.md`, `tests/test_content.sh`: sixth suite named and asserted
 
 **Done when:** the suite passes under `python3 -I`, each listed behaviour has a test
 that fails when the example loses it, and the content contract names the suite.
