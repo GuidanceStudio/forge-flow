@@ -492,6 +492,8 @@ behaviour, and never reuse a retired ID for a different behaviour.
 its repository-relative path, its matching scope, and its behaviour row count
 (excluding the header). Split a TSV before it exceeds 40 behaviour rows; repeat
 the affected scopes across its split files and keep row IDs unchanged.
+The 40-row cap is a chosen convention, not a measured limit; the adapter enforces
+it, and changing it is a decision for a reviewed milestone.
 
 Scope mapping is many-to-many. The `scope` cell is a semicolon-separated OR
 list of case-sensitive repository-relative file globs, matched with Python's

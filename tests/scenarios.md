@@ -67,6 +67,10 @@ isolated temporary repository made the content command fail on that missing
 anchor. This establishes the textual guards; the adapter cases establish the
 example's execution, without claiming a model will apply the playbook correctly.
 
+**Location note (M83):** the Python code block this scenario extracts now lives in
+`forge-flow/SPECS-ADAPTER.md`. The observations above were recorded when it sat in
+`forge-flow/EXECUTOR-CORE.md`; the fixture cases are unchanged.
+
 ## M78 — Local characterization in a partially specified file
 
 **Setup:** two temporary projects start with the same `orders.py`: `subtotal`

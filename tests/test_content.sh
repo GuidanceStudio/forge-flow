@@ -1253,4 +1253,15 @@ assert 'Tests: all green ✅' not in text, 'recap must report actual outcomes an
 assert 'approved validation checkpoint' in text[text.index('## Common rules'):], 'validation checkpoints must qualify the done-before-commit rule'
 PY_SECURITY_GATE
 
+# M84 — provenance record, location note and the 40-row convention.
+PROVENANCE="$REPO_ROOT/docs/SOURCE-PROVENANCE.md"
+test -f "$PROVENANCE" || fail "docs/SOURCE-PROVENANCE.md missing"
+contains "$PROVENANCE" '196a9073ab10d35bacf111f945e02c00b2c6883a'
+contains_flat "$PROVENANCE" '**Confirmed derivation:** none.'
+contains_flat "$PROVENANCE" 'Real-project use | the playbooks applied to an existing project'"'"'s change | none yet'
+contains "$REPO_ROOT/README.md" 'docs/SOURCE-PROVENANCE.md'
+contains_flat "$REPO_ROOT/tests/scenarios.md" 'now lives in `forge-flow/SPECS-ADAPTER.md`'
+contains_flat "$EXECUTOR_CORE" 'The 40-row cap is a chosen convention, not a measured limit'
+grep -q 'Observed:\*\* 15 fixture tests passed' "$REPO_ROOT/tests/scenarios.md" || fail "M77 observations were rewritten"
+
 echo "content contract passed"

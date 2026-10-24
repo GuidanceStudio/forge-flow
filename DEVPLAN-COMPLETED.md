@@ -3024,3 +3024,31 @@ whole payload directory, needs no change.
 
 **Done when:** `EXECUTOR-CORE.md` is 91 lines shorter (1,204 to 1,113), both suites are green and the
 adapter example still executes against the fixtures from its new file.
+
+## Follow-up — Source evidence and conditional procedures
+
+### M84: Record source provenance and validation limits ✅
+
+**Why:** readers need to distinguish verified evidence, source assumptions and historical
+workflow descriptions before relying on the published skill.
+
+**Approach:** `docs/SOURCE-PROVENANCE.md` records the M81/M82 comparison sources, pinned
+revisions, licenses and unavailable originals, distinguishing comparison references from
+confirmed derivation. Link it from `README.md` and separate fixture, reader-walkthrough and
+real-project evidence. Annotate the M83 adapter relocation in `tests/scenarios.md`, preserving
+the original M77 observations; describe the 40-row cap as a chosen convention in
+`forge-flow/EXECUTOR-CORE.md`.
+
+**Tasks:**
+- [x] Record `trailofbits/skills@196a9073ab10d35bacf111f945e02c00b2c6883a`, including `fp-check` and `sharp-edges`, comparison methods, licenses and provenance gaps
+- [x] Distinguish verified references, confirmed derivation and unknown original inputs without asserting unsupported license compatibility
+- [x] Document automatic tests, controlled walkthroughs and the outstanding real-project validation separately
+- [x] Add the M83 location note to `tests/scenarios.md` without rewriting M77 observations
+- [x] Explain the 40-row convention while preserving its enforcement and the reviewer approval process
+- [x] Link `docs/SOURCE-PROVENANCE.md` from the root `README.md`
+- [x] Test: docs — verify pinned references, current adapter paths and evidence classifications; run existing content and installer suites
+- [x] `./install.sh --target all --force`
+- [x] Commit & push
+
+**Done when:** the published record identifies checked sources and unresolved provenance,
+and historical observations are clearly distinguished from the current adapter location and validation coverage.

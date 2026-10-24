@@ -55,6 +55,11 @@ execute it. You can pass a forge-flow file path directly:
 /forge-flow devplan/v0.3.md         # path alone defaults to TDD
 ```
 
+## Provenance
+
+[`docs/SOURCE-PROVENANCE.md`](docs/SOURCE-PROVENANCE.md) records the sources the security
+rules were compared against and what each kind of test evidence covers.
+
 ## Devplan format
 
 The executor works best with the structured milestone format produced by
