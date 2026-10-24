@@ -155,3 +155,30 @@ incomplete one. The content contract parses the example and asserts the parts.
 
 
 **Closed:** 2026-10-24. Verified: the content contract passes, and fails with `P1: no non-goal` when the example loses its Non-goal line and with `reviewers section does not follow the principles` when the heading is removed.
+
+## ✅ M91: Every threat entry carries the parts design prescribes
+
+**Why:** design asks the threat model for protected assets, trust boundaries and a
+STRIDE category per threat, with a concrete failure, a control and a named
+verification. The executable example that runs model the executor copies from
+carries the failure, the control and the verification, and names the boundaries
+once in its header; no entry names its asset or its STRIDE category. A run that
+copies the shape writes a model the Phase 4 check cannot verify for assets, and the
+category that tells a reader which failure class a threat belongs to is absent.
+
+**Approach:** one line per threat in the example (`Asset:` and `STRIDE:`), which
+the example's parser ignores because it reads headings only. The Phase 4 persist
+step names the five parts of an entry and reports an incomplete one instead of
+writing it. The content contract parses the example block and asserts the parts and
+a valid STRIDE category on each threat.
+
+**Tasks:**
+- [x] `forge-flow/SECURITY-EXAMPLE.md`: asset and STRIDE category on each threat entry
+- [x] `forge-flow/DESIGN.md`: Phase 4 names the five parts; an incomplete entry is reported, not written
+- [x] `tests/test_content.sh`: parse the block; every threat has the five parts and a STRIDE category
+
+**Done when:** the security suite and the contract pass, and the contract fails
+when a threat in the example loses its `STRIDE:` line.
+
+
+**Closed:** 2026-10-24. Verified: security suite 14 OK, runner suite 9 OK, contract passes; the contract fails with `THREAT-IDENTITY: no STRIDE category` when that line is removed from the example.

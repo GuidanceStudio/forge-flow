@@ -1040,6 +1040,27 @@ assert ban < second < once, "the second trigger is not under the ban, or the onc
 assert second < text.index("includes a read of what remains"), "the remainder read precedes the trigger"
 PY_ARCH_ORDER
 
+# M91 — every threat entry in the example carries the parts design prescribes.
+contains_flat "$DESIGN" 'an entry missing a part is reported, not written'
+python3 - "$REPO_ROOT/forge-flow/SECURITY-EXAMPLE.md" <<'PY'
+import re, sys
+from pathlib import Path
+text = Path(sys.argv[1]).read_text()
+m = re.search(r"<!-- security-threats-example -->\n```markdown\n(.*?)\n```", text, re.S)
+assert m, "threat model example missing"
+doc = m.group(1)
+stride = ("spoofing", "tampering", "repudiation", "information disclosure", "denial of service", "elevation of privilege")
+threats = re.findall(r"^### (THREAT-\S+)[ \t]*\n(.*?)(?=^### |\Z)", doc, re.S | re.M)
+assert len(threats) >= 3, "example shows fewer than three threats"
+for tid, body in threats:
+    assert "Asset:" in body, f"{tid}: no asset"
+    cat = re.search(r"STRIDE: ([a-z ]+)\.", body)
+    assert cat and cat.group(1) in stride, f"{tid}: no STRIDE category"
+    assert "Control:" in body, f"{tid}: no control"
+    assert re.search(r"Verify `\w+\.\w+`", body), f"{tid}: no named verification"
+    assert re.search(r"\n[A-Z][^\n]*\. Control:", body), f"{tid}: no concrete failure before the control"
+PY
+
 # M90 — the principles document has one shape; the example carries every part.
 contains_flat "$DESIGN" 'A principle without a losing side or a non-goal is incomplete and is not written'
 contains_flat "$DESIGN" 'A principle missing a part is reported, not written'

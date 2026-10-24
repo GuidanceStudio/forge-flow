@@ -29,14 +29,17 @@ Caller identity and record ownership cross the caller/record boundary; startup
 configuration crosses the configuration/application boundary.
 
 ### THREAT-IDENTITY
+Asset: the owner's record. STRIDE: spoofing.
 An anonymous caller reads a protected record. Control: reject absent identity.
 Verify `SecurityTests.test_anonymous_access_is_refused` before any record return.
 
 ### THREAT-OWNER
+Asset: the owner's record. STRIDE: information disclosure.
 A caller reads another owner's record. Control: require matching ownership.
 Verify `SecurityTests.test_cross_owner_access_is_refused`, preserving own access.
 
 ### THREAT-STARTUP
+Asset: the protection every record depends on. STRIDE: spoofing.
 The process starts without configured protection. Control: require a nonempty,
 non-placeholder startup value. Verify `SecurityTests.test_startup_requires_secret`.
 ```

@@ -459,6 +459,10 @@ Persist the approved threat section in Phase 4 on the same approval as the plan,
 in `THREATS.md` beside the devplan or the existing model named in the proposal.
 Preserve unrelated sections, and verify that assets, boundaries, assumptions,
 mitigations and negative-test tasks match what was approved.
+Each threat entry carries its asset, its STRIDE category, the concrete failure,
+the control and the named verification, as in
+[`SECURITY-EXAMPLE.md`](SECURITY-EXAMPLE.md); an entry missing a part is reported,
+not written.
 
 #### Numbering
 - Follow the target file's **existing milestone ID scheme** (e.g.
