@@ -111,6 +111,11 @@ and negative-test tasks, then persists the approved `THREATS.md` section with
 the plan. Execution checks policy violations at the selected mode's timing and
 looks for other occurrences of a fixed defect's cause within the approved scope.
 
+[Security verification](EXECUTOR-CORE.md#security-verification) separates findings,
+uncertainties and hardening, and records actual check outcomes, including checks
+that could not run. Critical findings and mandatory non-passes block completion
+and shipping unless project policy allows explicit, documented risk acceptance.
+
 ## Executable specifications
 
 Behaviour rows live in `specs/<area>.tsv`; `specs/INDEX.tsv` maps affected files

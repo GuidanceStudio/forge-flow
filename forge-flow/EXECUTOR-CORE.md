@@ -685,6 +685,68 @@ print(json.dumps({"selected": selected, "executed": sorted(executed)}))
   error/empty states use actionable copy. This catches the most common
   UX regressions without a full audit.
 
+#### Security verification
+
+Review the diff and relevant context before marking done. Rank risk by change
+type rather than diff size: authentication/authorization, cryptography, external
+calls, removed validation and untested behaviour deserve closer inspection even
+in a small patch. Include secrets, configuration, tests and CI in that review.
+Redact sensitive values in findings, commands and evidence before sharing them.
+
+Separate confirmed findings, concerns to verify and hardening:
+
+- **Confirmed findings** have evidence of the defect and its consequence. For
+  application vulnerabilities, establish attacker control, reachability, damage
+  and feasible exploit steps from the actual code and deployment assumptions.
+- **Concerns to verify** retain the uncertainty and name the evidence or test
+  needed next; do not invent an exploit or call the review clean.
+- **Hardening** proposes additional protection without claiming a demonstrated
+  vulnerability. It does not become mandatory merely by appearing in a report.
+
+Those four application questions are evidence prompts; never suppress secrets,
+configuration, test or CI risks by directory or input shape. Assess each risk
+using appropriate evidence: a credential exposure in a test file remains a
+finding when supported, even without an application exploit path.
+
+Read mandatory checks and allowed exceptions from project instructions, test
+policy and CI configuration; distinguish optional checks rather than making
+every suggested tool mandatory. Record secret-scan and dependency-lock outcomes
+even when unavailable or not applicable, using the project's commands and lock
+consistency rules. For each check, record required/optional status, sanitized
+command (or "not run"), evidence, reason and the revision/worktree checked:
+`passed`, `failed`, `error` or `skipped`. `passed` means the check completed and
+met its criteria; `failed` means it completed and found a problem; `error` means
+an attempted check could not complete; `skipped` means it was not run, including
+inapplicability or unavailable prerequisites. An unavailable tool or service is
+never a clean result. Preserve the actual outcome even when an exception is accepted.
+
+Place invariants required on every change in project-owned hooks or CI when
+the approved plan and project policy authorize that automation; reuse existing
+gates. Preserve explicit manual-review exceptions and binding decisions. If the
+automation is not authorized, report the needed plan work rather than changing
+the project's hooks or policy during review.
+
+Offer second-model review for sensitive milestones using approved configuration
+and available models/tools. Do not presume a provider, send code to an unapproved
+service or invent a second opinion. Record declined/unavailable review and its
+reason; it is optional unless the project's policy requires it.
+
+**Completion and shipping gate:** Critical findings and non-passing mandatory
+checks block completion and shipping. Remediate and re-run, or obtain explicit,
+documented user acceptance only when project policy permits it. Record the
+specific finding/check, residual risk, scope and approval; a forbidden exception
+remains blocked. Execution or push permission is not risk acceptance. Concerns,
+hardening and optional unavailable checks remain visible under their actual
+status; apply any additional gates the project requires.
+
+Validation pushes require an agreed project route solely to obtain pending
+required CI before landing. Keep the milestone in progress (`🔄`), retain pending
+tasks/checks and label the checkpoint as validation, without a done/shipped claim.
+This exception does not waive known failures or unaccepted critical findings.
+Do not invent a branch or treat a validation upload as shipping. If required CI
+cannot run before the agreed landing, report the blocker and resolve an approved
+route or policy-permitted acceptance; do not land first to bypass the gate.
+
 ### Update the devplan
 
 - **Two-verdict self-check** before marking done:
@@ -692,7 +754,9 @@ print(json.dumps({"selected": selected, "executed": sorted(executed)}))
     implemented, and nothing implemented beyond the contract.
     Unrequested extras: delete them via ladder rung 1, or record them
     in the devplan when genuinely needed.
-  - **Quality:** the simplify pass ran; all applicable tests are green.
+  - **Quality:** the simplify pass ran; applicable test outcomes are recorded.
+    Quality includes the Security verification evidence and gate, with any
+    policy-permitted acceptance stated explicitly, never relabelled as a pass.
 - Mark the milestone as done — tick every task (`- [~]` → `- [x]`) and
   swap the in-progress `🔄` for the done marker on the milestone heading,
   matching the heading level the devplan uses: `## MNN: <title> ✅`.
@@ -770,6 +834,11 @@ two versions to keep true.
 
 ### Commit & push
 
+- Apply the "Security verification" completion and shipping gate before a
+  completion commit or shipping. Its approved validation checkpoint is the
+  limited exception to done-before-commit bookkeeping: commit the in-progress
+  record and pending checks for that agreed validation route, then close the
+  milestone only after the gate permits it.
 - Stage ONLY the files touched by this milestone (explicit paths —
   never `git add -A` / `git add .`).
 - **Bound the commit, not just the staging.** A bare `git commit` commits
@@ -825,12 +894,14 @@ two versions to keep true.
   access not currently available, record the exact blocker in the
   devplan and surface it clearly — then continue with the next
   milestone only if that is safe.
-- If the push succeeds but CI reports a failure later, add a note to
-  the devplan with the failing job link and continue; CI failures
-  after a pushed milestone are a separate follow-up, not a reason to
-  block the current run.
+- A mandatory CI failure discovered after a push blocks completion and remaining
+  shipping under "Security verification" until remediation or policy-permitted
+  explicit acceptance. Record the job, revision and failure evidence; a note
+  alone does not clear the gate. Optional CI failures may become follow-up work
+  only when project policy permits, with their failed status still reported.
 - Never rewrite or discard unrelated user changes.
-- Announce: *"✅ Milestone X complete — moving to Milestone Y"* and
+- Only after the gate permits completion, announce:
+  *"✅ Milestone X complete — moving to Milestone Y"* and
   **immediately proceed to the next milestone**.
 
 ---
@@ -1036,7 +1107,10 @@ example does not justify introducing a class or an extra layer.
 When all milestones are done:
 
 1. Run the broadest local test set that is practical (all levels you
-   can run locally) to verify everything works together.
+   can run locally) to verify everything works together. Re-check the
+   "Security verification" evidence and gate, including mandatory CI results
+   after any push. If blocked, report the blocked state instead of the complete
+   recap or further shipping.
 2. **Sweep the devplan for unfinished bookkeeping:** every milestone
    closed during this run must show `- [x]` for all its tasks and a done
    marker on its heading, in whichever file now holds it — the two-file layout
@@ -1044,17 +1118,21 @@ When all milestones are done:
    showing an unchecked
    task before the recap — the run is not complete while the plan still
    misreports its own state.
-3. Show the final recap:
+3. Show the final recap. Completion recap includes every check outcome and
+   accepted risk, with commands/evidence or reasons for anything not run:
 
 ```
 🎉 DevPlan complete!
 Mode: {TDD|IDD}
 Milestones: X/X ✅
-Tests: all green ✅
+Tests/checks: {actual passed/failed/error/skipped outcomes}
+Security gate: {passed | policy-permitted explicit acceptance}
 Documentation: updated ✅
 
 [list of milestones with one-line summary each]
 [tests written but not run locally, and why]
+[secret-scan and dependency-lock outcomes, including unavailable/not applicable]
+[confirmed findings, concerns to verify, hardening, and accepted risks]
 [any intentional TODOs, tech debt, or residual risks left behind]
 [debt registered: N items → .tech-audit/debt.tsv]
 [follow-up work already added back into the devplan]
@@ -1082,7 +1160,8 @@ Documentation: updated ✅
 
 ## Common rules
 
-- ❌ Never mark a milestone done if its relevant tests are not green
+- ❌ Never mark a milestone done if its relevant tests are not green, except
+  explicit policy-permitted acceptance under "Security verification"
 - ❌ Never ask for approval between milestones
 - ❌ Never prompt "Do you want to proceed?" — everything is pre-approved
 - ⚠️ Neither ban reaches the archive question in "Completion" step 5. Both are
@@ -1094,12 +1173,16 @@ Documentation: updated ✅
   made once before the first milestone rather than between two. The same line
   covers landing on a shared branch or opening a pull request mid-run: those are
   outward-facing acts, not permission to carry on.
+- ⚠️ The bans also permit an explicit risk-acceptance request when "Security
+  verification" is blocked and project policy allows acceptance. That request
+  concerns a named risk or check; permission to execute the run does not accept it.
 - ❌ Do not turn execution into a long planning exercise
 - ❌ Never mark a milestone done without verifying its **Done when**
   condition
 - ❌ Never stage with `git add -A` / `git add .` — explicit paths only
 - ❌ Never commit a milestone whose devplan tasks and heading aren't
-  marked done — the bookkeeping ships in the milestone commit
+  marked done — the bookkeeping ships in the milestone commit; the limited
+  exception is an approved validation checkpoint under "Security verification"
 - ❌ Never compress a closed milestone mid-run — relocating it to the
   completed file is the close-out step above; compressing the completed
   file to the one-line form is the user's call in design mode

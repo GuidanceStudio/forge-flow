@@ -1204,4 +1204,46 @@ for required in ('THREATS.md', 'assets', 'trust boundaries', 'data flows', 'exis
     assert required in section, f'threat proposal missing: {required}'
 PY_THREATS
 
+# M82 — missing checks remain visible and the gate reaches every close-out path.
+contains "$EXECUTOR_CORE" '#### Security verification'
+contains_flat "$EXECUTOR_CORE" 'Separate confirmed findings, concerns to verify and hardening'
+contains_flat "$EXECUTOR_CORE" 'attacker control, reachability, damage and feasible exploit steps'
+contains_flat "$EXECUTOR_CORE" 'never suppress secrets, configuration, test or CI risks by directory or input shape'
+contains_flat "$EXECUTOR_CORE" 'Rank risk by change type rather than diff size'
+contains_flat "$EXECUTOR_CORE" 'Record secret-scan and dependency-lock outcomes even when unavailable or not applicable'
+contains_flat "$EXECUTOR_CORE" '`passed`, `failed`, `error` or `skipped`'
+contains_flat "$EXECUTOR_CORE" 'Critical findings and non-passing mandatory checks block completion and shipping'
+contains_flat "$EXECUTOR_CORE" 'explicit, documented user acceptance only when project policy permits it'
+contains_flat "$EXECUTOR_CORE" 'Execution or push permission is not risk acceptance'
+contains_flat "$EXECUTOR_CORE" 'Preserve explicit manual-review exceptions and binding decisions'
+contains_flat "$EXECUTOR_CORE" 'Offer second-model review for sensitive milestones'
+contains_flat "$EXECUTOR_CORE" 'Validation pushes require an agreed project route'
+contains_flat "$EXECUTOR_CORE" 'If required CI cannot run before the agreed landing, report the blocker'
+contains_flat "$EXECUTOR_CORE" 'A mandatory CI failure discovered after a push blocks completion and remaining shipping'
+contains_flat "$EXECUTOR_CORE" 'Quality includes the Security verification evidence and gate'
+contains_flat "$EXECUTOR_CORE" 'Completion recap includes every check outcome and accepted risk'
+contains_flat "$EXECUTOR_CORE" 'The bans also permit an explicit risk-acceptance request'
+python3 - "$EXECUTOR_CORE" <<'PY_SECURITY_GATE'
+from pathlib import Path
+import sys
+
+text = Path(sys.argv[1]).read_text()
+flat = ' '.join(text.split())
+verify = text.index('### Verify "Done when"')
+security = text.index('#### Security verification')
+update = text.index('### Update the devplan')
+commit = text.index('### Commit & push')
+completion = text.index('## Completion')
+assert verify < security < update < commit < completion, 'security verification must precede marking done'
+for label, block in (
+    ('quality', text[update:commit]),
+    ('commit', text[commit:completion]),
+    ('completion', text[completion:]),
+):
+    assert 'Security verification' in block, f'{label}: missing shared gate reference'
+assert 'CI failures after a pushed milestone are a separate follow-up, not a reason to block' not in flat, 'mandatory CI can no longer bypass completion'
+assert 'Tests: all green ✅' not in text, 'recap must report actual outcomes and acceptance'
+assert 'approved validation checkpoint' in text[text.index('## Common rules'):], 'validation checkpoints must qualify the done-before-commit rule'
+PY_SECURITY_GATE
+
 echo "content contract passed"

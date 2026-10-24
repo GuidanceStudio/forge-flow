@@ -203,3 +203,34 @@ explicitly excluded legacy export was reported with the needed regression case,
 without editing it or adding a task. The public operation and excluded export
 source stayed unchanged. These recorded reader decisions and command outputs
 are separate from the instruction-anchor guards.
+
+## M82 — Actual check outcomes control completion and shipping
+
+**Action:** an independent reader applied Security verification, Quality,
+Commit & push, Completion and Common rules to five controlled case files and
+their project policy. Scanner, exploit and CI records were supplied inputs;
+no actual scan, credential validation, exploit, CI or placeholder command ran.
+The observations below are the reader's classifications and gate decisions.
+
+**Observed:** a supplied detector result for credential exposure in a test file
+remained a confirmed critical finding without requiring an application exploit
+path. Uncertain application reachability stayed a concern to verify; an
+unproven quota suggestion stayed optional hardening. Values remained redacted.
+
+Mandatory checks with `failed`, `error` and `skipped` outcomes each blocked
+completion and shipping. Optional unavailable or inapplicable checks remained
+visible without becoming mandatory. General execution/push permission did not
+accept a risk. Remediation cleared the corrected finding; policy-permitted
+explicit acceptance applied only to its recorded revision and preview scope,
+preserving the actual outcome. Acceptance forbidden by policy stayed blocked.
+
+A mandatory CI failure after an approved validation upload kept the milestone
+in progress and blocked completion and remaining shipping. Without an agreed
+validation route, the reader reported the blocker instead of landing first or
+inventing a branch. The manual-review exception in `DEC-1` remained intact;
+unavailable optional second-model review did not imply a second opinion.
+
+The reader found no residual contradiction in these cases. Read-only source
+and fixture inspection exited 0; only its temporary report was written. These
+judgements are separate from the instruction-anchor and coherence mutations,
+which verify textual guards rather than an automated security classifier.
