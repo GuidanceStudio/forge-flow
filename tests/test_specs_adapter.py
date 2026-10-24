@@ -14,7 +14,7 @@ import unittest
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = REPO_ROOT / "tests/fixtures/specs_adapter"
-CORE = REPO_ROOT / "forge-flow/EXECUTOR-CORE.md"
+CORE = REPO_ROOT / "forge-flow/SPECS-ADAPTER.md"
 
 
 class SpecsAdapterTests(unittest.TestCase):
@@ -24,7 +24,7 @@ class SpecsAdapterTests(unittest.TestCase):
             CORE.read_text(),
             re.S,
         )
-        self.assertIsNotNone(match, "EXECUTOR-CORE.md missing executable specs adapter example")
+        self.assertIsNotNone(match, "SPECS-ADAPTER.md missing executable specs adapter example")
         self.adapter = match.group(1)
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)

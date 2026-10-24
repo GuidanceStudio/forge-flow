@@ -1055,11 +1055,18 @@ contains "$EXECUTOR_CORE" 'even when the union is the entire set'
 contains "$EXECUTOR_CORE" 'Never filter a selected TSV by its rows'
 contains "$EXECUTOR_CORE" 'Split a TSV before it exceeds 40 behaviour rows'
 contains "$EXECUTOR_CORE" 'same commit as the implementation'
-contains "$EXECUTOR_CORE" 'unknown IDs and unexecuted rows fail'
+contains "$REPO_ROOT/forge-flow/SPECS-ADAPTER.md" 'unknown IDs and unexecuted rows fail'
 contains "$DESIGN" 'name the added spec row IDs under the milestone'
 contains "$TDD" 'Read the relevant spec rows from disk'
 contains "$TDD" 'derive the failing tests from their `when` and `expect` values'
 python3 "$REPO_ROOT/tests/test_specs_adapter.py"
+
+# M83 — the adapter example is its own payload file, opened only when needed.
+test -f "$REPO_ROOT/forge-flow/SPECS-ADAPTER.md" || fail "SPECS-ADAPTER.md missing from the payload"
+contains_flat "$EXECUTOR_CORE" '[`SPECS-ADAPTER.md`](SPECS-ADAPTER.md) holds a complete adapter'
+contains_flat "$EXECUTOR_CORE" 'skip it when one already exists'
+grep -q 'specs-adapter-example' "$EXECUTOR_CORE" && fail "adapter code block still inside EXECUTOR-CORE.md"
+contains "$REPO_ROOT/forge-flow/README.md" '`SPECS-ADAPTER.md`'
 
 # M78 — scope selection does not establish whole-file behavioural coverage.
 contains "$EXECUTOR_CORE" '### Joining an existing project'

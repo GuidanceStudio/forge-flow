@@ -2997,3 +2997,30 @@ permits explicit, documented user acceptance.
 
 **Done when:** recorded scenarios demonstrate reporting and completion/shipping gates, including
 unavailable mandatory checks.
+
+## v0.7 — Lighter executor read
+
+### M83: The spec adapter example moves out of the file read on every run ✅
+
+**Why:** `EXECUTOR-CORE.md` grew from 847 to 1,204 lines across M76-M82 and is read in full at
+every run. Its "Executable adapter example" is 100 lines of fixtures and Python that the
+executor needs only when it writes a spec adapter.
+
+**Approach:** the section moves verbatim to `forge-flow/SPECS-ADAPTER.md`; `EXECUTOR-CORE.md`
+keeps two sentences and a link under "Executable specifications". The marker
+`<!-- specs-adapter-example -->` moves with the code, and `tests/test_specs_adapter.py` reads
+it from the new file. The payload README lists the file, and the installer, which copies the
+whole payload directory, needs no change.
+
+**Tasks:**
+- [x] Move "Executable adapter example" verbatim to `forge-flow/SPECS-ADAPTER.md`
+- [x] Replace it in `EXECUTOR-CORE.md` with a pointer stating when to open the file
+- [x] `tests/test_specs_adapter.py` reads the example from `SPECS-ADAPTER.md`
+- [x] `forge-flow/README.md` lists `SPECS-ADAPTER.md` among the payload files
+- [x] Test: content anchors for the pointer and for the file's presence in the payload
+- [x] Falsified — removing each anchor reds `tests/test_content.sh`
+- [x] `./install.sh --force`
+- [x] Commit & push
+
+**Done when:** `EXECUTOR-CORE.md` is 91 lines shorter (1,204 to 1,113), both suites are green and the
+adapter example still executes against the fixtures from its new file.

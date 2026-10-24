@@ -42,6 +42,8 @@ file; Git with a remote for push.
 - `EXECUTOR-CORE.md` — shared behavior for execution modes (operating mode,
   preflight, simplify ladder, comment rules, ponytail, debt registration,
   test policy, the close-out move to the completed file, etc.)
+- `SPECS-ADAPTER.md` — worked example of an executable spec adapter, opened
+  only when a project's first adapter is written
 - `agents/openai.yaml` — optional Codex interface metadata (ignored by
   other assistants)
 
