@@ -52,6 +52,8 @@ for t in claude codex opencode; do
     HOME="$H" bash "$INSTALL_SH" --force --target "$t" >/dev/null
     assert_file "$D/SKILL.md" "$t: SKILL.md installed"
     assert_file "$D/agents/openai.yaml" "$t: payload includes agents/openai.yaml"
+    assert_file "$D/REVIEW.md" "$t: payload includes REVIEW.md"
+    assert_file "$D/CHARACTERIZATION.md" "$t: payload includes CHARACTERIZATION.md"
     HOME="$H" assert_run 0 "OK" "$t: --check clean" -- --check --target "$t"
     echo "edit" >> "$D/SKILL.md"
     HOME="$H" assert_run 1 "DRIFT" "$t: --check detects drift" -- --check --target "$t"

@@ -44,6 +44,9 @@ file; Git with a remote for push.
   test policy, the close-out move to the completed file, etc.)
 - `SPECS-ADAPTER.md` — worked example of an executable spec adapter, opened
   only when a project's first adapter is written
+- `REVIEW.md` — configured-review procedure, read only when a project lists reviewers
+- `CHARACTERIZATION.md` — procedure for pinning unspecified existing behaviour,
+  read only when a milestone changes behaviour that has no spec row
 - `agents/openai.yaml` — optional Codex interface metadata (ignored by
   other assistants)
 
@@ -124,7 +127,8 @@ Behaviour rows live in `specs/<area>.tsv`; `specs/INDEX.tsv` maps affected files
 to the relevant areas, including shared scopes and splits above 40 rows. Tests
 read those rows from disk using the project's adapter. See
 [Executable specifications](EXECUTOR-CORE.md#executable-specifications) for the
-layout, scope rules and an executable example that rejects uncovered rows.
+layout and scope rules, and [`SPECS-ADAPTER.md`](SPECS-ADAPTER.md) for an executable
+example that rejects uncovered rows.
 Existing projects characterize unspecified behaviour only where the milestone
 changes it, with a green baseline before edits in either mode. File scopes and
 row counts establish only partial behavioural coverage; unrelated gaps stay

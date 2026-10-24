@@ -6,6 +6,8 @@ DESIGN="$REPO_ROOT/forge-flow/DESIGN.md"
 TDD="$REPO_ROOT/forge-flow/TDD.md"
 IDD="$REPO_ROOT/forge-flow/IDD.md"
 EXECUTOR_CORE="$REPO_ROOT/forge-flow/EXECUTOR-CORE.md"
+REVIEW="$REPO_ROOT/forge-flow/REVIEW.md"
+CHARACTERIZATION="$REPO_ROOT/forge-flow/CHARACTERIZATION.md"
 SCAFFOLD="$REPO_ROOT/forge-flow/SCAFFOLD.md"
 SKILL="$REPO_ROOT/forge-flow/SKILL.md"
 OPENAI_YAML="$REPO_ROOT/forge-flow/agents/openai.yaml"
@@ -1075,7 +1077,7 @@ contains_flat "$EXECUTOR_CORE" 'no row means unspecified, not unconstrained'
 contains_flat "$EXECUTOR_CORE" 'even when another operation in that file already has rows'
 contains_flat "$EXECUTOR_CORE" 'Run the characterization baseline green before implementation edits'
 contains_flat "$EXECUTOR_CORE" 'Do not backfill unrelated behaviours'
-contains_flat "$EXECUTOR_CORE" 'observations do not approve bugs'
+contains_flat "$CHARACTERIZATION" 'observations do not approve bugs'
 contains_flat "$EXECUTOR_CORE" 'Greenfield work skips characterization'
 contains_flat "$EXECUTOR_CORE" 'Characterization baseline tests are exempt from both timing rules'
 contains_flat "$DESIGN" 'Report specified behaviours and gaps'
@@ -1115,14 +1117,14 @@ contains "$DESIGN" 'Adam Shostack'
 contains "$EXECUTOR_CORE" '## Configured review'
 contains_flat "$EXECUTOR_CORE" 'If the section is absent or empty, report that and continue'
 contains_flat "$EXECUTOR_CORE" 'do not silently install the design defaults'
-contains_flat "$EXECUTOR_CORE" 'Never impersonate an author or invent their verdict'
-contains_flat "$EXECUTOR_CORE" 'No finding is required per author or criterion'
-contains_flat "$EXECUTOR_CORE" 'diff location (`path:line`), configured criterion and concrete consequence'
-contains_flat "$EXECUTOR_CORE" 'Deduplicate findings about the same underlying issue'
-contains_flat "$EXECUTOR_CORE" 'Respect explicitly approved, reasoned exceptions within their bounds'
-contains_flat "$EXECUTOR_CORE" 'An unresolved contradiction between binding requirements is a blocker'
-contains_flat "$EXECUTOR_CORE" 'Only confirmed findings within the milestone scope become tasks'
-contains_flat "$EXECUTOR_CORE" 'Report out-of-scope findings and rejected objections with their reasons'
+contains_flat "$REVIEW" 'Never impersonate an author or invent their verdict'
+contains_flat "$REVIEW" 'No finding is required per author or criterion'
+contains_flat "$REVIEW" 'diff location (`path:line`), configured criterion and concrete consequence'
+contains_flat "$REVIEW" 'Deduplicate findings about the same underlying issue'
+contains_flat "$REVIEW" 'Respect explicitly approved, reasoned exceptions within their bounds'
+contains_flat "$REVIEW" 'An unresolved contradiction between binding requirements is a blocker'
+contains_flat "$REVIEW" 'Only confirmed findings within the milestone scope become tasks'
+contains_flat "$REVIEW" 'Report out-of-scope findings and rejected objections with their reasons'
 python3 - "$DESIGN" "$EXECUTOR_CORE" <<'PY_REVIEWERS'
 from pathlib import Path
 import sys
@@ -1263,5 +1265,31 @@ contains "$REPO_ROOT/README.md" 'docs/SOURCE-PROVENANCE.md'
 contains_flat "$REPO_ROOT/tests/scenarios.md" 'now lives in `forge-flow/SPECS-ADAPTER.md`'
 contains_flat "$EXECUTOR_CORE" 'The 40-row cap is a chosen convention, not a measured limit'
 grep -q 'Observed:\*\* 15 fixture tests passed' "$REPO_ROOT/tests/scenarios.md" || fail "M77 observations were rewritten"
+
+# M85 — optional procedures sit in their own files; CORE keeps the conditions and the reads.
+test -f "$REVIEW" || fail "REVIEW.md missing from the payload"
+test -f "$CHARACTERIZATION" || fail "CHARACTERIZATION.md missing from the payload"
+contains_flat "$EXECUTOR_CORE" 'When it lists reviewers, read [`REVIEW.md`](REVIEW.md) at the simplify pass, not in preflight'
+contains_flat "$EXECUTOR_CORE" 'read [`CHARACTERIZATION.md`](CHARACTERIZATION.md) before editing'
+contains_flat "$TDD" 'read the `CHARACTERIZATION.md` it names'
+contains_flat "$IDD" 'read the `CHARACTERIZATION.md` it names'
+contains "$REPO_ROOT/forge-flow/README.md" '`REVIEW.md`'
+contains "$REPO_ROOT/forge-flow/README.md" '`CHARACTERIZATION.md`'
+python3 - "$EXECUTOR_CORE" "$REVIEW" "$CHARACTERIZATION" <<'PY_ROUTING'
+from pathlib import Path
+import sys
+
+core, review, charac = [" ".join(Path(path).read_text().split()) for path in sys.argv[1:]]
+section = core.split('## Configured review', 1)[1].split('## Comments', 1)[0]
+assert 'continue under the existing test, simplify and completion rules' in section
+assert 'impersonate' not in section and 'Deduplicate' not in section, 'review procedure leaked back into CORE'
+joining = core.split('### Joining an existing project', 1)[1].split('---', 1)[0]
+assert 'green before implementation edits' in joining.replace('baseline green', 'green') or 'baseline green before implementation edits' in joining
+assert 'Greenfield work skips characterization' in joining
+assert 'observed baseline' not in joining, 'characterization procedure leaked back into CORE'
+assert 'observed baseline' in charac and 'Prove it can fail' in charac
+assert 'Apply only configured criteria' in review
+PY_ROUTING
+contains_flat "$REPO_ROOT/tests/scenarios.md" '## M85 — Optional procedures load only where they apply'
 
 echo "content contract passed"

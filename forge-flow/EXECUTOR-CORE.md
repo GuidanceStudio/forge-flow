@@ -186,30 +186,8 @@ Read the approved `## Reviewers` section in `PRINCIPLES.md` or the existing
 equivalent loaded in preflight; re-read it on resume. If the section is absent
 or empty, report that and continue under the existing test, simplify and
 completion rules; do not silently install the design defaults or invent reviewers.
-Apply only configured criteria whose scopes cover the diff. Each needs a
-published source supporting its explicit heuristic and scope (DESIGN.md
-"Reviewer configuration"); reject unsupported entries and report the reason.
-Never impersonate an author or invent their verdict. No finding is required
-per author or criterion.
-
-For each proposed finding, require a diff location (`path:line`), configured
-criterion and concrete consequence. Cite the implementation, test or interaction
-that supports that consequence. A style preference, a name, or a smell without
-investigation is insufficient. Drop unsupported objections from the findings.
-
-Deduplicate findings about the same underlying issue, merging their locations,
-evidence and applicable criteria into one finding rather than one per reference.
-Resolve competing advice against the project principles and approved milestone
-contract. Respect explicitly approved, reasoned exceptions within their bounds.
-Reject an advisory suggestion that would break a binding constraint; for example,
-do not remove an ownership check to simplify a private-record operation.
-An unresolved contradiction between binding requirements is a blocker under
-"Operating mode"; report it rather than rewriting a principle or requirement.
-
-Only confirmed findings within the milestone scope become tasks under that
-milestone. Apply the mode's test timing to each fix and re-run applicable tests
-and the simplify pass. Report out-of-scope findings and rejected objections with
-their reasons; they do not expand the milestone or create tasks on their own.
+When it lists reviewers, read [`REVIEW.md`](REVIEW.md) at the simplify pass, not in
+preflight; it holds the procedure.
 
 ---
 
@@ -527,33 +505,17 @@ do not invent a whole-project inventory or a coverage column.
 
 Before changing existing behaviour, inspect the relevant rows for that operation
 and input case. If its baseline is unspecified, characterize only the behaviour
-being changed, even when another operation in that file already has rows. Read
-the implementation and run it to observe its current result, write a row from
-that observation, and add a test reading the row from disk.
-Run the characterization baseline green before implementation edits in both
-TDD and IDD. Do not backfill unrelated behaviours; leave their gaps explicit.
-Greenfield work skips characterization because no existing baseline exists.
-
-Label characterization as observed baseline in the test name and run evidence;
-observations do not approve bugs. For a bug fix, preserve the observed result
-in the evidence separately from the approved desired result. When writing the
-mode's change test, revise the affected row's expectation to that desired result,
-keeping its stable ID. The final active row and test assert the corrected
-behaviour; do not keep a contradictory snapshot of the bug as a requirement.
-An unchanged baseline can remain as regression coverage.
-
-This preliminary baseline is exempt from the modes' change-test timing. TDD's
-change tests still start red before implementation; IDD's change tests are
-written after implementation. Characterization tests that remain as guards
-still follow "Prove it can fail"; green baseline timing does not waive that
-policy.
+being changed, even when another operation in that file already has rows: read
+[`CHARACTERIZATION.md`](CHARACTERIZATION.md) before editing. Run the characterization
+baseline green before implementation edits in both TDD and IDD. Do not backfill
+unrelated behaviours; leave their gaps explicit. Greenfield work skips
+characterization because no existing baseline exists.
 
 ### Executable adapter example
 
 [`SPECS-ADAPTER.md`](SPECS-ADAPTER.md) holds a complete adapter over four sample
 rows, executed by the repository's content suite. Open it when writing a project's
 first adapter; skip it when one already exists.
-
 
 ---
 

@@ -29,8 +29,8 @@
   EXECUTOR-CORE's state markers — before writing any test or code, so an
   interrupted run is unambiguously resumable.
 - For affected existing behaviour without a specified baseline, follow
-  EXECUTOR-CORE.md "Joining an existing project" even if its file already has
-  other rows. The characterization baseline is preliminary and must be green
+  EXECUTOR-CORE.md "Joining an existing project", and read the
+  `CHARACTERIZATION.md` it names, even if its file already has other rows. The characterization baseline is preliminary and must be green
   before implementation edits; it is exempt from step 3's red requirement.
   Greenfield work skips this baseline.
 

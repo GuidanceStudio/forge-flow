@@ -238,3 +238,29 @@ The reader found no residual contradiction in these cases. Read-only source
 and fixture inspection exited 0; only its temporary report was written. These
 judgements are separate from the instruction-anchor and coherence mutations,
 which verify textual guards rather than an automated security classifier.
+
+## M85 — Optional procedures load only where they apply
+
+**Setup:** an existing project with `specs/INDEX.tsv` and `PRINCIPLES.md`; the
+milestone changes `service_fee` in `src/orders.py`. Four cases: TDD with no
+`## Reviewers` section and a specified baseline; TDD with one reviewer and a
+specified baseline; TDD with no reviewers and no row for `service_fee`; IDD with
+one reviewer and no row for `service_fee`.
+
+**Action:** a reader given only the skill payload reports which files it opens
+before the first test or line of code, and when it reads the review procedure.
+
+**Observed:** in the first two cases neither `CHARACTERIZATION.md` nor
+`SPECS-ADAPTER.md` was opened. In the last two, `CHARACTERIZATION.md` was read
+before editing and the baseline was run green before implementation, exempt from
+TDD's red rule and IDD's after-code rule. `REVIEW.md` was never opened with no
+reviewers, and was opened at the simplify pass, after the code, when a reviewer
+was listed. The reader found one ambiguity: the preflight and "Configured review"
+wording allowed reading `REVIEW.md` before coding. The text now says to read it
+at the simplify pass, not in preflight.
+
+**Loaded words, `EXECUTOR-CORE.md` and the files it routes to**, against the
+revision before this change (9,447 words): no reviewers and a specified baseline
+9,117 (-330); reviewers listed 9,373 (-74); no row for the behaviour 9,291 (-156);
+both 9,547 (+100, the two pointers and the two file headers).
+
