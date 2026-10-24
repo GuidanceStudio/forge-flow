@@ -88,8 +88,8 @@ Estimate the likely number of milestones from the request:
    equivalent), and a live/e2e tier. Note the runner, the structure, and
    which spine pieces are **present vs missing**.
    *(medium+ scale, or if the request is test-related)*
-   Inventory the selectable conformance flow, its spec-to-test mapping, full-run
-   inclusion and authorized CI wiring, even for non-runnable projects.
+   Inventory selectable conformance/security flows, their spec/threat-to-test
+   mappings, full-run inclusion and authorized CI wiring, even for non-runnable projects.
 7. **Stack detection** — identify the tech stack from manifest files
    (package.json, pyproject.toml, Cargo.toml, etc.).
    *(large scale, or if unfamiliar with the project)*
@@ -216,6 +216,9 @@ and elevation of privilege](https://learn.microsoft.com/en-us/archive/msdn-magaz
 Tie threats to the model and describe their concrete failure, proposed
 mitigation and verification; note why a category is irrelevant where needed,
 without inventing six threats for every element.
+Give affected threats stable threat IDs, retaining existing IDs. Map each to its
+control and named negative tests/checks in the required security flow; preserve
+explicit applicability reasons and approved manual-review exceptions.
 
 Read the affected code to identify assumptions it relies on but does not
 enforce. Turn each unenforced assumption into a concrete negative-test task:
@@ -231,13 +234,18 @@ target document path in the proposal so the same approval covers its update.
 #### Required test flows
 
 Read [`TEST-FLOWS.md`](TEST-FLOWS.md) before planning test changes. Every project,
-including libraries and skills, needs a dedicated selectable `conformance` suite.
+including libraries and skills, needs dedicated selectable `conformance` and
+`security` flows in the normal runner, full run and authorized CI.
 Map each affected approved requirement to its spec rows and executable tests;
 missing rows become tasks within the behaviour milestone. Include missing runner
 and authorized CI wiring in that milestone, reusing the native test framework.
 Do not make a preparation-only milestone or backfill unrelated legacy behaviour.
 Done-when requires full execution of all declared contracts, with unverified
 rows and unspecified legacy gaps distinguished from passed checks.
+Map affected threats to controls and negative tests/checks, including applicable
+secret and dependency/lock checks. Show required/optional decisions and expected
+rejections. Non-passing mandatory evidence blocks completion under the existing
+security gate; optional unavailable checks remain visible with their reasons.
 
 #### Operational spine — propose explicitly
 

@@ -48,6 +48,7 @@ Read or revise the relevant spec rows for the desired behaviour and derive the
 change tests from them, retaining stable IDs ("Joining an existing project").
 Register the change tests in the required flows (EXECUTOR-CORE.md "Required test
 flows"). Preserve IDD timing and failure proof; run full conformance at the gate.
+Include mapped security cases and run the security flow under the existing gate.
 Derive negative tests from the approved threat model and milestone contract.
 Example shapes: cross-owner reads are refused; protected requests without
 credentials are refused; startup without a required secret fails. Apply these

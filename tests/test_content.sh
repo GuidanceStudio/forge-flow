@@ -1300,10 +1300,20 @@ contains "$FLOWS" '## Conformance'
 contains_flat "$FLOWS" 'including libraries and skill packages'
 contains_flat "$FLOWS" 'every row in every area listed in `specs/INDEX.tsv`'
 contains_flat "$FLOWS" 'An empty suite or missing mapping is incomplete, never a pass'
-contains_flat "$SCAFFOLD" 'selectable `conformance` flow'
+contains_flat "$SCAFFOLD" 'conformance executes all declared specs'
 contains "$DESIGN" '#### Required test flows'
 contains "$TDD" 'Register the change tests in the required flows'
 contains "$IDD" 'Register the change tests in the required flows'
 python3 "$REPO_ROOT/tests/test_test_flows.py"
+
+# M88 — mapped security tests execute under the existing security gate.
+contains "$FLOWS" '## Security'
+contains_flat "$FLOWS" 'threat ID → control → negative test or check'
+contains_flat "$FLOWS" 'Every mandatory check must have passing evidence'
+contains_flat "$FLOWS" 'Do not impose an unrelated scanner'
+contains_flat "$EXECUTOR_CORE" 'Run the required `security` flow'
+contains_flat "$DESIGN" 'stable threat IDs'
+contains_flat "$SCAFFOLD" 'selectable `conformance` and `security` flows'
+python3 "$REPO_ROOT/tests/test_security_flow.py"
 
 echo "content contract passed"

@@ -61,10 +61,17 @@ A walkthrough shows one reader's application of one playbook in a temporary proj
 
 ## Required-flow extensions
 
-The conformance extension is exercised by `tests/test_specs_adapter.py` and
-`tests/test_test_flows.py`. They extract the exact Python examples published in
-the payload, execute them against temporary disk fixtures, and alter real
-implementations to prove that drift produces failures. Runner selection and
-exit-code propagation are executable evidence; content guards establish the
+The flow extensions are exercised by `tests/test_specs_adapter.py`,
+`tests/test_security_flow.py` and `tests/test_test_flows.py`. They extract the
+exact Python examples published in the payload, execute them against temporary
+disk fixtures, and alter real implementations to prove that drift or removed
+protections produce failures. Runner selection and exit-code propagation are
+executable evidence; content guards establish the
 playbook wiring only. This does not establish real-project adoption or execution
 of another project's CI.
+
+Security check-outcome cases execute the published project-specific example.
+They distinguish real negative-test failures, setup errors, mandatory skips and
+optional unavailable tooling. Tool availability is controlled in those fixtures;
+an unavailable optional tool is not a completed scan. These tests establish the
+example's behaviour, not a security assessment of an unrelated application.

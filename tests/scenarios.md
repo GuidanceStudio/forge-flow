@@ -19,6 +19,25 @@ These cases are run by `tests/test_specs_adapter.py` and
 `tests/test_test_flows.py`. They exercise the shipped examples; no claim is made
 that another project has adopted the flows or that remote CI has executed them.
 
+## M88 — Security tests and actual check outcomes reach the full runner
+
+`tests/test_security_flow.py` extracts the published threat model, implementation
+and tests from SECURITY-EXAMPLE.md. Each real identity/owner/startup protection
+is removed in a temporary project: its mapped test fails, and restoring the
+implementation returns the flow to green. Missing mappings/tests, numeric
+unknown IDs, empty/duplicate declarations, setup errors, mandatory skips and
+optimized Python cannot produce passing evidence.
+
+Stub tool processes exercise optional/mandatory command outcomes and unavailable
+tooling; these are outcome-propagation tests, not completed scanner assessments.
+Raw scanner output and setup tracebacks are excluded from the public JSON.
+The combined runner runs security even after conformance fails, runs conformance
+when security is unavailable, and propagates non-passing mandatory outcomes.
+The final executable suites contain 23 adapter, 9 runner and 14 security tests;
+all passed. Installer checks passed 43 cases. An actual redacted directory scan
+with Gitleaks found no leaks; there are no dependency or lockfile changes.
+Remote CI and existing-project adoption remain unverified.
+
 ## M76 — Approved principles persist and constrain a resumed run
 
 **Setup:** a temporary project has a README stating that records belong to their

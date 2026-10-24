@@ -561,6 +561,11 @@ first adapter; skip it when one already exists.
 
 #### Security verification
 
+Run the required `security` flow under [`TEST-FLOWS.md`](TEST-FLOWS.md) and inspect
+its threat-to-test/check evidence before the review below. Include it in full
+runs and authorized CI; missing mappings, errors and skipped mandatory checks
+are non-passing. A review or scanner alone cannot replace mapped negative tests.
+
 Review the diff and relevant context before marking done. Rank risk by change
 type rather than diff size: authentication/authorization, cryptography, external
 calls, removed validation and untested behaviour deserve closer inspection even
@@ -809,11 +814,13 @@ When green won't come, find the cause — don't patch the symptom.
 ### Required test flows
 
 Read [`TEST-FLOWS.md`](TEST-FLOWS.md) before planning test changes or wiring the
-runner. A dedicated `conformance` module/suite is mandatory for every project,
+runner. Dedicated `conformance` and `security` flows are mandatory for every project,
 including libraries and skills. Reuse the project's test levels and commands;
-the full run and authorized CI must include the flow. Full conformance executes
+the full run and authorized CI must include both flows. Full conformance executes
 every declared spec row, and missing or non-passing verification blocks completion.
-Focused runs remain partial evidence; unspecified legacy behaviour stays explicit.
+Security maps approved threats to controls and executed tests/checks under the
+existing security gate. Focused runs remain partial evidence; unspecified legacy
+behaviour stays explicit.
 
 **First run (once per devplan execution):** discover the project's real
 test structure. Check:
@@ -1013,6 +1020,8 @@ When all milestones are done:
 Mode: {TDD|IDD}
 Milestones: X/X ✅
 Tests/checks: {actual passed/failed/error/skipped outcomes}
+Conformance flow: {full declared contracts verified | incomplete, with IDs/reasons}
+Security flow: {actual mapped test/check outcomes, including exceptions}
 Security gate: {passed | policy-permitted explicit acceptance}
 Documentation: updated ✅
 

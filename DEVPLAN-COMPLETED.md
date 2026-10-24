@@ -3116,3 +3116,21 @@ reports that in chat at the start of the simplify pass, and not again later in t
 - [x] Commit the verified milestone with its devplan record
 
 **Done when:** the published runner executes all declared contracts, reports partial selections honestly and fails on implementation drift or missing verification.
+
+### M88: Make security verification an executable test flow ✅
+
+**Why:** threat modeling and security review exist, but their tests and checks have no required executable flow.
+
+**Approach:** add `security` to the native runner and authorized CI, mapping threat IDs to controls and negative tests/checks. Reuse existing review criteria, stack-appropriate tools and policy exceptions. Preserve actual outcomes; missing mandatory evidence blocks completion. Extend M87's flow contract without copying tests between levels.
+
+**Tasks:**
+- [x] Test: executable fixtures — anonymous/cross-owner access, unsafe startup, missing mappings and mandatory check outcomes
+- [x] Add a project-specific security example whose protection removals produce failing tests
+- [x] Extend the documented runner with `security` and mandatory inclusion in full runs
+- [x] Integrate threat mappings, security-flow execution and existing completion gates across playbooks
+- [x] Update documentation, content/installer checks and validation evidence
+- [x] Run content and installer suites; verify optional and mandatory unavailable checks remain distinguishable
+- [x] Install with `./install.sh --target all --force` and verify installed payloads
+- [x] Commit the verified milestone with its devplan record
+
+**Done when:** the runner executes the mapped security tests and checks, propagates failures and blocks missing mandatory verification.

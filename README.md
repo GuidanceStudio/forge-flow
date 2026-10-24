@@ -15,6 +15,8 @@ A required `conformance` flow verifies all declared specification rows against
 actual behaviour through the project's native runner and authorized CI. Focused
 runs remain partial; unspecified legacy behaviour remains visible. See
 [`TEST-FLOWS.md`](forge-flow/TEST-FLOWS.md) for the contract and executable examples.
+A required `security` flow runs threat-mapped negative tests and applicable
+policy checks, preserving missing/failed verification under the security gate.
 
 ## Install
 

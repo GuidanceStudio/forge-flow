@@ -6,7 +6,7 @@ in SCAFFOLD.md does not exempt other projects from verification.
 
 ## Runner and evidence
 
-Expose each required flow as a named selection in the project's normal test
+Expose `conformance` and `security` as named selections in the project's normal test
 command. Reuse framework suites, markers or existing commands. A flow groups
 tests by the contract they verify; unit, integration and live remain execution
 levels. Keep one test implementation when it belongs to several selections, and
@@ -57,9 +57,53 @@ Required rows without passing evidence block the claim, including live rows
 whose prerequisites are unavailable. Record what remains unverified and use an
 agreed CI validation route when required; never relabel a skip as a pass.
 
+## Security
+
+Maintain a dedicated `security` flow, selectable through the same runner and
+included in default/full runs and authorized CI. Reuse negative tests across
+the existing unit/integration/live levels; a test can belong to conformance and
+security without being copied or run twice in the combined selection.
+
+Preserve the approved threat model and give the affected threats stable IDs.
+Trace threat ID → control → negative test or check, including the expected
+rejection, error and forbidden side effects. Use the threat model and framework's
+existing metadata/fixtures as the mapping; do not add a parallel security DSL.
+Each applicable declared threat needs an executed verification, or an explicit
+policy-permitted exception. Check unknown IDs, missing/removed tests, collection
+errors and skipped mandatory cases; test discovery or a matching test name alone
+is not passing evidence. An empty flow cannot establish verification. When no
+threat applies, record why and run the applicable project-policy checks.
+
+Run the mapped negative cases against the actual controls, with TDD/IDD timing
+and characterization rules unchanged. Assert the forbidden action's outcome and
+side effects, not only an HTTP status or a mock call. Prove tests can fail by
+removing the relevant protection in an isolated fixture, then restore it and
+confirm green. Use test resources; live tests keep the non-production boundary.
+
+Include applicable secret, dependency/lock and static checks from the approved
+plan, stack and project policy. Do not impose an unrelated scanner, add a tool
+without authorization or replace an approved manual review with automation.
+Record applicability, required/optional status, command, revision, actual outcome
+and reason using EXECUTOR-CORE.md "Security verification". A scanner result does
+not replace the behavioural cases; optional unavailable tools stay visible as
+skipped, and no scan is invented when the tool is unavailable.
+
+Every mandatory check must have passing evidence before completion, or the
+explicit exception allowed by the existing security gate. A mandatory check's
+failure, setup error, missing mapping or unavailable prerequisite returns
+non-zero from the raw flow. It blocks readiness/shipping unless the existing
+gate permits a documented exception. An accepted exception changes that gate,
+not the raw exit code or the underlying failed/error/skipped outcome. Optional
+non-passes remain visible without blocking solely because they are non-passing;
+critical findings still follow the existing gate regardless of check optionality.
+Enforce the same gate in full runs and authorized CI, retaining the existing
+critical-finding and validation-checkpoint rules.
+
 ## Worked examples
 
 Open [`SPECS-ADAPTER.md`](SPECS-ADAPTER.md) when creating the first spec adapter;
 it shows full and focused execution. Open [`FLOW-EXAMPLE.md`](FLOW-EXAMPLE.md)
 when wiring the first runner. These are project-specific examples executed by
 this repository's fixture tests, not a universal runner to install unchanged.
+Open [`SECURITY-EXAMPLE.md`](SECURITY-EXAMPLE.md) when creating the first security
+flow; it maps concrete threat IDs to negative tests and check outcomes.

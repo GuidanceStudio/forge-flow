@@ -46,6 +46,7 @@ file; Git with a remote for push.
   only when a project's first adapter is written
 - `TEST-FLOWS.md` — required conformance flow, traceability and execution evidence
 - `FLOW-EXAMPLE.md` — executable runner example, opened when wiring the first runner
+- `SECURITY-EXAMPLE.md` — mapped negative tests and security-check execution example
 - `REVIEW.md` — configured-review procedure, read only when a project lists reviewers
 - `CHARACTERIZATION.md` — procedure for pinning unspecified existing behaviour,
   read only when a milestone changes behaviour that has no spec row
@@ -125,12 +126,15 @@ and shipping unless project policy allows explicit, documented risk acceptance.
 
 ## Executable specifications
 
-Every project must expose a dedicated `conformance` test flow through its native
-runner and include it in full runs and authorized CI, including libraries and
+Every project must expose dedicated `conformance` and `security` flows through its
+native runner and include both in full runs and authorized CI, including libraries and
 skills. Full verification runs all declared spec rows; scoped runs are partial.
 Missing or unexecuted contracts block completion. See [`TEST-FLOWS.md`](TEST-FLOWS.md)
 for traceability and evidence, and [`FLOW-EXAMPLE.md`](FLOW-EXAMPLE.md) when wiring
 the first runner. Flows reuse existing unit/integration/live tests without copies.
+Security traces approved threats to controls and negative tests/checks, preserving
+required/optional status and actual outcomes under the existing security gate.
+See [`SECURITY-EXAMPLE.md`](SECURITY-EXAMPLE.md) for an executable example.
 
 Behaviour rows live in `specs/<area>.tsv`; `specs/INDEX.tsv` maps affected files
 to the relevant areas, including shared scopes and splits above 40 rows. Tests

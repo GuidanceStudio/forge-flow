@@ -11,6 +11,7 @@ import tempfile
 import unittest
 
 
+sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -32,6 +33,8 @@ class TestFlowRunnerTests(unittest.TestCase):
         (self.project / "run_tests.py").write_text(self.runner)
         (self.project / "test_specs.py").write_text(
             example(ROOT / "forge-flow/SPECS-ADAPTER.md", "specs-adapter-example"))
+        from test_security_flow import install_example
+        install_example(self.project)
 
     def run_flow(self, *args, env=None):
         return subprocess.run([sys.executable, "run_tests.py", *args], cwd=self.project,
@@ -53,6 +56,8 @@ class TestFlowRunnerTests(unittest.TestCase):
                 result = self.run_flow(*args)
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertIn("conformance: passed", result.stdout)
+                self.assertIn("security: passed", result.stdout)
+                self.assertEqual(result.stdout.count("security: passed"), 1)
                 self.assertIn("DELIVERY-001", result.stdout)
 
     def test_real_implementation_drift_reaches_runner_exit_code(self):
@@ -64,6 +69,34 @@ class TestFlowRunnerTests(unittest.TestCase):
                 self.assertNotEqual(result.returncode, 0)
                 self.assertIn("DELIVERY-001", result.stderr)
                 self.assertIn("conformance: failed", result.stdout)
+                if flow == "all":
+                    self.assertIn("security: passed", result.stdout)
+
+    def test_security_is_independently_selectable(self):
+        (self.project / "test_specs.py").unlink()
+        result = self.run_flow("security")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("security: passed", result.stdout)
+        self.assertNotIn("conformance:", result.stdout)
+
+    def test_removed_security_controls_fail_the_combined_run(self):
+        (self.project / "security_app.py").write_text(
+            "def read_record(identity, owner):\n    return 'private'\n"
+            "def start(secret):\n    return secret\n")
+        result = self.run_flow("all")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("conformance: passed", result.stdout)
+        self.assertIn("security: failed", result.stdout)
+        self.assertIn("THREAT-IDENTITY", result.stdout)
+
+    def test_missing_security_flow_blocks_full_verification(self):
+        (self.project / "test_security.py").unlink()
+        result = self.run_flow("all")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("security: error", result.stdout)
+        self.assertIn("conformance: passed", result.stdout)
+        focused = self.run_flow("conformance")
+        self.assertEqual(focused.returncode, 0, focused.stderr)
 
     def test_missing_adapter_is_an_error(self):
         (self.project / "test_specs.py").unlink()
