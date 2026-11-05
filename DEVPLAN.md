@@ -17,34 +17,19 @@ Closed milestones live in **[`DEVPLAN-COMPLETED.md`](DEVPLAN-COMPLETED.md)** as 
 
 ---
 
-## ✅ M93: The scaffold's generated runner has an executable shape, like the other generated files
+## ✅ M94: The READMEs state the suite count and read as three documents
 
-**Why:** the decision log, the threat model, the spec files and the principles
-document each ship a worked shape, and three of them ship an example a test suite
-extracts and runs. The scaffold route generates a bring-up script and a tiered
-`run_tests.sh` from about a hundred lines of requirements and no example: each run
-reimplements the fast-tier refusal, skip-with-reason, per-test timing, the
-`comments` check and the flow selection from prose, and nothing executes the result.
-A generated runner that drops one of those is caught only by a reader.
+**Why:** M93 added a sixth suite, but the root README still says "five suites" in its layout block and in the Tests section, while listing six commands. The layout block omits `docs/`. "MIT licensed." appears twice. The payload README sets the principles, review and executable-specification rules as dense paragraphs, so a reader cannot find the rule they came for.
 
-**Approach:** a `SCAFFOLD-EXAMPLE.md` beside the other examples with the runner in a
-block marked `<!-- scaffold-runner-example -->`, read only from the scaffold route.
-A `tests/test_scaffold.py` suite copies it into a temporary project the way the flow
-runner suite does and drives it: an unscoped `fast` run refuses, exits non-zero and
-prints both scoped forms; a tier whose prerequisite is absent skips and prints why;
-a failing test makes the exit code non-zero; the five slowest tests print on every
-run; `conformance` and `security` are selectable and included in the full run;
-the `comments` check reports a planted hit as `file:line` and skips outside a diff.
-The workflow and the README gain the suite as a sixth named step.
+**Approach:** Correct the count and the layout in the root README; drop the duplicated licence line. In the payload README, split the two dense sections into short bullet lists, one rule per bullet, with the normative wording unchanged. Phrases pinned by `tests/test_content.sh` stay verbatim.
 
 **Tasks:**
-- [x] `forge-flow/SCAFFOLD-EXAMPLE.md`: the runner example, with a bring-up skeleton
-- [x] `forge-flow/SCAFFOLD.md`: Phase 2 points at the example; the loading rule follows M85
-- [x] `tests/test_scaffold.py`: the behaviours above, each falsified once
-- [x] `.github/workflows/tests.yml`, `README.md`, `tests/test_content.sh`: sixth suite named and asserted
+- [x] `README.md`: "six suites" in layout and Tests; add `docs/` to the layout; remove the duplicate licence line; lower-case "forge-flow"
+- [x] `forge-flow/README.md`: "Project principles" and "Executable specifications" as bullet lists
+- [x] Run the six suites; all green
+- [x] Commit with the ticks, push
 
-**Done when:** the suite passes under `python3 -I`, each listed behaviour has a test
-that fails when the example loses it, and the content contract names the suite.
+**Done when:** no README says "five suites", the six suites pass, and both sections read as one rule per bullet.
 
 ---
 

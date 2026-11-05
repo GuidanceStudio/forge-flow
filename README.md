@@ -143,9 +143,7 @@ it unasked.
 - **Agile / Scrum** — definition-of-done (Done-when verification), iterative
   delivery, no-preparation-milestones rule.
 
-Runtime dependency: none. Forge-flow imports the concepts, not the code.
-
-MIT licensed.
+Runtime dependency: none. forge-flow imports the concepts, not the code.
 
 ## Project layout
 
@@ -157,7 +155,8 @@ forge-flow/
 ├── DEVPLAN.md         ← this project's own dev plan (pending work)
 ├── DEVPLAN-COMPLETED.md ← its closed milestones, moved at close-out
 ├── DECISIONS.md       ← choices that bind future work, superseded not edited
-├── tests/             ← five suites: installer, content contract, spec adapter, flow runner, security flow
+├── docs/              ← SOURCE-PROVENANCE.md: the sources the security rules were compared against
+├── tests/             ← six suites: installer, content contract, spec adapter, flow runner, security flow, scaffold
 └── forge-flow/           ← the flat, assistant-neutral skill payload
     ├── SKILL.md       ← router (design / TDD / IDD / scaffold)
     ├── DESIGN.md      ← planning playbook
@@ -165,7 +164,7 @@ forge-flow/
     ├── IDD.md         ← implementation-first execution playbook
     ├── EXECUTOR-CORE.md ← shared execution behavior (TDD/IDD)
     ├── SCAFFOLD.md    ← operational-spine generation playbook
-    ├── README.md      ← skill payload docs
+    ├── README.md      ← skill payload docs, with the full file list
     └── agents/openai.yaml  ← optional Codex metadata
 ```
 
@@ -187,7 +186,7 @@ python3 -I tests/test_security_flow.py
 python3 -I tests/test_scaffold.py
 ```
 
-CI (GitHub Actions) runs the five suites as separate steps on every push and PR,
+CI (GitHub Actions) runs the six suites as separate steps on every push and PR,
 so a failing suite is named in the log.
 
 ## License

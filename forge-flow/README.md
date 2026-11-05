@@ -99,53 +99,55 @@ milestone's own commit. Format and the gate on what earns an entry live in
 
 ## Project principles
 
-Design proposes numbered trade-offs in root `PRINCIPLES.md`, preserving an
-existing equivalent, and writes them on the plan's approval. Linked instruction
-snippets are provided for the user to insert. Execution reads saved principles
-before work and on resume; projects without them remain executable.
-
-Decisions may cite a `Principle:` and record an approved departure with a reasoned
-`Exception:`. Existing decision entries remain valid. A reason alone does not
-authorize an exception.
-
-Projects can approve a `## Reviewers` section there: published references,
-explicit heuristics and applicable scopes. Design proposes the relevant defaults
-and records user edits. [Configured review](EXECUTOR-CORE.md#configured-review)
-applies that saved configuration beside simplification, requires evidence,
-deduplicates findings and routes confirmed work by milestone scope.
-
-For data, access and external-service changes, design proposes scoped threats
-and negative-test tasks, then persists the approved `THREATS.md` section with
-the plan. Execution checks policy violations at the selected mode's timing and
-looks for other occurrences of a fixed defect's cause within the approved scope.
-
-[Security verification](EXECUTOR-CORE.md#security-verification) separates findings,
-uncertainties and hardening, and records actual check outcomes, including checks
-that could not run. Critical findings and mandatory non-passes block completion
-and shipping unless project policy allows explicit, documented risk acceptance.
+- **Principles.** Design proposes numbered trade-offs in root `PRINCIPLES.md`,
+  preserving an existing equivalent, and writes them on the plan's approval.
+  Linked instruction snippets are provided for the user to insert. Execution
+  reads saved principles before work and on resume; projects without them remain
+  executable.
+- **Decisions.** A decision may cite a `Principle:` and record an approved
+  departure with a reasoned `Exception:`. Existing decision entries remain valid.
+  A reason alone does not authorize an exception.
+- **Reviewers.** Projects can approve a `## Reviewers` section there: published
+  references, explicit heuristics and applicable scopes. Design proposes the
+  relevant defaults and records user edits.
+  [Configured review](EXECUTOR-CORE.md#configured-review) applies that saved
+  configuration beside simplification, requires evidence, deduplicates findings
+  and routes confirmed work by milestone scope.
+- **Threats.** For data, access and external-service changes, design proposes
+  scoped threats and negative-test tasks, then persists the approved `THREATS.md`
+  section with the plan. Execution checks policy violations at the selected mode's
+  timing and looks for other occurrences of a fixed defect's cause within the
+  approved scope.
+- **Security gate.** [Security verification](EXECUTOR-CORE.md#security-verification)
+  separates findings, uncertainties and hardening, and records actual check
+  outcomes, including checks that could not run. Critical findings and mandatory
+  non-passes block completion and shipping unless project policy allows explicit,
+  documented risk acceptance.
 
 ## Executable specifications
 
-Every project must expose dedicated `conformance` and `security` flows through its
-native runner and include both in full runs and authorized CI, including libraries and
-skills. Full verification runs all declared spec rows; scoped runs are partial.
-Missing or unexecuted contracts block completion. See [`TEST-FLOWS.md`](TEST-FLOWS.md)
-for traceability and evidence, and [`FLOW-EXAMPLE.md`](FLOW-EXAMPLE.md) when wiring
-the first runner. Flows reuse existing unit/integration/live tests without copies.
-Security traces approved threats to controls and negative tests/checks, preserving
-required/optional status and actual outcomes under the existing security gate.
-See [`SECURITY-EXAMPLE.md`](SECURITY-EXAMPLE.md) for an executable example.
-
-Behaviour rows live in `specs/<area>.tsv`; `specs/INDEX.tsv` maps affected files
-to the relevant areas, including shared scopes and splits above 40 rows. Tests
-read those rows from disk using the project's adapter. See
-[Executable specifications](EXECUTOR-CORE.md#executable-specifications) for the
-layout and scope rules, and [`SPECS-ADAPTER.md`](SPECS-ADAPTER.md) for an executable
-example that rejects uncovered rows.
-Existing projects characterize unspecified behaviour only where the milestone
-changes it, with a green baseline before edits in either mode. File scopes and
-row counts establish only partial behavioural coverage; unrelated gaps stay
-unspecified. Observing a bug does not make it the desired requirement.
+- **Two flows.** Every project, libraries and skills included, exposes dedicated
+  `conformance` and `security` flows through its native runner and includes both
+  in full runs and authorized CI. Full verification runs all declared spec rows;
+  scoped runs are partial. Missing or unexecuted contracts block completion.
+  Flows reuse existing unit, integration and live tests without copies. See
+  [`TEST-FLOWS.md`](TEST-FLOWS.md) for traceability and evidence, and
+  [`FLOW-EXAMPLE.md`](FLOW-EXAMPLE.md) when wiring the first runner.
+- **Security flow.** It traces approved threats to controls and negative
+  tests/checks, preserving required/optional status and actual outcomes under the
+  existing security gate. See [`SECURITY-EXAMPLE.md`](SECURITY-EXAMPLE.md) for an
+  executable example.
+- **Spec rows.** Behaviour rows live in `specs/<area>.tsv`; `specs/INDEX.tsv` maps
+  affected files to the relevant areas, including shared scopes and splits above
+  40 rows. Tests read those rows from disk using the project's adapter. See
+  [Executable specifications](EXECUTOR-CORE.md#executable-specifications) for the
+  layout and scope rules, and [`SPECS-ADAPTER.md`](SPECS-ADAPTER.md) for an
+  executable example that rejects uncovered rows.
+- **Existing behaviour.** Existing projects characterize unspecified behaviour
+  only where the milestone changes it, with a green baseline before edits in
+  either mode. File scopes and row counts establish only partial behavioural
+  coverage; unrelated gaps stay unspecified. Observing a bug does not make it the
+  desired requirement.
 
 ## Devplan format
 
