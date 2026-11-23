@@ -33,18 +33,18 @@ Closed milestones live in **[`DEVPLAN-COMPLETED.md`](DEVPLAN-COMPLETED.md)** as 
 
 ---
 
-## M95: The repo carries its own principles
+## ✅ M95: The repo carries its own principles
 
 **Why:** `DESIGN.md` and `EXECUTOR-CORE.md` make root `PRINCIPLES.md` the document design and execution read first, yet this repo has none. Its trade-offs sit in `CLAUDE.md` (no foreign names in a public payload) and `DECISIONS.md` (DEC-1 to DEC-3), where design cannot find them under the name it looks for.
 
 **Approach:** Draft 3-5 numbered principles from `CLAUDE.md` and `DECISIONS.md` in the shape of the `principles-shape-example` block in `DESIGN.md`, show the draft in chat and write the file only after the user approves its wording. Add a `## Reviewers` section with the defaults design proposes for a skill package. Do not alter DEC entries; cite them as `Principle:` where they apply.
 
 **Tasks:**
-- [ ] Draft the principles and the `## Reviewers` section; present them in chat for approval
-- [ ] Write root `PRINCIPLES.md` after approval
-- [ ] Add `tests/test_content.sh` coverage: the file exists and follows the shape the example in `DESIGN.md` prescribes
-- [ ] Run the suites; all green
-- [ ] Commit with the ticks, push
+- [x] Draft the principles and the `## Reviewers` section; present them in chat for approval
+- [x] Write root `PRINCIPLES.md` after approval
+- [x] Add `tests/test_content.sh` coverage: the file exists and follows the shape the example in `DESIGN.md` prescribes
+- [x] Run the suites; all green
+- [x] Commit with the ticks, push
 
 **Done when:** root `PRINCIPLES.md` exists with user-approved wording, a content test pins its shape, and the suites pass.
 

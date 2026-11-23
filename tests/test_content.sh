@@ -1364,4 +1364,31 @@ contains_flat "$DESIGN" 'stable threat IDs'
 contains_flat "$SCAFFOLD" 'selectable `conformance` and `security` flows'
 python3 "$REPO_ROOT/tests/test_security_flow.py"
 
+# M95 — the repo carries its own principles in the shape design prescribes.
+PRINCIPLES="$REPO_ROOT/PRINCIPLES.md"
+test -f "$PRINCIPLES" || fail "PRINCIPLES.md missing from the repo root"
+contains_flat "$PRINCIPLES" 'Read by design before a plan is proposed and by the executor before every run.'
+contains_flat "$PRINCIPLES" 'needs an approved exception in `DECISIONS.md`'
+contains "$PRINCIPLES" '## Reviewers'
+contains "$PRINCIPLES" '| Criterion | Published source | Heuristic | Applicable scope |'
+python3 - "$PRINCIPLES" <<'PY' || fail "PRINCIPLES.md principles are incomplete"
+import re, sys
+text = open(sys.argv[1]).read()
+body = text.split("## Reviewers")[0]
+blocks = re.split(r"(?m)^## (P\d+): ", body)[1:]
+ids = blocks[0::2]
+texts = blocks[1::2]
+assert 3 <= len(ids) <= 5, ids
+assert ids == [f"P{i}" for i in range(1, len(ids) + 1)], ids
+for i, t in zip(ids, texts):
+    assert "Non-goal:" in t, f"{i} has no non-goal"
+    assert len(t.strip().splitlines()) >= 3, f"{i} has no losing side"
+rows = [l for l in text.split("## Reviewers")[1].splitlines() if l.startswith("| C-")]
+assert rows, "no reviewer rows"
+for r in rows:
+    cells = [c.strip() for c in r.strip("|").split("|")]
+    assert len(cells) == 4 and all(cells), r
+    assert "](http" in cells[1], f"{cells[0]} has no published source link"
+PY
+
 echo "content contract passed"
