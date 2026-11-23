@@ -7,3 +7,9 @@ SEC-005	a mandatory test is skipped	the flow does not pass	forge-flow/SECURITY-E
 SEC-006	the mapping from threats to tests is empty	the flow cannot pass as an empty suite	forge-flow/SECURITY-EXAMPLE.md
 SEC-007	an optional scanner is unavailable and project policy makes it required	the check is reported skipped and required, and the flow exits non-zero	forge-flow/SECURITY-EXAMPLE.md
 SEC-008	a scanner fails and prints output	the check is reported failed and the raw output is not published	forge-flow/SECURITY-EXAMPLE.md
+SEC-009	a mapped test runs an empty suite	the threat is reported as an error that says the test did not execute	forge-flow/SECURITY-EXAMPLE.md
+SEC-010	a threat's mapped test no longer exists	the threat is reported as an error that says the test is missing, and the flow exits non-zero	forge-flow/SECURITY-EXAMPLE.md
+SEC-011	the threat source or the application file is missing	the flow exits with a setup error and reports an error status	forge-flow/SECURITY-EXAMPLE.md
+SEC-012	an optional scanner exits 0, 1 or 2	the check is reported passed, failed or error, and the flow still exits 0	forge-flow/SECURITY-EXAMPLE.md
+SEC-013	a scanner that policy requires exits 0, 1 or 2	the check is reported passed, failed or error, and the flow exits with the same code	forge-flow/SECURITY-EXAMPLE.md
+SEC-014	Python optimization is enabled for the security flow	the flow exits with a setup error that names optimized Python	forge-flow/SECURITY-EXAMPLE.md

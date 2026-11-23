@@ -1,0 +1,2 @@
+id	when	expect	file
+REPO-001	a threat is declared in THREATS.md	it names a test that exists in the repository security suite	THREATS.md

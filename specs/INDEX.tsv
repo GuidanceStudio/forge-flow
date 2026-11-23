@@ -1,6 +1,7 @@
 path	scope	rows
-specs/spec-adapter.tsv	forge-flow/SPECS-ADAPTER.md;tests/test_specs_adapter.py	10
-specs/flow-runner.tsv	forge-flow/FLOW-EXAMPLE.md;tests/test_test_flows.py	6
-specs/security-flow.tsv	forge-flow/SECURITY-EXAMPLE.md;tests/test_security_flow.py	8
+specs/spec-adapter.tsv	forge-flow/SPECS-ADAPTER.md;tests/test_specs_adapter.py	23
+specs/flow-runner.tsv	forge-flow/FLOW-EXAMPLE.md;tests/test_test_flows.py	9
+specs/security-flow.tsv	forge-flow/SECURITY-EXAMPLE.md;tests/test_security_flow.py	14
 specs/scaffold-runner.tsv	forge-flow/SCAFFOLD-EXAMPLE.md;tests/test_scaffold.py	6
 specs/payload.tsv	forge-flow/*.md;tests/test_payload.py	1
+specs/repo-security.tsv	THREATS.md;tests/test_repo_security.py	1

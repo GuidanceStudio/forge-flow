@@ -106,10 +106,18 @@ Closed milestones live in **[`DEVPLAN-COMPLETED.md`](DEVPLAN-COMPLETED.md)** as 
 
 ---
 
-## Deferred — Existing-project pilot
+## ✅ M99: Every test carries a conformance row or a threat
 
-This is not an executable milestone. It requires explicit authorization, a selected
-repository and a desired change. An isolated run would trace selective spec reads,
-a green characterization baseline before implementation, the TDD red/green cycle and
-stopping on a principle departure without an approved exception. Controlled scenarios
-in M85 do not close this real-project validation gap.
+**Why:** M98 mapped 34 of the 57 tests to a spec row or a threat; the runner reported the other 23 as having no row, so their behaviours were unspecified.
+
+**Approach:** Write one row per remaining test from its assertions, in the area file of the example it exercises, and map each in `tests/run_tests.py`. Add one area for the repository security suite's own structural test.
+
+**Tasks:**
+- [x] Add the 13 spec-adapter, 3 flow-runner and 6 security-flow rows, and `specs/repo-security.tsv`
+- [x] Map the 23 new IDs in `tests/run_tests.py`; update the index counts
+- [x] Run the full runner: every test mapped, all green
+- [x] Commit with the ticks, push
+
+**Done when:** the runner reports 0 tests without a conformance row or threat and all flows pass.
+
+---

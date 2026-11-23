@@ -9,3 +9,16 @@ ADAPT-007	a row's expected value is edited on disk	the adapter fails the asserti
 ADAPT-008	a row carries an ID the adapter has no branch for	the adapter rejects the ID	forge-flow/SPECS-ADAPTER.md
 ADAPT-009	Python runs with optimization enabled	the adapter refuses to run	forge-flow/SPECS-ADAPTER.md
 ADAPT-010	an area file holds more than 40 rows	the adapter requires a split	forge-flow/SPECS-ADAPTER.md
+ADAPT-011	the changed paths together select every indexed area	every area file is read	forge-flow/SPECS-ADAPTER.md
+ADAPT-012	an implementation file changes so a row's expected value no longer holds	the adapter fails and names the row, the expected value and the actual value	forge-flow/SPECS-ADAPTER.md
+ADAPT-013	a row's input is edited on disk	the edited input reaches the implementation and the result changes with it	forge-flow/SPECS-ADAPTER.md
+ADAPT-014	two rows carry the same ID	the adapter fails with duplicate spec IDs before executing any row	forge-flow/SPECS-ADAPTER.md
+ADAPT-015	`--all` is combined with affected paths	the adapter fails	forge-flow/SPECS-ADAPTER.md
+ADAPT-016	an index entry's row count differs from its area file	the adapter fails with a row count mismatch	forge-flow/SPECS-ADAPTER.md
+ADAPT-017	the adapter gets no affected paths and no `--all`	it fails and asks for the scope to be clarified	forge-flow/SPECS-ADAPTER.md
+ADAPT-018	the adapter's execution loop skips a row	it fails and lists the unexecuted row	forge-flow/SPECS-ADAPTER.md
+ADAPT-019	a path matches one area only	the other area files are not opened	forge-flow/SPECS-ADAPTER.md
+ADAPT-020	the same path is given twice, or two paths select the same area	each row executes once	forge-flow/SPECS-ADAPTER.md
+ADAPT-021	an index scope is a glob	it matches repository-relative paths	forge-flow/SPECS-ADAPTER.md
+ADAPT-022	a path matches a scope shared by several areas	the shared area is selected and area files outside the selection are ignored	forge-flow/SPECS-ADAPTER.md
+ADAPT-023	an affected path matches no index scope, alone or beside a matching path	the adapter fails and names the unmatched path	forge-flow/SPECS-ADAPTER.md
