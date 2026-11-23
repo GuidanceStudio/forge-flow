@@ -50,33 +50,51 @@ Closed milestones live in **[`DEVPLAN-COMPLETED.md`](DEVPLAN-COMPLETED.md)** as 
 
 ---
 
-## M96: The repo carries its threat model
+## M96: The repo distributes the payload as a plain folder
 
-**Why:** README "Threats" requires `THREATS.md` with negative tests for changes touching data, access or external services. `install.sh` writes under the user's home for six targets, accepts `--force`, and in remote mode clones a repository and runs from it. The public repo also has one standing leak risk (DEC-1). None of these has a threat entry or a negative test.
+**Why:** `forge-flow/` is already the complete, assistant-neutral payload, and the README says copying it is enough. `install.sh` (245 lines, 151 of tests) adds a clone-and-run remote mode, six targets and an `rm -rf` on the destination. It encodes one user's multi-location setup in a public repo, and that setup belongs on that user's machine. Standard distribution is a folder a person copies to wherever their assistant reads skills.
 
-**Approach:** Write `THREATS.md` in the shape `SECURITY-EXAMPLE.md` shows, scoped to `install.sh` and the public-repo naming rule. Each threat names its control and the negative test or check that proves it. Add the negative tests to the existing installer suite. Task wording of each threat is settled with the user before the file is written.
+**Approach:** Remove `install.sh` and `tests/test_install.sh`, drop the installer suite from CI, and rewrite the README Install section to the standard path: clone or download, copy `forge-flow/` into the assistant's skills directory, or use the assistant's own skill installer from the GitHub path. No plugin manifest and no assistant-specific packaging. The `agents/openai.yaml` metadata file stays. The user's personal deployment moves to a separate local script, tracked in its own devplan outside this repo.
 
 **Tasks:**
-- [ ] Propose the threat list (destination overwrite without `--force`, path escape through `--target` or `FORGE_FLOW_REPO_URL`, temp-dir cleanup, foreign name reaching the remote) in chat for approval
-- [ ] Write `THREATS.md` after approval
-- [ ] Add a negative test per approved threat to `tests/test_install.sh`
-- [ ] Run the six suites; all green
+- [ ] Remove `install.sh`, `tests/test_install.sh` and the installer step in `.github/workflows/tests.yml`
+- [ ] Rewrite the README Install section and layout block; "six suites" becomes five everywhere it is stated
+- [ ] Adjust `tests/test_content.sh` where it pins installer wording, and `forge-flow/README.md` where it mentions the installer
+- [ ] Add `.claude/` to `.gitignore`
+- [ ] Run the remaining suites; all green
 - [ ] Commit with the ticks, push
 
-**Done when:** every approved threat has a control and a passing negative test, and `THREATS.md` follows the `SECURITY-EXAMPLE.md` shape.
+**Done when:** no file references `install.sh`, the README gives the copy and skill-installer routes, and the five remaining suites pass.
 
 ---
 
-## M97: The repo exposes its own conformance and security flows
+## M97: The repo carries its threat model
 
-**Why:** `TEST-FLOWS.md` applies to every project, skill packages included: dedicated `conformance` and `security` selections in the native runner and in CI, and behaviour rows under `specs/`. The repo has `tests/` for its examples but no `specs/` for `install.sh` and no named flows, so a full run cannot show that every declared contract executed.
+**Why:** README "Threats" requires `THREATS.md` for changes touching data, access or external services. With the installer gone, the public repo's standing exposure is a foreign project name or host reaching the remote inside an installable payload (DEC-1), and the CI workflow that runs on every push. Neither has a threat entry or a negative test.
 
-**Approach:** Declare `install.sh` behaviours and the payload's pinned contracts as rows in `specs/<area>.tsv` with `specs/INDEX.tsv`, reusing the adapter pattern from `SPECS-ADAPTER.md`. Add `conformance` and `security` as selections of the existing test commands, mapped to M96's threats, and wire both into `.github/workflows/tests.yml`. Reuse existing tests; copy none.
+**Approach:** Write `THREATS.md` in the shape `SECURITY-EXAMPLE.md` shows, scoped to those two surfaces. Each threat names its control and the check that proves it; the threat list is settled with the user before the file is written. Controls stay manual where DEC-1 says so, and a negative test only where a check can run without a name pattern wide enough to flag this repo's own URL.
 
 **Tasks:**
-- [ ] Write `specs/INDEX.tsv` and the area files for `install.sh` and the payload contracts
+- [ ] Propose the threat list in chat for approval
+- [ ] Write `THREATS.md` after approval
+- [ ] Add a negative test or check per approved threat that can be automated; list the rest as manual controls
+- [ ] Run the suites; all green
+- [ ] Commit with the ticks, push
+
+**Done when:** every approved threat has a control and either a passing negative test or an explicit manual-control entry, and `THREATS.md` follows the `SECURITY-EXAMPLE.md` shape.
+
+---
+
+## M98: The repo exposes its own conformance and security flows
+
+**Why:** `TEST-FLOWS.md` applies to every project, skill packages included: dedicated `conformance` and `security` selections in the native runner and in CI, and behaviour rows under `specs/`. The repo has `tests/` for its examples but no `specs/` and no named flows, so a full run cannot show that every declared contract executed.
+
+**Approach:** Declare the payload's pinned contracts and the README's distribution claims as rows in `specs/<area>.tsv` with `specs/INDEX.tsv`, reusing the adapter pattern from `SPECS-ADAPTER.md`. Add `conformance` and `security` as selections of the existing test commands, the latter mapped to M97's threats, and wire both into `.github/workflows/tests.yml`. Reuse existing tests; copy none.
+
+**Tasks:**
+- [ ] Write `specs/INDEX.tsv` and the area files
 - [ ] Add the `conformance` selection; it fails when a row has no executing test
-- [ ] Add the `security` selection mapped to the `THREATS.md` entries from M96
+- [ ] Add the `security` selection mapped to the `THREATS.md` entries from M97
 - [ ] Wire both selections into `.github/workflows/tests.yml`
 - [ ] Run the full set; record flow, scope, IDs and outcomes as `TEST-FLOWS.md` requires
 - [ ] Commit with the ticks, push
