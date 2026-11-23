@@ -1,0 +1,11 @@
+id	when	expect	file
+ADAPT-001	a changed path matches both a shared scope and a split scope	the adapter selects exactly the union of the matching area files	forge-flow/SPECS-ADAPTER.md
+ADAPT-002	the full run is requested with no affected paths	every indexed area executes	forge-flow/SPECS-ADAPTER.md
+ADAPT-003	an implementation changes outside the scoped selection	the full run fails on the drifted row	forge-flow/SPECS-ADAPTER.md
+ADAPT-004	the spec index has no rows	the adapter fails instead of passing as verified	forge-flow/SPECS-ADAPTER.md
+ADAPT-005	an indexed area file has no rows	the adapter fails instead of passing as verified	forge-flow/SPECS-ADAPTER.md
+ADAPT-006	two index entries name the same path	the adapter fails instead of deduplicating silently	forge-flow/SPECS-ADAPTER.md
+ADAPT-007	a row's expected value is edited on disk	the adapter fails the assertion	forge-flow/SPECS-ADAPTER.md
+ADAPT-008	a row carries an ID the adapter has no branch for	the adapter rejects the ID	forge-flow/SPECS-ADAPTER.md
+ADAPT-009	Python runs with optimization enabled	the adapter refuses to run	forge-flow/SPECS-ADAPTER.md
+ADAPT-010	an area file holds more than 40 rows	the adapter requires a split	forge-flow/SPECS-ADAPTER.md

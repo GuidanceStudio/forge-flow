@@ -1,0 +1,7 @@
+id	when	expect	file
+SCAF-001	the fast tier is run without a scope	the runner refuses and prints both scoped forms	forge-flow/SCAFFOLD-EXAMPLE.md
+SCAF-002	a tier's prerequisite is missing	the tier is skipped and the reason is printed	forge-flow/SCAFFOLD-EXAMPLE.md
+SCAF-003	a test in the selected tier fails	the runner exits non-zero	forge-flow/SCAFFOLD-EXAMPLE.md
+SCAF-004	any tier is run	the five slowest tests are printed	forge-flow/SCAFFOLD-EXAMPLE.md
+SCAF-005	conformance or security is selected, or the full run is requested	the selected flows run, and both run in the full run	forge-flow/SCAFFOLD-EXAMPLE.md
+SCAF-006	the comment check meets a planted hit inside a diff	it reports the hit as file and line, and skips files outside a diff	forge-flow/SCAFFOLD-EXAMPLE.md

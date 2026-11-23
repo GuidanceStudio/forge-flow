@@ -4,7 +4,7 @@ An assistant-neutral skill that handles the full forge-flow lifecycle:
 planning (`design`) and execution (`TDD` / `IDD`). One flat folder,
 installable into any coding assistant that reads skills.
 
-> This is the skill payload. See the [project README](../README.md) for
+> This is the skill payload. See the [project README](https://github.com/GuidanceStudio/forge-flow#install) for
 > installation.
 
 ## What it does

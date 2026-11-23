@@ -1,0 +1,7 @@
+id	when	expect	file
+FLOW-001	the conformance selection is run	every declared contract executes	forge-flow/FLOW-EXAMPLE.md
+FLOW-002	the runner gets no selection or `all`	conformance runs inside the full run	forge-flow/FLOW-EXAMPLE.md
+FLOW-003	a real implementation drifts from its row	the runner exits non-zero	forge-flow/FLOW-EXAMPLE.md
+FLOW-004	the security selection is run	only the security flow executes	forge-flow/FLOW-EXAMPLE.md
+FLOW-005	the security flow's script is missing	the full run exits non-zero	forge-flow/FLOW-EXAMPLE.md
+FLOW-006	an unknown selection or an extra argument is given	the runner prints usage and exits non-zero	forge-flow/FLOW-EXAMPLE.md

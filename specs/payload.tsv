@@ -1,0 +1,2 @@
+id	when	expect	file
+PAYLOAD-001	a markdown file in forge-flow/ links to a relative path	the target exists inside forge-flow/, so the folder works when copied alone	forge-flow/SKILL.md

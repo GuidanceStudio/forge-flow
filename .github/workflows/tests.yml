@@ -13,15 +13,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Run content contract suite
-        run: bash tests/test_content.sh
-      - name: Run spec adapter suite
-        run: python3 -I tests/test_specs_adapter.py
-      - name: Run flow runner suite
-        run: python3 -I tests/test_test_flows.py
-      - name: Run security flow suite
-        run: python3 -I tests/test_security_flow.py
-      - name: Run scaffold runner suite
-        run: python3 -I tests/test_scaffold.py
-      - name: Run repository security suite
-        run: python3 -I tests/test_repo_security.py
+      - name: Run the required flows and every suite
+        run: python3 -I tests/run_tests.py

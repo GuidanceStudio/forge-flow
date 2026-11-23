@@ -158,7 +158,8 @@ forge-flow/
 ├── PRINCIPLES.md      ← the trade-offs this repo's plans are checked against
 ├── THREATS.md         ← the repo's threat model, each threat mapped to a test
 ├── docs/              ← SOURCE-PROVENANCE.md: the sources the security rules were compared against
-├── tests/             ← six suites: content contract, spec adapter, flow runner, security flow, scaffold, repository security
+├── specs/             ← behaviour rows for the executable examples, with INDEX.tsv
+├── tests/             ← run_tests.py and its seven suites: content contract, spec adapter, flow runner, security flow, scaffold, repository security, payload
 └── forge-flow/           ← the flat, assistant-neutral skill payload
     ├── SKILL.md       ← router (design / TDD / IDD / scaffold)
     ├── DESIGN.md      ← planning playbook
@@ -180,16 +181,15 @@ skills.
 ## Tests
 
 ```bash
-bash tests/test_content.sh
-python3 -I tests/test_specs_adapter.py
-python3 -I tests/test_test_flows.py
-python3 -I tests/test_security_flow.py
-python3 -I tests/test_scaffold.py
-python3 -I tests/test_repo_security.py
+python3 -I tests/run_tests.py                # every suite once, then both required flows
+python3 -I tests/run_tests.py conformance    # the test mapped to each row in specs/
+python3 -I tests/run_tests.py security       # the test mapped to each threat in THREATS.md
 ```
 
-CI (GitHub Actions) runs the six suites as separate steps on every push and PR,
-so a failing suite is named in the log.
+Each suite also runs alone, for example `python3 -I tests/test_scaffold.py` or
+`bash tests/test_content.sh`. The runner reports each flow with its scope and the
+requirements that did not pass, and exits non-zero for any non-pass. CI runs
+`tests/run_tests.py` on every push and pull request.
 
 ## License
 

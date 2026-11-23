@@ -86,19 +86,21 @@ Closed milestones live in **[`DEVPLAN-COMPLETED.md`](DEVPLAN-COMPLETED.md)** as 
 
 ---
 
-## M98: The repo exposes its own conformance and security flows
+## ✅ M98: The repo exposes its own conformance and security flows
 
 **Why:** `TEST-FLOWS.md` applies to every project, skill packages included: dedicated `conformance` and `security` selections in the native runner and in CI, and behaviour rows under `specs/`. The repo has `tests/` for its examples but no `specs/` and no named flows, so a full run cannot show that every declared contract executed.
 
 **Approach:** Declare the payload's pinned contracts and the README's distribution claims as rows in `specs/<area>.tsv` with `specs/INDEX.tsv`, reusing the adapter pattern from `SPECS-ADAPTER.md`. Add `conformance` and `security` as selections of the existing test commands, the latter mapped to M97's threats, and wire both into `.github/workflows/tests.yml`. Reuse existing tests; copy none.
 
 **Tasks:**
-- [ ] Write `specs/INDEX.tsv` and the area files, including a row that the payload folder alone contains every file its entry points reference
-- [ ] Add the `conformance` selection; it fails when a row has no executing test
-- [ ] Add the `security` selection mapped to the `THREATS.md` entries from M97
-- [ ] Wire both selections into `.github/workflows/tests.yml`
-- [ ] Run the full set; record flow, scope, IDs and outcomes as `TEST-FLOWS.md` requires
-- [ ] Commit with the ticks, push
+- [x] Write `specs/INDEX.tsv` and the area files, including a row that the payload folder alone contains every file its entry points reference
+- [x] Add the `conformance` selection; it fails when a row has no executing test
+- [x] Add the `security` selection mapped to the `THREATS.md` entries from M97
+- [x] Wire both selections into `.github/workflows/tests.yml`
+- [x] Run the full set; record flow, scope, IDs and outcomes as `TEST-FLOWS.md` requires
+- [x] Commit with the ticks, push
+
+**Notes:** the conformance adapter proves that each row's mapped test ran and passed. It does not read a row's `when` and `expect` into the test; the row text is the human contract and the mapped test holds the assertion. Rows cover the four executable examples, the repository security checks and the payload's links. The 23 tests with no row stay visible in the runner's summary.
 
 **Done when:** both flows run through the repo's native commands and CI, every row has an executing test, and a row without one fails the run.
 

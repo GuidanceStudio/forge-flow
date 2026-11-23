@@ -58,11 +58,11 @@ contains_flat "$ROOT_README" "Conceptual prior art"
 contains_flat "$SKILL_README" "is conceptual prior art"
 
 contains "$ROOT_README" "bash tests/test_content.sh"
-contains "$WORKFLOW" "bash tests/test_content.sh"
-# M89: every suite is a named workflow step and a README command
-for suite in tests/test_specs_adapter.py tests/test_test_flows.py tests/test_security_flow.py tests/test_scaffold.py; do
-    contains "$WORKFLOW" "python3 -I $suite"
-    contains "$ROOT_README" "python3 -I $suite"
+# M98: the runner is the CI step and the README command; it names every Python suite
+contains "$ROOT_README" "python3 -I tests/run_tests.py"
+contains "$WORKFLOW" "python3 -I tests/run_tests.py"
+for suite in "$REPO_ROOT"/tests/test_*.py; do
+    contains "$REPO_ROOT/tests/run_tests.py" "\"$(basename "$suite" .py)\""
 done
 
 python3 - "$SKILL" <<'PY'
@@ -1109,7 +1109,6 @@ contains "$REPO_ROOT/forge-flow/SPECS-ADAPTER.md" 'unknown IDs and unexecuted ro
 contains "$DESIGN" 'name the added spec row IDs under the milestone'
 contains "$TDD" 'Read the relevant spec rows from disk'
 contains "$TDD" 'derive the failing tests from their `when` and `expect` values'
-python3 "$REPO_ROOT/tests/test_specs_adapter.py"
 
 # M83 — the adapter example is its own payload file, opened only when needed.
 test -f "$REPO_ROOT/forge-flow/SPECS-ADAPTER.md" || fail "SPECS-ADAPTER.md missing from the payload"
@@ -1352,7 +1351,6 @@ contains_flat "$SCAFFOLD" 'conformance executes all declared specs'
 contains "$DESIGN" '#### Required test flows'
 contains "$TDD" 'Register the change tests in the required flows'
 contains "$IDD" 'Register the change tests in the required flows'
-python3 "$REPO_ROOT/tests/test_test_flows.py"
 
 # M88 — mapped security tests execute under the existing security gate.
 contains "$FLOWS" '## Security'
@@ -1362,7 +1360,6 @@ contains_flat "$FLOWS" 'Do not impose an unrelated scanner'
 contains_flat "$EXECUTOR_CORE" 'Run the required `security` flow'
 contains_flat "$DESIGN" 'stable threat IDs'
 contains_flat "$SCAFFOLD" 'selectable `conformance` and `security` flows'
-python3 "$REPO_ROOT/tests/test_security_flow.py"
 
 # M95 — the repo carries its own principles in the shape design prescribes.
 PRINCIPLES="$REPO_ROOT/PRINCIPLES.md"
