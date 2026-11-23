@@ -68,18 +68,19 @@ Closed milestones live in **[`DEVPLAN-COMPLETED.md`](DEVPLAN-COMPLETED.md)** as 
 
 ---
 
-## M97: The repo carries its threat model
+## ✅ M97: The repo carries its threat model
 
 **Why:** README "Threats" requires `THREATS.md` for changes touching data, access or external services. With the installer gone, the public repo's standing exposure is a foreign project name or host reaching the remote inside an installable payload (DEC-1), and the CI workflow that runs on every push. Neither has a threat entry or a negative test.
 
 **Approach:** Write `THREATS.md` in the shape `SECURITY-EXAMPLE.md` shows, scoped to those two surfaces. Each threat names its control and the check that proves it; the threat list is settled with the user before the file is written. Controls stay manual where DEC-1 says so, and a negative test only where a check can run without a name pattern wide enough to flag this repo's own URL.
 
 **Tasks:**
-- [ ] Propose the threat list in chat for approval; it includes altered instructions delivered through a mutable reference such as `main`, with a tag as the control
-- [ ] Write `THREATS.md` after approval
-- [ ] Add a negative test or check per approved threat that can be automated; list the rest as manual controls
-- [ ] Run the suites; all green
-- [ ] Commit with the ticks, push
+- [x] Propose the threat list in chat for approval; it includes altered instructions delivered through a mutable reference such as `main`, with a tag as the control
+- [x] Write `THREATS.md` after approval
+- [x] Add a negative test or check per approved threat that can be automated; list the rest as manual controls
+- [x] Declare read-only contents permission in `.github/workflows/tests.yml` and run the new suite in CI
+- [x] Run the suites; all green
+- [x] Commit with the ticks, push
 
 **Done when:** every approved threat has a control and either a passing negative test or an explicit manual-control entry, and `THREATS.md` follows the `SECURITY-EXAMPLE.md` shape.
 

@@ -155,8 +155,10 @@ forge-flow/
 ├── DEVPLAN.md         ← this project's own dev plan (pending work)
 ├── DEVPLAN-COMPLETED.md ← its closed milestones, moved at close-out
 ├── DECISIONS.md       ← choices that bind future work, superseded not edited
+├── PRINCIPLES.md      ← the trade-offs this repo's plans are checked against
+├── THREATS.md         ← the repo's threat model, each threat mapped to a test
 ├── docs/              ← SOURCE-PROVENANCE.md: the sources the security rules were compared against
-├── tests/             ← five suites: content contract, spec adapter, flow runner, security flow, scaffold
+├── tests/             ← six suites: content contract, spec adapter, flow runner, security flow, scaffold, repository security
 └── forge-flow/           ← the flat, assistant-neutral skill payload
     ├── SKILL.md       ← router (design / TDD / IDD / scaffold)
     ├── DESIGN.md      ← planning playbook
@@ -183,9 +185,10 @@ python3 -I tests/test_specs_adapter.py
 python3 -I tests/test_test_flows.py
 python3 -I tests/test_security_flow.py
 python3 -I tests/test_scaffold.py
+python3 -I tests/test_repo_security.py
 ```
 
-CI (GitHub Actions) runs the five suites as separate steps on every push and PR,
+CI (GitHub Actions) runs the six suites as separate steps on every push and PR,
 so a failing suite is named in the log.
 
 ## License
