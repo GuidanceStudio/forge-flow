@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Run installer test suite
-        run: bash tests/test_install.sh
       - name: Run content contract suite
         run: bash tests/test_content.sh
       - name: Run spec adapter suite

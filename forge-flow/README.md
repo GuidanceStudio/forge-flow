@@ -5,7 +5,7 @@ planning (`design`) and execution (`TDD` / `IDD`). One flat folder,
 installable into any coding assistant that reads skills.
 
 > This is the skill payload. See the [project README](../README.md) for
-> install + the multi-assistant installer.
+> installation.
 
 ## What it does
 

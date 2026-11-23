@@ -20,29 +20,31 @@ policy checks, preserving missing/failed verification under the security gate.
 
 ## Install
 
-The installer is multi-assistant. Run it with no target for an
-interactive menu, or pass `--target`:
+`forge-flow/` is the whole skill: one flat folder that follows the common `SKILL.md`
+layout. Put a copy where your assistant reads skills.
 
 ```bash
-git clone https://github.com/GuidanceStudio/forge-flow.git && cd forge-flow
-./install.sh                      # interactive menu
-./install.sh --target claude      # ~/.claude/skills/forge-flow/
-./install.sh --target opencode    # ~/.config/opencode/skills/forge-flow/
-./install.sh --target all         # claude + codex + opencode
+git clone https://github.com/GuidanceStudio/forge-flow.git
+cp -r forge-flow/forge-flow ~/.claude/skills/forge-flow            # Claude Code
+cp -r forge-flow/forge-flow ~/.config/opencode/skills/forge-flow   # opencode
 ```
 
-Remote one-liner:
+For Codex, its skill installer takes the GitHub path directly; pin a tag or a commit
+instead of `main`, because a moving branch changes the instructions the assistant follows:
 
-```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/GuidanceStudio/forge-flow/main/install.sh) --target claude
+```
+$skill-installer install GuidanceStudio/forge-flow/tree/<tag-or-commit>/forge-flow
 ```
 
-`claude`, `codex`, and `opencode` get the `forge-flow/` folder copied
-verbatim — one payload serves all three. Installing one target leaves the
-others on the payload they already had, so the installer names any it finds
-holding a different one. Flags: `--force` (overwrite),
-`--check` (report `OK`/`DRIFT` vs source). Or skip the installer —
-`forge-flow/` is self-contained, copy it anywhere your tool reads skills.
+A manual Codex copy goes in `~/.agents/skills/forge-flow`. Keep one active copy per
+assistant.
+
+**Update.** Save any local edits, then replace the whole installed folder with the new
+one. `diff -r forge-flow/forge-flow <installed folder>` shows whether a copy has drifted
+from the source.
+
+**Not provided.** There is no installer script, no remote one-liner and no Gemini or
+`AGENTS.md` wrapper; earlier versions had them.
 
 ## Usage
 
@@ -51,8 +53,7 @@ Invoke however your assistant invokes skills, then pick a mode:
 | Assistant | Invocation |
 |---|---|
 | Claude Code / Codex / opencode | `/forge-flow design`, `/forge-flow TDD`, `/forge-flow IDD`, `/forge-flow scaffold`, or `/forge-flow` |
-| Gemini CLI | `/forge-flow` (installed as a TOML command) |
-| Cursor / Windsurf / Copilot / Aider | reference forge-flow from `AGENTS.md`, then ask |
+| Other assistants | point the assistant's instruction file (for example `AGENTS.md`) at the copied folder's `SKILL.md`, then ask |
 
 `design` creates/updates the plan; `TDD` (recommended) and `IDD`
 execute it. You can pass a forge-flow file path directly:
@@ -150,13 +151,12 @@ Runtime dependency: none. forge-flow imports the concepts, not the code.
 ```
 forge-flow/
 ├── README.md          ← you are here
-├── install.sh         ← multi-assistant installer
 ├── CLAUDE.md          ← contributor rules for this public repo
 ├── DEVPLAN.md         ← this project's own dev plan (pending work)
 ├── DEVPLAN-COMPLETED.md ← its closed milestones, moved at close-out
 ├── DECISIONS.md       ← choices that bind future work, superseded not edited
 ├── docs/              ← SOURCE-PROVENANCE.md: the sources the security rules were compared against
-├── tests/             ← six suites: installer, content contract, spec adapter, flow runner, security flow, scaffold
+├── tests/             ← five suites: content contract, spec adapter, flow runner, security flow, scaffold
 └── forge-flow/           ← the flat, assistant-neutral skill payload
     ├── SKILL.md       ← router (design / TDD / IDD / scaffold)
     ├── DESIGN.md      ← planning playbook
@@ -169,7 +169,7 @@ forge-flow/
 ```
 
 `forge-flow/` is the whole skill — copy it anywhere your assistant reads
-skills, or use `install.sh`.
+skills.
 
 ## Skill docs
 
@@ -178,7 +178,6 @@ skills, or use `install.sh`.
 ## Tests
 
 ```bash
-bash tests/test_install.sh
 bash tests/test_content.sh
 python3 -I tests/test_specs_adapter.py
 python3 -I tests/test_test_flows.py
@@ -186,7 +185,7 @@ python3 -I tests/test_security_flow.py
 python3 -I tests/test_scaffold.py
 ```
 
-CI (GitHub Actions) runs the six suites as separate steps on every push and PR,
+CI (GitHub Actions) runs the five suites as separate steps on every push and PR,
 so a failing suite is named in the log.
 
 ## License

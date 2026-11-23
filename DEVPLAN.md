@@ -5,7 +5,7 @@ plan creation/maintenance (`design`) and plan execution (`TDD` / `IDD`).
 
 This project replaces the two standalone repos `claude-forge-flow-executor` and
 `codex-forge-flow-executor` with a single source of truth that ships both variants
-plus a shared installer.
+plus a plain-folder distribution.
 
 ## Milestone format
 
@@ -43,28 +43,28 @@ Closed milestones live in **[`DEVPLAN-COMPLETED.md`](DEVPLAN-COMPLETED.md)** as 
 - [ ] Draft the principles and the `## Reviewers` section; present them in chat for approval
 - [ ] Write root `PRINCIPLES.md` after approval
 - [ ] Add `tests/test_content.sh` coverage: the file exists and follows the shape the example in `DESIGN.md` prescribes
-- [ ] Run the six suites; all green
+- [ ] Run the suites; all green
 - [ ] Commit with the ticks, push
 
-**Done when:** root `PRINCIPLES.md` exists with user-approved wording, a content test pins its shape, and the six suites pass.
+**Done when:** root `PRINCIPLES.md` exists with user-approved wording, a content test pins its shape, and the suites pass.
 
 ---
 
-## M96: The repo distributes the payload as a plain folder
+## ✅ M96: The repo distributes the payload as a plain folder
 
 **Why:** `forge-flow/` is already the complete, assistant-neutral payload, and the README says copying it is enough. `install.sh` (245 lines, 151 of tests) adds a clone-and-run remote mode, six targets and an `rm -rf` on the destination. It encodes one user's multi-location setup in a public repo, and that setup belongs on that user's machine. Standard distribution is a folder a person copies to wherever their assistant reads skills.
 
 **Approach:** Remove `install.sh` and `tests/test_install.sh`, drop the installer suite from CI, and rewrite the README Install section to the standard path: clone or download, copy `forge-flow/` into the assistant's skills directory, or use the assistant's own skill installer from the GitHub path. No plugin manifest and no assistant-specific packaging. The `agents/openai.yaml` metadata file stays. The user's personal deployment moves to a separate local script, tracked in its own devplan outside this repo.
 
 **Tasks:**
-- [ ] Remove `install.sh`, `tests/test_install.sh` and the installer step in `.github/workflows/tests.yml`
-- [ ] Rewrite the README Install section and layout block; "six suites" becomes five everywhere it is stated
-- [ ] Adjust `tests/test_content.sh` where it pins installer wording, and `forge-flow/README.md` where it mentions the installer
-- [ ] Add `.claude/` to `.gitignore`
-- [ ] Run the remaining suites; all green
-- [ ] Commit with the ticks, push
+- [x] Remove `install.sh`, `tests/test_install.sh` and the installer step in `.github/workflows/tests.yml`
+- [x] Rewrite the README Install section and layout block: the copy route, the Codex skill-installer route pinned to a tag, an update procedure (save local edits, replace the whole folder), and a note that the Gemini and AGENTS.md wrappers and the remote one-liner are gone; "six suites" becomes five everywhere it is stated
+- [x] Adjust `tests/test_content.sh` where it pins installer wording, and `forge-flow/README.md` where it mentions the installer
+- [x] Add `.claude/` to `.gitignore`
+- [x] Run the remaining suites; all green
+- [x] Commit with the ticks, push
 
-**Done when:** no file references `install.sh`, the README gives the copy and skill-installer routes, and the five remaining suites pass.
+**Done when:** no file references `install.sh`, the README gives the copy and skill-installer routes with the update procedure and the removed-features note, and the five remaining suites pass.
 
 ---
 
@@ -75,7 +75,7 @@ Closed milestones live in **[`DEVPLAN-COMPLETED.md`](DEVPLAN-COMPLETED.md)** as 
 **Approach:** Write `THREATS.md` in the shape `SECURITY-EXAMPLE.md` shows, scoped to those two surfaces. Each threat names its control and the check that proves it; the threat list is settled with the user before the file is written. Controls stay manual where DEC-1 says so, and a negative test only where a check can run without a name pattern wide enough to flag this repo's own URL.
 
 **Tasks:**
-- [ ] Propose the threat list in chat for approval
+- [ ] Propose the threat list in chat for approval; it includes altered instructions delivered through a mutable reference such as `main`, with a tag as the control
 - [ ] Write `THREATS.md` after approval
 - [ ] Add a negative test or check per approved threat that can be automated; list the rest as manual controls
 - [ ] Run the suites; all green
@@ -92,7 +92,7 @@ Closed milestones live in **[`DEVPLAN-COMPLETED.md`](DEVPLAN-COMPLETED.md)** as 
 **Approach:** Declare the payload's pinned contracts and the README's distribution claims as rows in `specs/<area>.tsv` with `specs/INDEX.tsv`, reusing the adapter pattern from `SPECS-ADAPTER.md`. Add `conformance` and `security` as selections of the existing test commands, the latter mapped to M97's threats, and wire both into `.github/workflows/tests.yml`. Reuse existing tests; copy none.
 
 **Tasks:**
-- [ ] Write `specs/INDEX.tsv` and the area files
+- [ ] Write `specs/INDEX.tsv` and the area files, including a row that the payload folder alone contains every file its entry points reference
 - [ ] Add the `conformance` selection; it fails when a row has no executing test
 - [ ] Add the `security` selection mapped to the `THREATS.md` entries from M97
 - [ ] Wire both selections into `.github/workflows/tests.yml`
